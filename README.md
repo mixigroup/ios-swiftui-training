@@ -14,46 +14,46 @@ SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付け�
 
 ## セッション
 ### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+[session-0](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-0)
 
 ### 1. SwiftUIの基本
 #### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+[session-1-prepare](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1-prepare)
 
 #### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
+[session-1.1](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1.1)
 
 #### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+[session-1.2](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1.2)
 
 #### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+[session-1.3](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1.3)
 
 #### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
+[session-1.4](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1.4)
 
 #### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
+[session-1.5](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-1.5)
 
 ### 2. WebAPIとの通信
 #### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+[session-2.1](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-2.1)
 
 #### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+[session-2.2](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-2.2)
 
 #### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+[session-2.3](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-2.3)
 
 ### 3. 設計とテスト
 #### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+[session-3.1](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-3.1)
 
 #### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+[session-3.2](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-3.2)
 
 #### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
+[session-3.3](https://github.com/mixigroup/2021BeginnerTrainingContainer/tree/session-3.3)
 
 ### 4. ログイン
 WIP
