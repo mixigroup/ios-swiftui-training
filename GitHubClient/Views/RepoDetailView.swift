@@ -19,8 +19,10 @@ struct RepoDetailView: View {
                         .font(.body)
                         .fontWeight(.bold)
 
-                    Text(repo.description)
-                        .padding(.top, 4)
+                    if let description = repo.description {
+                        Text(description)
+                            .padding(.top, 4)
+                    }
 
                     HStack {
                         Image(systemName: "star")
