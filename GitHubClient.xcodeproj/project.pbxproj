@@ -17,6 +17,7 @@
 		DF938EEC262FF30F003642C7 /* RepoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EE9262FF30F003642C7 /* RepoRow.swift */; };
 		DF938EED262FF30F003642C7 /* RepoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EEA262FF30F003642C7 /* RepoListView.swift */; };
 		DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EEB262FF30F003642C7 /* RepoDetailView.swift */; };
+		DF938EF7262FF439003642C7 /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EF6262FF439003642C7 /* Stateful.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		DF938EE9262FF30F003642C7 /* RepoRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoRow.swift; sourceTree = "<group>"; };
 		DF938EEA262FF30F003642C7 /* RepoListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoListView.swift; sourceTree = "<group>"; };
 		DF938EEB262FF30F003642C7 /* RepoDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoDetailView.swift; sourceTree = "<group>"; };
+		DF938EF6262FF439003642C7 /* Stateful.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				DF1AB52C262F0FBF002A9028 /* Info.plist */,
 				DF938EE8262FF30F003642C7 /* Views */,
 				DF938ED8262FF242003642C7 /* Models */,
+				DF938EF5262FF439003642C7 /* Utilities */,
 				DF1AB529262F0FBF002A9028 /* Preview Content */,
 			);
 			path = GitHubClient;
@@ -109,6 +112,14 @@
 				DF938EE9262FF30F003642C7 /* RepoRow.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		DF938EF5262FF439003642C7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				DF938EF6262FF439003642C7 /* Stateful.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +195,7 @@
 				DF938EED262FF30F003642C7 /* RepoListView.swift in Sources */,
 				DF938EDB262FF242003642C7 /* User.swift in Sources */,
 				DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */,
+				DF938EF7262FF439003642C7 /* Stateful.swift in Sources */,
 				DF938EE5262FF304003642C7 /* User+mock.swift in Sources */,
 				DF938EDC262FF242003642C7 /* Repo.swift in Sources */,
 				DF938EEC262FF30F003642C7 /* RepoRow.swift in Sources */,
