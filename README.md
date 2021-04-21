@@ -1,59 +1,51 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 1.1. 簡単なレイアウトを組む
+- `ContentView` を開いて、右上の `Resume` ボタンを押してXcode Previewsを起動してみましょう
 
-## 概要
+<img src="https://user-images.githubusercontent.com/8536870/115507337-f26e6200-a2b6-11eb-90a1-bad00fcba348.png" height=500>
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+- Previewのビルドが完了すると以下のような表示が確認できますね
 
-## 環境
+<img src="https://user-images.githubusercontent.com/8536870/115507424-12058a80-a2b7-11eb-946c-adbc2fa5e79d.png" height=500>
 
-- Xcode 12.4
-- Swift 5.3.2
+- 今 `ContentView` にはHello, world!という一つの [Text](https://developer.apple.com/documentation/swiftui/text) が配置されているだけになっています
+- まずは「テキストを縦に二つ左揃えに並べる」ということをやってみましょう
+- Previewのテキストを `⌘ + Click` で選択してみてください、すると以下のようにオプションがいくつか表示されます
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+<img src="https://user-images.githubusercontent.com/8536870/115507463-2184d380-a2b7-11eb-8b4e-7319f76369a3.png" height=500>
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+- この内 `Embed in VStack` を選択してください
+- すると、以下のようにTextが [VStack](https://developer.apple.com/documentation/swiftui/vstack) で囲われていることがわかります
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
+```swift
+VStack {
+    Text("Hello, world!")
+        .padding()
+}
+```
 
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+- VStackは子要素を縦に並べてくれます (対して [HStack](https://developer.apple.com/documentation/swiftui/hstack) は子要素を横に並べてくれるものです)
+- それではGood evening, world!というテキストをVStackに追加して縦に並べてみてください
 
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+<img src="https://user-images.githubusercontent.com/8536870/115507512-33667680-a2b7-11eb-803e-51bab6c31ffa.png" height=500>
 
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
+- いい感じですね、では最後に「左揃え」にしてみましょう
+- 以下のようにVStackを選択してください、右側のペインに `Alignment` という項目があるのがわかります
 
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
+<img src="https://user-images.githubusercontent.com/8536870/115507549-3f523880-a2b7-11eb-838e-19635a4a66f2.png" height=500>
 
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+- 左揃えアイコンを選択してVStackを左揃えにしてください
 
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+<img src="https://user-images.githubusercontent.com/8536870/115507583-48dba080-a2b7-11eb-9cc5-0c42f8b8055a.png" height=500>
 
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+- 良さそうですね :+1:
+- SwiftUIの魅力はなんと言ってもXcode PreviewsによるホットリロードでのViewの開発の生産性の高さにあります、使いこなして効率をあげましょう
+- Preview経由で編集した際にコードベースでどういった差分が追加されたかもしっかり見て覚えておきましょう
 
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+### チャレンジ
+- それぞれのTextのフォントサイズ, ウエイト, 色を変更してみましょう
 
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+### 前セッションとのDiff
+[session-1-prepare...session-1.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1-prepare...session-1.1)
 
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
-
-### 4. ログイン
-WIP
+## Next
+[1.2. 画像を表示](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
