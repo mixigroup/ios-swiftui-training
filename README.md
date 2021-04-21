@@ -1,59 +1,144 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 2.1. Combineによる非同期処理
 
-## 概要
+- APIリクエストを送り、レスポンスを受け取ってその結果をViewに表示する際、その間Main Threadを止めてユーザーの自由を奪ってしまってはかなり体験の悪いアプリになってしまいます
+- よってAPIリクエストは別スレッドで非同期に送り、結果が帰ってきたらMain ThreadでUIを更新する、という実装をするのが良いとされています
+- なので、API通信周りの実装する前に、まずは非同期処理について学ぶ必要があります
+- 今回は [Combine](https://developer.apple.com/documentation/combine) というフレームワークを用いて実装していきます
+- CombineとはApple製のリアクティブプログラミングのフレームワークです、 `import Combine` を宣言することで利用可能です
+- Combineには大きな概念として以下の二つがあります
+- [Publisher](https://developer.apple.com/documentation/combine/publisher):
+    - 時系列順にイベントを発火する
+    - 様々なoperatorによってイベントを加工して流したり、複数のPublisherを合成して一つのストリームにしたりすることが可能
+- [Subscriber](https://developer.apple.com/documentation/combine/subscriber)
+    - Publisherをsubscribeしてイベントを受け取る
+    - 返り値のcancellableを保持しておくことで任意のタイミングでキャンセルすることも可能
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+- 具体的な例を見せつつ説明します
 
-## 環境
+```swift
+struct RepoListView: View {
+    ...
+    private var cancellables = Set<AnyCancellable>()
+    
+    var body: some View { ... }
 
-- Xcode 12.4
-- Swift 5.3.2
+    private mutating func loadRepos() {
+        let reposPublisher = Future<[Repo], Error> { promise in
+            DispatchQueue.main().asyncAfter(deadline: .now() + 1.0) {
+                promise(.success([
+                    .mock1, .mock2, .mock3, .mock4, .mock5
+                ]))
+            }
+        }
+        reposPublisher.sink(receiveCompletion: { completion in
+            print("Finished: \(completion)")
+        }, receiveValue: { repos in
+            mockRepos = repos
+        }
+        ).store(in: &cancellables)
+    }
+}
+```
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+- `loadRepos()` メソッドを見てください、図にすると以下のようなイメージです
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+<img src="https://user-images.githubusercontent.com/8536870/115534916-396a5080-a2d3-11eb-9c6a-e76302326259.png" height=500>
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
+- 説明すると、以下のようなことが実行されています
+    1. FutureというPublisherで1秒後にリポジトリ一覧がストリームに流れる
+    2. SinkというSubscriberで上記Publisherをsubscribe
+    3. `.store(in: &cancellables)` でSubscriberが返す [Cancellable](https://developer.apple.com/documentation/combine/cancellable) を保持  
+    4. 1秒後にPublisherから流れてきたArray<Repo>をSinkの `receiveValue` にてmockReposに反映 
 
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+- しかし、この状態だと以下のようなエラーが出てしまいます
 
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+> Cannot use mutating member on immutable value: 'self' is immutable
 
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
+- これはsubscribe時に返されるcancellableを構造体である `RepoListView` のメンバ変数である `cancellables` に対して追加しようとしているためエラーが出ています
+- 構造体は値型なので、mutatingのキーワードを付与したメソッド内でしかpropertyの更新ができません (よって、 `View.body` 内でエラーが起きている)
+- なので、参照型であるclassに「リポジトリ一覧を読み込む処理」を委譲しましょう
+- `ReposLoader` というクラスを作ってみてください (ファイルは `RepoListView` と同じで構いません)
 
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
+```swift
+class ReposLoader {
+    private(set) var repos = [Repo]()
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    func call() {
+        let reposPublisher = Future<[Repo], Error> { promise in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                promise(.success([
+                    .mock1, .mock2, .mock3, .mock4, .mock5
+                ]))
+            }
+        }
+        reposPublisher
+            .sink(receiveCompletion: { completion in
+                print("Finished: \(completion)")
+            }, receiveValue: { [weak self] repos in
+                self?.repos = repos
+            }
+            ).store(in: &cancellables)
+    }
+}
+```
 
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+- `ReposLoader` を `RepoListView` のpropertyとして初期化して、 `mockRepos` を参照していた箇所を置き換えていきます
 
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+```swift
+struct RepoListView: View {
+    @State private var reposLoader = ReposLoader()
 
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+    var body: some View {
+        NavigationView {
+            if reposLoader.repos.isEmpty {
+                ProgressView("loading...")
+            } else {
+                List(reposLoader.repos) { repo in
+                    NavigationLink(
+                        destination: RepoDetailView(repo: repo)) {
+                        RepoRow(repo: repo)
+                    }
+                }
+                .navigationTitle("Repositories")
+            }
+        }
+        .onAppear {
+            reposLoader.call()
+        }
+    }
+}
+```
+    
+- この状態でLive Previewを試してみましょう
+- loadingのまま何も中身が更新されないことがわかるでしょう
+- @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `ReposLoader` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
+- `ReposLoader` の `repos` という特定のpropertyを監視する必要があります
+- そのためには [ObservableObject](https://developer.apple.com/documentation/combine/observableobject) を使用します
+- `ReposLoader` にObservableObjectを適用し、監視させたいpropertyである `repos` には [@Published](https://developer.apple.com/documentation/combine/published) をannotateします
+    - @Publishedでannotateすると、そのpropertyの型でPublisherを生成してくれます、これをView側から監視するわけです
 
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+```swift
+class ReposLoader: ObservableObject {
+    @Published private(set) var repos = [Repo]()
+```
+    
+- そして最後に、 `RepoListView` のproperty `reposLoader` には [@StateObject](https://developer.apple.com/documentation/swiftui/stateobject) をannotateします
 
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+```swift
+struct RepoListView: View {
+    @StateObject private var reposLoader = ReposLoader()
+```
+    
+- Live Previewでリポジトリがリスト表示されることを確認しましょう
 
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
+### チャレンジ
+- `ReposLoader.call` 内で `DispatchQueue.main.asyncAfter` を `DispatchQueue.global().asyncAfter` に変更して `⌘ + R` でSimulatorを起動してみてください
+- 紫色の警告が表示されるはずなので、なぜ警告が出たのかを理解しつつエラーメッセージの通りに修正してください
 
-### 4. ログイン
-WIP
+### 前セッションとのDiff
+[session-1.5...session-2.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.5...session-2.1)
+
+## Next
+[2.2. URLSessionによる通信](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
