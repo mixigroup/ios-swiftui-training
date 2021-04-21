@@ -1,6 +1,4 @@
 ## 1.2. 画像を表示
-<img src="" height=500>
-
 - Assetsを追加して画像を表示してみましょう
 - https://github.com/logos からGitHub markをダウンロードしてください
 
