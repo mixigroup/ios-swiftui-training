@@ -9,7 +9,7 @@
 - [Publisher](https://developer.apple.com/documentation/combine/publisher):
     - 時系列順にイベントを発火する
     - 様々なoperatorによってイベントを加工して流したり、複数のPublisherを合成して一つのストリームにしたりすることが可能
-- [Subscriber](https://developer.apple.com/documentation/combine/subscriber)
+- [Subscriber](https://developer.apple.com/documentation/combine/subscriber):
     - Publisherをsubscribeしてイベントを受け取る
     - 返り値のcancellableを保持しておくことで任意のタイミングでキャンセルすることも可能
 
