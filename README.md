@@ -1,59 +1,78 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 1.5. ライフサイクルと状態管理
 
-## 概要
+- SwiftUIにおけるViewは状態を入力として受け取ってレイアウトを返す関数です
+- UIを更新するためには直接Viewを追加したり編集したりするのではなく、入力である状態を変更してView関数の出力が変わるようにします
+- 具体的なViewのライフサイクルについては https://www.vadimbulavin.com/swiftui-view-lifecycle/ より下図を引用します
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+<img src="https://user-images.githubusercontent.com/8536870/115531403-b4316c80-a2cf-11eb-962f-8d81b9aedda5.png">
 
-## 環境
 
-- Xcode 12.4
-- Swift 5.3.2
+- Appearing
+  - 画面が表示されるタイミングで、まずはStateの監視を開始します
+  - `View.body` メソッドの出力を元にレンダリングが走ります
+  - その後、 [onAppear](https://developer.apple.com/documentation/swiftui/text/onappear(perform:)) メソッドが呼び出されます
+- Updating
+  - Stateに更新が走ると現在のViewGraphに差分が生じるかの確認が入り、変更がなければ再レンダリングは走りません
+  - ViewGraphに変更がある場合には `View.body` の出力をもとにレンダリングが走ります
+- Disappearing
+  - 画面が消えるタイミングで [onDisappear](https://developer.apple.com/documentation/swiftui/text/ondisappear(perform:)) が呼ばれます
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+- あまりピンとこないかもしれないので、実際にコードを書いて学んでみましょう
+- 今 `RepoListView` には `mockRepos` が最初から定義されていてリポジトリ一覧が表示されています
+- しかし本来ならば、Viewが表示されるタイミングでAPIにリポジトリ一覧取得のリクエストを投げて、正常にレスポンスを受け取ることができて初めてリポジトリ一覧が表示可能になります
+- APIリクエスト周りは次のセッションで説明するとして、まずは擬似的にリポジトリを読み込む処理を書いてみましょう
+- その前に、まずは `mockRepos` の状態を監視してViewに変更が反映されるようにしてみます
+- [@State](https://developer.apple.com/documentation/swiftui/state) で `mockRepos` をannotateしてください
+    - Stateは変更されることが前提なので、letではなくvarで変数として宣言する必要があります
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+```swift
+@State private var mockRepos: [Repo] = [
+    .mock1, .mock2, .mock3, .mock4, .mock5
+]
+```
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
+- `mockRepos` は最初は空っぽにしつつ、 `loadRepos()` メソッドを宣言してモックデータを代入するようにします
 
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+```swift
+struct RepoListView: View {
+    @State private var mockRepos: [Repo] = []
 
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+    var body: some View { ... }
 
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
+    private func loadRepos() {
+        // 1秒後にモックデータを読み込む
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            mockRepos = [
+                .mock1, .mock2, .mock3, .mock4, .mock5
+            ]
+        }
+    }
+}
+```
 
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
+- これでリポジトリ一覧が読み込まれたらbodyが描画されて一覧が表示されるようになりました
+- リポジトリ一覧をViewが表示されたタイミングで読み込むように、 `onAppear` イベントを受け取って、そこで `loadRepos()` を呼んでみましょう
 
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+```swift
+var body: some View {
+    NavigationView {
+        ...
+    }
+    .onAppear {
+        loadRepos()
+    }
+}
+```
 
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+- Live Previewにて空のViewが表示された一秒後にリポジトリ一覧が表示されたら成功です
 
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+### チャレンジ
+- `mockRepos` を読み込み中(== 空のとき)には以下のように [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) が表示されるようにしてみましょう
 
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+<img src="https://user-images.githubusercontent.com/8536870/115532071-6832f780-a2d0-11eb-93d6-5e3fa44200d2.png" height=500>
 
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+### 前セッションとのDiff
+[session-1.4...session-1.5](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.4...session-1.5)
 
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
-
-### 4. ログイン
-WIP
+## Next
+[2.1. Combineによる非同期処理](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
