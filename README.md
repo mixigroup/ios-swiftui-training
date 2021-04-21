@@ -1,59 +1,42 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 前準備
+- 前準備として、これから実装を追加していくプロジェクトファイルを作成します
+- まずはXcodeを開いてください
+- 下図のようなウィンドウが開くので `Create a new Xcode project` から新規にプロジェクトを作成してください
 
-## 概要
+![image](https://user-images.githubusercontent.com/8536870/115506402-c6061600-a2b5-11eb-87af-ee70138481d5.png)
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+- すると以下のようなウィンドウが開くので `App` を選択してください
 
-## 環境
+![image](https://user-images.githubusercontent.com/8536870/115506461-d61df580-a2b5-11eb-9e74-f93792f8604c.png)
 
-- Xcode 12.4
-- Swift 5.3.2
+- 以下のようにそれぞれ入力した上で `Next` を押して適当なフォルダに保存してください
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+![image](https://user-images.githubusercontent.com/8536870/115506518-e635d500-a2b5-11eb-844c-fdc54bd090de.png)
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+- 一応各項目について簡単に説明しておきます
+    - Product Name: プロダクトの名前、この名前がデフォルトでアプリ名として表示されるが、もちろん変更可能
+    - Team: アプリを管理するチーム
+    - Organization Identifier: 組織の識別子、ユニークである必要がある、基本的には所属している組織が保有しているドメインを逆から並べたものを指定
+    - Bundle Identifier: アプリを一意に識別する文字列、Organization IdentifierにProduct Nameをくっつけたものになる
+    - Interface: SwiftUI, Storyboardから選択できる
+    - Life Cycle: SwiftUI App, UIKit App Delegateから選択できる
+    - Language: SwiftUIを選択しなかった場合にはSwift以外にObjective-Cを選択可能
+    - Use Core Data: Local DBにCore Dataを採用する場合、チェックを入れておくとCore Data周りのファイルをいくつか用意してくれる
+    - Include Tests: チェックを入れておくとテスト用のターゲットも追加してくれる
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
 
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+- `GitHubClientApp` はアプリを起動したときのエントリーポイントになります
+- この場合 `WindowGroup` で囲われている `ContentView()` が一番最初に表示されるViewとなります
+```swift:GitHubClientApp.swift
+@main
+struct GitHubClientApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
 
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
-
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
-
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
-
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
-
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
-
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
-
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
-
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
-
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
-
-### 4. ログイン
-WIP
+## Next
+[1.1. 簡単なレイアウトを組む](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
