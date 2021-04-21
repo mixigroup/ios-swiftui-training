@@ -1,59 +1,54 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 1.2. 画像を表示
+<img src="" height=500>
 
-## 概要
+- Assetsを追加して画像を表示してみましょう
+- https://github.com/logos からGitHub markをダウンロードしてください
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+<img src="https://user-images.githubusercontent.com/8536870/115510465-bd640e80-a2ba-11eb-8490-bacf4df5c012.png" height=500>
 
-## 環境
+- `GitHub-Mark-120px-plus.png` を `Assets.xcassets` に向けてdrag&dropしてください
 
-- Xcode 12.4
-- Swift 5.3.2
+<img src="https://user-images.githubusercontent.com/8536870/115510540-d53b9280-a2ba-11eb-97f7-ebd7345aae59.png" height=500>
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+- 名前を `GitHubMark` に変更しつつ、下図のように `Single Scale` にしてください
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+<img src="https://user-images.githubusercontent.com/8536870/115510613-eb495300-a2ba-11eb-9bf8-8e96b2b3e07b.png">
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
+- ⚠︎ 本来は `Individual Scales` で解像度ごとに3つのサイズの画像を用意することが望まれますが、今回は研修ということで `Single Scale` にしています
+    - さらに言うならば、ロゴのようなベクター形式で吐き出せる画像は `.svg` 形式(iOS13未満サポートの場合は `.pdf` 形式)で追加することで、3枚の画像サイズを用意する必要がなくなるため理想的です
 
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
+- さて、画像の準備ができたので実際に表示してみましょう
+- `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) をVStackの先頭に追加してください
+- Imageへの引数には先ほど追加した `GitHubMark` を指定します
 
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+<img src="https://user-images.githubusercontent.com/8536870/115510706-061bc780-a2bb-11eb-82e6-00404eef74cf.png" height=500>
 
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
+- PreviewからImageを選択して右側のペインのFrameにてWidth, Heightをそれぞれ44に設定しましょう
+- 設定したのに画像のサイズが変わらないことに気づくでしょう
+- 画像がリサイズ可能になるように、 `.resizable` のmodifierをImageに追加しましょう
 
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
+```swift
+Image("GitHubMark")
+    .resizable()
+    .frame(width: 44.0, height: 44.0)
+```
 
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+<img src="https://user-images.githubusercontent.com/8536870/115510756-16cc3d80-a2bb-11eb-9983-c212dc188003.png" height=500>
 
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+### チャレンジ
+- 下図のようなレイアウトになるように修正してみてください
 
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+<img src="https://user-images.githubusercontent.com/8536870/115510855-319eb200-a2bb-11eb-806e-bb2cc45bd923.png" height=500>
 
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+- Textのフォントとウエイトはそれぞれ以下のような設定にしています
+  - Owner Name:
+    - font: caption
+  - Repository Name:
+    - font: body
+    - weight: semibold
 
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+### 前セッションとのDiff
+[session-1.1...session-1.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.1...session-1.2)
 
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
-
-### 4. ログイン
-WIP
+## Next
+[1.3. リスト表示](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
