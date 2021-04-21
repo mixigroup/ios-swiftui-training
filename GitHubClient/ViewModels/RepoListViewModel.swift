@@ -6,6 +6,12 @@ class RepoListViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
+    private let repoRepository: RepoRepository
+
+    init(repoRepository: RepoRepository = RepoDataRepository()) {
+        self.repoRepository = repoRepository
+    }
+
     func onAppear() {
         loadRepos()
     }
@@ -15,7 +21,7 @@ class RepoListViewModel: ObservableObject {
     }
 
     private func loadRepos() {
-        RepoRepository().fetchRepos()
+        repoRepository.fetchRepos()
             .handleEvents(receiveSubscription: { [weak self] _ in
                 self?.repos = .loading
             })
