@@ -11,6 +11,8 @@
 		DF1AB528262F0FBF002A9028 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF1AB527262F0FBF002A9028 /* Assets.xcassets */; };
 		DF1AB52B262F0FBF002A9028 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF1AB52A262F0FBF002A9028 /* Preview Assets.xcassets */; };
 		DF228A35262FF69A00C69CDC /* RepoListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF228A34262FF69A00C69CDC /* RepoListViewModelTests.swift */; };
+		DF228A44262FF76C00C69CDC /* DummyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF228A42262FF76C00C69CDC /* DummyError.swift */; };
+		DF228A45262FF76C00C69CDC /* MockRepoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF228A43262FF76C00C69CDC /* MockRepoRepository.swift */; };
 		DF938EDB262FF242003642C7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938ED9262FF242003642C7 /* User.swift */; };
 		DF938EDC262FF242003642C7 /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EDA262FF242003642C7 /* Repo.swift */; };
 		DF938EE5262FF304003642C7 /* User+mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EE3262FF304003642C7 /* User+mock.swift */; };
@@ -43,6 +45,8 @@
 		DF228A32262FF69A00C69CDC /* GitHubClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF228A34262FF69A00C69CDC /* RepoListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListViewModelTests.swift; sourceTree = "<group>"; };
 		DF228A36262FF69A00C69CDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF228A42262FF76C00C69CDC /* DummyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyError.swift; sourceTree = "<group>"; };
+		DF228A43262FF76C00C69CDC /* MockRepoRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRepoRepository.swift; sourceTree = "<group>"; };
 		DF938ED9262FF242003642C7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DF938EDA262FF242003642C7 /* Repo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		DF938EE3262FF304003642C7 /* User+mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+mock.swift"; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 			children = (
 				DF938EE3262FF304003642C7 /* User+mock.swift */,
 				DF938EE4262FF304003642C7 /* Repo+mock.swift */,
+				DF228A42262FF76C00C69CDC /* DummyError.swift */,
+				DF228A43262FF76C00C69CDC /* MockRepoRepository.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -291,10 +297,12 @@
 				DF938EDB262FF242003642C7 /* User.swift in Sources */,
 				DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */,
 				DF938EF7262FF439003642C7 /* Stateful.swift in Sources */,
+				DF228A45262FF76C00C69CDC /* MockRepoRepository.swift in Sources */,
 				DFDE10BE262FF56400E709EA /* RepoRepository.swift in Sources */,
 				DF938EE5262FF304003642C7 /* User+mock.swift in Sources */,
 				DF938EDC262FF242003642C7 /* Repo.swift in Sources */,
 				DF938EEC262FF30F003642C7 /* RepoRow.swift in Sources */,
+				DF228A44262FF76C00C69CDC /* DummyError.swift in Sources */,
 				DFDE10C2262FF56E00E709EA /* RepoAPIClient.swift in Sources */,
 				DFDE10BA262FF55700E709EA /* RepoListViewModel.swift in Sources */,
 				DF938EE6262FF304003642C7 /* Repo+mock.swift in Sources */,
