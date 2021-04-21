@@ -1,59 +1,44 @@
-# iOS SwiftUI Training
-SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。
+## 2.3. エラーハンドリング
+- 通信は必ず成功するものではありません、そして仮に失敗した場合にはしっかりエラーをハンドリングしてユーザーがそれを理解できるように示してあげる必要があります
+- 先のセッションで実装したURLSession周りの処理で必ずErrorをthrowするようにしてみましょう
 
-## 概要
+```swift
+            .tryMap() { element -> Data in
+//                guard let httpResponse = element.response as? HTTPURLResponse,
+//                      httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+//                }
+//                return element.data
+            }
+```
+    
+- この状態で `⌘ + R` でSimulatorを起動してみてください
+- ずっとloadingのままであることがわかります、これだとユーザーは何が起きたか理解できないどころか、エラーから復帰することもできません
+- throwされたErrorをキャッチするにはSinkの `receiveCompletion` にて処理を記述します
+- 以下のようにSwitch文で [Subscribers.Completion](https://developer.apple.com/documentation/combine/subscribers/completion) からエラーをハンドリングします
 
-- まずはSwift言語に対する基本的な知識を身に付けてもらいます。
-- その後GitHubのクライアントアプリをSwiftUIで実装してもらいます。
-- 各セッションのブランチごとに、実装後のプロジェクトを用意しています。
+```swift
+.sink(receiveCompletion: { completion in
+    switch completion {
+    case .failure(let error):
+        print("Error: \(error)")
+    case .finished: print("Finished")
+    }
+}
+```
 
-## 環境
+### チャレンジ
+- エラーをキャッチした際には以下のようなエラー画面を表示しましょう
+<img src="https://user-images.githubusercontent.com/8536870/115537014-5869e200-a2d5-11eb-976b-ca4612adfba7.png" height=500>
 
-- Xcode 12.4
-- Swift 5.3.2
+- リトライボタンの表示には [Button](https://developer.apple.com/documentation/swiftui/button) を使用してください
+- リトライボタンを押すと再びリポジトリ一覧を取得しつつ、その最中はloadingを表示させてください
+- もし取得したリポジトリが空の場合には以下のように空であることを示してください
 
-## セッション
-### 0. Swift言語の基本
-[session-0](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+<img src="https://user-images.githubusercontent.com/8536870/115537090-6e77a280-a2d5-11eb-801a-03e8b99fc87d.png" height=500>
 
-### 1. SwiftUIの基本
-#### 前準備
-[session-1-prepare](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+### 前セッションとのDiff
+[session-2.2...session-2.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.2...session-2.3)
 
-#### 1.1. 簡単なレイアウトを組む
-[session-1.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
-
-#### 1.2. 画像を表示
-[session-1.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.2)
-
-#### 1.3. リスト表示
-[session-1.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
-
-#### 1.4. ナビゲーション
-[session-1.4](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
-
-#### 1.5. ライフサイクルと状態管理
-[session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
-
-### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
-[session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
-
-#### 2.2. URLSessionによる通信
-[session-2.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
-
-#### 2.3. エラーハンドリング
-[session-2.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
-
-### 3. 設計とテスト
-#### 3.1. MVVMアーキテクチャ
-[session-3.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
-
-#### 3.2. XCTest
-[session-3.2](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
-
-#### 3.3. Xcode Previewsの再活用
-[session-3.3](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
-
-### 4. ログイン
-WIP
+## Next
+[3.1. MVVMアーキテクチャ](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
