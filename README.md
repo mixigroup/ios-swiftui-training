@@ -44,6 +44,15 @@ VStack {
 ### チャレンジ
 - それぞれのTextのフォントサイズ, ウエイト, 色を変更してみましょう
 
+<details>
+ <summary>解説</summary>
+ Previewで対象のテキストを選択した状態で、右側に表示されるペインにFontの項目があるので、そこで各種属性を設定しましょう
+    
+ <img src="https://user-images.githubusercontent.com/8536870/116014840-29a39100-a672-11eb-99e6-ae073c725a8d.png" height=500>
+     
+ 左側のコードでどういったmodifierが付与されるかも併せてしっかり見ておきましょう
+</details>
+
 ### 前セッションとのDiff
 [session-1-prepare...session-1.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1-prepare...session-1.1)
 
