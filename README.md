@@ -141,7 +141,7 @@ Image(systemName: "star")
 ```swift
 HStack {
   VStack {
-    // 右上に表示したいコンテンツ
+    // 左上に表示したいコンテンツ
     Spacer()
   }
   Spacer()
@@ -176,6 +176,31 @@ NavigationLink(
 
 ### チャレンジ
 - 詳細画面は今後もコンテンツが増えていきそうですね、小さい端末でも内容が全て表示されるように、コンテンツをスクロールできるようにしてください
+
+<details>
+    <summary>解説</summary>
+やることは単純で、 <a href="https://developer.apple.com/documentation/swiftui/scrollview" rel="nofollow">ScrollView</a> でコンテンツを囲ってあげるだけです
+    
+```swift
+ScrollView {
+    HStack {
+        VStack(alignment: .leading) {
+            ...
+            Spacer()
+        }
+        Spacer()
+    }
+    .padding(8)
+}
+.navigationBarTitleDisplayMode(.inline)
+```
+
+動的なコンテンツを表示するViewでは、必ず小さい端末でも切れずに表示されるかを気にかけておきましょう<br>
+デザインの段階では短い文章だったため収まったが、実際のデータだと長い文章が入力されて下の方が見切れてしまう、というようなことは実務でもよくあります
+
+そういった場合を考慮して、ScrollViewでスクロール可能なコンテンツにしておけると良いでしょう
+
+</details>
 
 ### 前セッションとのDiff
 [session-1.3...session-1.4](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.3...session-1.4)
