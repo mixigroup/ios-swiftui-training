@@ -126,6 +126,42 @@ List(mockRepos) { repo in
 
 <img src="https://user-images.githubusercontent.com/8536870/115514113-c060fe00-a2be-11eb-9206-58772b5105a8.png" height=500>
 
+<details>
+    <summary>解説</summary>
+まずはListの中身であるImageとVStackをHStackで囲み、それに対して <code>⌘ + Click</code> で<code>Extract Subview</code> を選択して <code>RepoRow</code> という名前の新しいViewに切り出してみましょう <br>
+
+<img src="https://user-images.githubusercontent.com/8536870/116015634-f1518200-a674-11eb-8fb5-bd1e3252ffcb.png">
+
+
+すると、以下のようなエラーが出るはずです
+> Cannot find 'repo' in scope
+
+Listから配られるRepoを受け取ってくる必要がありそうですね
+
+切り出した <code>RepoRow</code> がイニシャライザ引数で <code>Repo</code> を受け取れるように、propertyを追加します
+
+
+```diff
+struct ContentView: View {
+    ...
+    var body: some View {
+        List(mockRepos) { repo in
+-           RepoRow()
++           RepoRow(repo: repo)
+        }
+    }
+}
+
+struct RepoRow: View {
++   let repo: Repo
+
+    var body: some View {...}
+}
+```
+
+あとは <code>RepoRow</code> を別ファイルに移してあげれば完了です
+</details>
+
 ### 前セッションとのDiff
 [session-1.2...session-1.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.2...session-1.3)
 
