@@ -32,8 +32,8 @@ struct RepoDetailView: View {
                 Spacer()
             }
             .padding(8)
-            .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
