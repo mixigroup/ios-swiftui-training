@@ -45,6 +45,29 @@ Image("GitHubMark")
     - font: body
     - weight: semibold
 
+<details>
+    <summary>解説</summary>
+画像とテキストを横に並べる必要があるので、以下のようにHStackを使う必要があります
+
+```swift
+HStack {
+    Image("GitHubMark")
+        .resizable()
+        .frame(
+            width: 44.0,
+            height: 44.0
+        )
+    VStack(alignment: .leading) {
+        Text("Owner Name")
+            .font(.caption)
+        Text("Repository Name")
+            .font(.body)
+            .fontWeight(.semibold)
+    }
+} 
+```
+</details>
+
 ### 前セッションとのDiff
 [session-1.1...session-1.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.1...session-1.2)
 
