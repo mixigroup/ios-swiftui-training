@@ -137,6 +137,36 @@ struct RepoListView: View {
 - `ReposLoader.call` 内で `DispatchQueue.main.asyncAfter` を `DispatchQueue.global().asyncAfter` に変更して `⌘ + R` でSimulatorを起動してみてください
 - 紫色の警告が表示されるはずなので、なぜ警告が出たのかを理解しつつエラーメッセージの通りに修正してください
 
+<details>
+    <summary>解説</summary>
+まずは言われた通り <code>DispatchQueue.main.asyncAfter</code> を <code>DispatchQueue.global().asyncAfter</code> に変更して <code>⌘ + R</code> でSimulatorを起動してください <br>
+Main ThreadでPublisherにイベントを流していた部分をBackground Threadで流すようにするという変更になっていて、これによってSubscriber側もBakcground Threadでの実行となります
+
+1秒待つと、以下のようなエラーが出るはずです
+
+![スクリーンショット 2021-05-03 16 43 39](https://user-images.githubusercontent.com/8536870/116852205-d8c20880-ac2e-11eb-8dd3-acb9606e5462.png)
+
+> Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
+
+iOSアプリでUIを更新する場合、不整合が起きないように必ずMain Threadから実行する必要があります <br>
+@PublishedはViewにbindされることを前提として作られているため、Backgroud Threadから値を更新しようとするとランタイムに上記のような紫色の警告が出て叱ってくれるというわけです
+
+怒られないようにどうすれば良いかのヒントも併記してくれていて、どうやら [receive(on:)](https://developer.apple.com/documentation/combine/fail/receive(on:options:)) を使ってMain Threadを指定してあげると良いらしいです
+
+以下のようにSinkによるsubscribeの前にreceive(on:)でMain Threadを指定してあげましょう
+
+```swift
+reposPublisher
+    .receive(on: DispatchQueue.main)
+    .sink(...)
+```
+
+これでまたSimulatorを起動しても紫色の警告が出なくなったことがわかるかと思います
+
+ネットワークとの通信処理はMain ThreadをブロッキングしないようにBackground Threadで実行されます <br>
+通信によって得られた結果をViewに反映させる際に誤ってBackground Threadのまま更新しないように注意して開発しましょう
+</details>
+
 ### 前セッションとのDiff
 [session-1.5...session-2.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.5...session-2.1)
 
