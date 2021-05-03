@@ -71,6 +71,30 @@ var body: some View {
 
 <img src="https://user-images.githubusercontent.com/8536870/115532071-6832f780-a2d0-11eb-93d6-5e3fa44200d2.png" height=500>
 
+<details>
+    <summary>解説</summary>
+<code>mockRepos</code> が空の時は読み込み中の状態であると判断するために、 <code>var body</code> の中で分岐を作ってあげましょう
+  
+```swift
+if mockRepos.isEmpty {
+
+} else {
+    List(mockRepos) {...}
+}
+```
+
+あとは空状態の場合にはProgressViewを表示させれば良いわけです <br>
+ここでProgressViewのイニシャライザ引数として文字列を渡すと、その文字列がプログレスの下側にその文字が表示されるようになります
+
+```diff
+if mockRepos.isEmpty {
++   ProgressView("loading...")
+} else {
+    List(mockRepos) {...}
+}
+```
+</details>
+
 ### 前セッションとのDiff
 [session-1.4...session-1.5](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.4...session-1.5)
 
