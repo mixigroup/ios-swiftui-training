@@ -168,6 +168,76 @@ struct DummyError: Error {}
 let dummyError = DummyError()
 ```
 
+<details>
+    <summary>解説</summary>
+
+異常系のテストを書けるようにするために、まずはモックでエラーを表現できるようにMockRepositoryを修正します <br>
+イニシャライザ引数でErrorをOptionalで受け取れるようにしておき、もしnilでなければそのErrorを [Fail](https://developer.apple.com/documentation/combine/fail) というPublisherで返すようにします
+
+```swift
+struct DummyError: Error {}
+
+struct MockRepoRepository: RepoRepository {
+    let repos: [Repo]
+    let error: Error?
+
+    init(repos: [Repo], error: Error? = nil) {
+        self.repos = repos
+        self.error = error
+    }
+
+    func fetchRepos() -> AnyPublisher<[Repo], Error> {
+        if let error = error {
+            return Fail(error: error)
+                .eraseToAnyPublisher()
+        }
+
+        return Just(repos)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+}
+```
+
+あとは正常系のテストと同じ要領でテストを書いていきます
+
+```swift
+func test_onAppear_異常系() {
+    let expectedToBeLoading = expectation(description: "読み込み中のステータスになること")
+    let expectedToBeFailed = expectation(description: "エラー状態になること")
+
+    let viewModel = RepoListViewModel(
+        repoRepository: MockRepoRepository(
+            repos: [],
+            error: DummyError()
+        )
+    )
+    viewModel.$repos.sink { result in
+        switch result {
+        case .loading: expectedToBeLoading.fulfill()
+        case let .failed(error):
+            if error is DummyError {
+                expectedToBeFailed.fulfill()
+            } else {
+                XCTFail("Unexpected: \(result)")
+            }
+        default: break
+        }
+    }.store(in: &cancellables)
+
+    viewModel.onAppear()
+
+    wait(
+        for: [expectedToBeLoading, expectedToBeFailed],
+        timeout: 2.0,
+        enforceOrder: true
+    )
+}
+```
+
+テストが通ることが確認できれば完了です
+</details>
+
 ### 前セッションとのDiff
 [session-3.1...session-3.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-3.1...session-3.2)
 
