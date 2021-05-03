@@ -70,6 +70,8 @@ struct RepoAPIClient {
 - この型情報をAPIClient層からRepository層へ公開してしまうと、例えば新しくAPIClient側でpublisherの実装を変更した時に型が変わってしまいRepository層まで影響してしまいます、AnyPubliserに変換して型情報を隠蔽してあげるのが良いでしょう
 - AnyPubliserに変換したい場合には [eraseToAnyPublisher](https://developer.apple.com/documentation/combine/just/erasetoanypublisher()) メソッドを使ってみてください
 
+(今回解説は特に用意していません、 `前セッションとのDiff` を眺めてどのようにコードが整理されたかを俯瞰してみてみてください)
+
 ### 前セッションとのDiff
 [session-2.3...session-3.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.3...session-3.1)
 
