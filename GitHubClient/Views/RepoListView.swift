@@ -16,9 +16,6 @@ class ReposLoader: ObservableObject {
         ]
 
         let reposPublisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                self?.repos = .loading
-            })
             .tryMap() { element -> Data in
                 guard let httpResponse = element.response as? HTTPURLResponse,
                       httpResponse.statusCode == 200 else {
@@ -30,6 +27,9 @@ class ReposLoader: ObservableObject {
 
         reposPublisher
             .receive(on: DispatchQueue.main)
+            .handleEvents(receiveSubscription: { [weak self] _ in
+                self?.repos = .loading
+            })
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .failure(let error):
