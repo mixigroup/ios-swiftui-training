@@ -2,11 +2,11 @@ import Foundation
 import Combine
 
 protocol RepoRepository {
-    func fetchRepos() -> AnyPublisher<[Repo], Error>
+    func fetchRepos() async throws -> [Repo]
 }
 
 struct RepoDataRepository: RepoRepository {
-    func fetchRepos() -> AnyPublisher<[Repo], Error> {
-        RepoAPIClient().getRepos()
+    func fetchRepos() async throws -> [Repo] {
+        return try await RepoAPIClient().getRepos()
     }
 }

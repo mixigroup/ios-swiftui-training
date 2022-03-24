@@ -2,9 +2,7 @@ import Foundation
 import Combine
 
 class RepoListViewModel: ObservableObject {
-    @Published private(set) var repos: Stateful<[Repo]> = .idle
-
-    private var cancellables = Set<AnyCancellable>()
+    @MainActor @Published private(set) var repos: Stateful<[Repo]> = .idle
 
     private let repoRepository: RepoRepository
 
@@ -12,30 +10,29 @@ class RepoListViewModel: ObservableObject {
         self.repoRepository = repoRepository
     }
 
-    func onAppear() {
-        loadRepos()
+    func onAppear() async {
+        await loadRepos()
+    }
+    
+    func onRetryButtonTapped() async {
+        await loadRepos()
     }
 
-    func onRetryButtonTapped() {
-        loadRepos()
-    }
-
-    private func loadRepos() {
-        repoRepository.fetchRepos()
-            .handleEvents(receiveSubscription: { [weak self] _ in
+    private func loadRepos() async {
+        do {
+            await MainActor.run { [weak self] in
                 self?.repos = .loading
-            })
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    print("Error: \(error)")
-                    self?.repos = .failed(error)
-                case .finished: print("Finished")
-                }
-            }, receiveValue: { [weak self] repos in
+            }
+
+            let repos = try await repoRepository.fetchRepos()
+
+            await MainActor.run { [weak self] in
                 self?.repos = .loaded(repos)
             }
-            ).store(in: &cancellables)
+        } catch let error {
+            await MainActor.run { [weak self] in
+                self?.repos = .failed(error)
+            }
+        }
     }
 }
