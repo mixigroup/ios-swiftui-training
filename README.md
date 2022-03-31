@@ -29,13 +29,13 @@
 
 ### チャレンジ
 - エラーをキャッチした際には以下のようなエラー画面を表示しましょう
-<img src="https://user-images.githubusercontent.com/8536870/115537014-5869e200-a2d5-11eb-976b-ca4612adfba7.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115537014-5869e200-a2d5-11eb-976b-ca4612adfba7.png" width=50%>
 
 - リトライボタンの表示には [Button](https://developer.apple.com/documentation/swiftui/button) を使用してください
 - リトライボタンを押すと再びリポジトリ一覧を取得しつつ、その最中はloadingを表示させてください
 - もし取得したリポジトリが空の場合には以下のように空であることを示してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115537090-6e77a280-a2d5-11eb-801a-03e8b99fc87d.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115537090-6e77a280-a2d5-11eb-801a-03e8b99fc87d.png" width=50%>
 
 <details>
     <summary>解説</summary>
