@@ -2,19 +2,19 @@
 - リスト表示から詳細画面へ遷移できるようにしてみましょう
 - まずは `⌘ + N`で詳細画面を `RepoDetailView` という名前で作りましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115515750-65c8a180-a2c0-11eb-894a-0e67e6c2d119.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115515750-65c8a180-a2c0-11eb-894a-0e67e6c2d119.png">
 
 - `ContentView` も `RepoListView` にrenameしておきましょう、範囲選択して右クリックで `Refactor > Rename` を選択して実行してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115515897-8abd1480-a2c0-11eb-9681-90ba9903412b.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115515897-8abd1480-a2c0-11eb-9681-90ba9903412b.png">
 
 - View周りのファイルも `Views` フォルダにまとめましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115515967-9e687b00-a2c0-11eb-9ace-d1cf74035b20.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115515967-9e687b00-a2c0-11eb-9ace-d1cf74035b20.png">
 
 - 詳細画面は以下のようなレイアウトにしましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115516019-ac1e0080-a2c0-11eb-8577-1d656de4522f.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115516019-ac1e0080-a2c0-11eb-8577-1d656de4522f.png" width=50%>
 
 - 新しく以下の要素を表示する必要が出てきました
     - リポジトリの説明文
@@ -132,7 +132,7 @@ Image(systemName: "star")
     - DynamicTypeと連動して大きさが変化したり、フォントのbaselineと揃えて表示できたりと便利なものになっています
 - さて、これまでのSwiftUIの知識でレイアウトを組んでいくと、以下のような表示になるかと思います
 
-<img src="https://user-images.githubusercontent.com/8536870/115516361-00c17b80-a2c1-11eb-9a28-77dd85c46b37.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115516361-00c17b80-a2c1-11eb-9a28-77dd85c46b37.png" width=50%>
 
 - 左上に詰めて表示させるにはどうすれば良いでしょうか、答えは [Spacer](https://developer.apple.com/documentation/swiftui/spacer) を使います
 - SpacerをVStack, HStackの中で宣言すれば、Stackが画面いっぱいに広がり、Spacerを宣言した部分に余白ができるレイアウトになります
@@ -172,7 +172,7 @@ NavigationLink(
 - 最後にRepoDetailViewにて `.navigationBarTitleDisplayMode(.inline)` のmodifierを追加することで表示されるNavigationBarのスタイルをインラインにしておきましょう
 - 一覧画面のPreviewで左上の再生ボタンをタップしてLive Previewにして遷移できるか確認してみましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115516573-35cdce00-a2c1-11eb-9a94-250060d7dff0.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115516573-35cdce00-a2c1-11eb-9a94-250060d7dff0.png" width=50%>
 
 ### チャレンジ
 - 詳細画面は今後もコンテンツが増えていきそうですね、小さい端末でも内容が全て表示されるように、コンテンツをスクロールできるようにしてください
