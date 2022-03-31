@@ -31,7 +31,7 @@ VStack {
 - いい感じですね、では最後に「左揃え」にしてみましょう
 - 以下のようにVStackを選択してください、右側のペインに `Alignment` という項目があるのがわかります
 
-<img src="https://user-images.githubusercontent.com/8536870/115507549-3f523880-a2b7-11eb-838e-19635a4a66f2.png" width=50%>
+<img src="https://user-images.githubusercontent.com/8536870/115507549-3f523880-a2b7-11eb-838e-19635a4a66f2.png">
 
 - 左揃えアイコンを選択してVStackを左揃えにしてください
 
