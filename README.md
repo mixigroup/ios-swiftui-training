@@ -7,15 +7,15 @@
 - Swift言語を学ぶにあたって、まずはPlaygroundを作成しましょう
 - Xcodeを開いて `File > New > Playground` を選択します
 
-<img src="https://user-images.githubusercontent.com/8536870/115705723-d696b900-a3a7-11eb-950f-8ad5fb63a71c.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115705723-d696b900-a3a7-11eb-950f-8ad5fb63a71c.png" width=50%>
 
 - Blankを選択した状態でNextを押下し適当な場所へ保存してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115705834-f8903b80-a3a7-11eb-876e-2301dd05af52.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115705834-f8903b80-a3a7-11eb-876e-2301dd05af52.png">
 
 - これで準備完了です、以降Swift言語を学ぶ上で試したいコードがあればPlaygroundを開いて実行してみましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115705899-0e9dfc00-a3a8-11eb-933c-319db443afbf.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115705899-0e9dfc00-a3a8-11eb-933c-319db443afbf.png">
 
 ### 変数と定数
 - Swiftでは変数を `var` ,定数を `let` で宣言します
