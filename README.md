@@ -130,7 +130,7 @@ print(greet(person: "Bill", from: "Cupertino"))
 ```
 
 - Swiftではクロージャを受け取る関数が数多く用意されています、その一つの例が [sorted(by:)](https://developer.apple.com/documentation/swift/array/2296815-sorted) です
-- 例えば、名前の配列を名前が短い順に並び替える処理は以下のようになります
+- 例えば、名前の配列を逆アルファベット順に並び替える処理は以下のようになります
 
 ```swift
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
