@@ -7,7 +7,7 @@
     - 取得時にエラーが発生した場合にはエラー状態をViewに表示する
 - iOSでテストを書くために、まずはTest Targetを下図のように追加してみましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115539731-49d0fa00-a2d8-11eb-85a0-87ec3b6548c0.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115539731-49d0fa00-a2d8-11eb-85a0-87ec3b6548c0.png">
 
 - `GitHubClientTests.swift` というテストファイルがすでに追加されているはずです、 `RepoListViewModelTests` という名前にrenameしましょう
 - `setUpWithError` と `tearDownWithError` は各テストの開始, 終了時にそれぞれ呼ばれます
