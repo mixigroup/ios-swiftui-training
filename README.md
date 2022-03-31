@@ -52,7 +52,7 @@ static var previews: some View {
 - Previewを複製して、空状態, エラー状態を表示するPreviewを作成してください
 - Previewは右上のDuplicateボタンから簡単に複製できます
 
-<img src="https://user-images.githubusercontent.com/8536870/115540895-7e918100-a2d9-11eb-97a0-e264500d9712.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115540895-7e918100-a2d9-11eb-97a0-e264500d9712.png">
 
 - 各Previewには [previewDisplayName](https://developer.apple.com/documentation/avkit/videoplayer/3580241-previewdisplayname) で名前をつけて表示することが可能です
 
