@@ -2,11 +2,11 @@
 - Assetsを追加して画像を表示してみましょう
 - https://github.com/logos からGitHub markをダウンロードしてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510465-bd640e80-a2ba-11eb-8490-bacf4df5c012.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115510465-bd640e80-a2ba-11eb-8490-bacf4df5c012.png">
 
 - `GitHub-Mark-120px-plus.png` を `Assets.xcassets` に向けてdrag&dropしてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510540-d53b9280-a2ba-11eb-97f7-ebd7345aae59.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115510540-d53b9280-a2ba-11eb-97f7-ebd7345aae59.png">
 
 - 名前を `GitHubMark` に変更しつつ、下図のように `Single Scale` にしてください
 
@@ -19,7 +19,7 @@
 - `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) をVStackの先頭に追加してください
 - Imageへの引数には先ほど追加した `GitHubMark` を指定します
 
-<img src="https://user-images.githubusercontent.com/8536870/115510706-061bc780-a2bb-11eb-82e6-00404eef74cf.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115510706-061bc780-a2bb-11eb-82e6-00404eef74cf.png" width=50%>
 
 - PreviewからImageを選択して右側のペインのFrameにてWidth, Heightをそれぞれ44に設定しましょう
 - 設定したのに画像のサイズが変わらないことに気づくでしょう
@@ -31,12 +31,12 @@ Image("GitHubMark")
     .frame(width: 44.0, height: 44.0)
 ```
 
-<img src="https://user-images.githubusercontent.com/8536870/115510756-16cc3d80-a2bb-11eb-9983-c212dc188003.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115510756-16cc3d80-a2bb-11eb-9983-c212dc188003.png" width=50%>
 
 ### チャレンジ
 - 下図のようなレイアウトになるように修正してみてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510855-319eb200-a2bb-11eb-806e-bb2cc45bd923.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115510855-319eb200-a2bb-11eb-806e-bb2cc45bd923.png" width=50%>
 
 - Textのフォントとウエイトはそれぞれ以下のような設定にしています
   - Owner Name:
