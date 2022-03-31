@@ -42,7 +42,7 @@ struct RepoListView: View {
 
 - `loadRepos()` メソッドを見てください、図にすると以下のようなイメージです
 
-<img src="https://user-images.githubusercontent.com/8536870/115534916-396a5080-a2d3-11eb-9c6a-e76302326259.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115534916-396a5080-a2d3-11eb-9c6a-e76302326259.png">
 
 - 説明すると、以下のようなことが実行されています
     1. FutureというPublisherで1秒後にリポジトリ一覧がストリームに流れる
