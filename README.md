@@ -3,21 +3,21 @@
 - SwiftUIでリスト表示を実装する場合には [List](https://developer.apple.com/documentation/swiftui/list) を使うと良いでしょう
 - 一番外側のHStackを `⌘ + Click` で選択して、 `Embed in List` を選択してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115513674-4c265a80-a2be-11eb-8f8b-27ce49fd49fb.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115513674-4c265a80-a2be-11eb-8f8b-27ce49fd49fb.png" width=50%>
 
 - いい感じにリスト表示されていることがわかります
 
-<img src="https://user-images.githubusercontent.com/8536870/115513734-6102ee00-a2be-11eb-897e-5084947cf214.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115513734-6102ee00-a2be-11eb-897e-5084947cf214.png" width=50%>
 
 - ではこのリストで動的なデータを表示してみましょう
 - まずはリポジトリ名やユーザー名を格納するデータモデルを作成しましょう
 - `⌘ + N` で `Repo` と `User` の2つのSwiftファイルを新規作成してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115513794-724bfa80-a2be-11eb-9ff5-7680bf1dd0f4.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115513794-724bfa80-a2be-11eb-9ff5-7680bf1dd0f4.png">
 
 - 2つのファイルを選択して右クリックで `New Group from Selection` を選んで `Models` フォルダにまとめてしまいましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115513909-8b54ab80-a2be-11eb-8a0c-f8efaac0ad4a.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115513909-8b54ab80-a2be-11eb-8a0c-f8efaac0ad4a.png" width=50%>
 
 ```swift
 struct Repo {
@@ -118,13 +118,13 @@ List(mockRepos) { repo in
 }
 ```
 
-<img src="https://user-images.githubusercontent.com/8536870/115514049-acb59780-a2be-11eb-9696-eab9a33c459b.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115514049-acb59780-a2be-11eb-9696-eab9a33c459b.png" width=50%>
 
 ### チャレンジ
 - List内で表示されるViewを `RepoRow` という名前で別なファイルに切り出してみましょう
 - ちなみに他のViewにSubviewを切り出す場合は `⌘ + Click` で `Extract Subview` を選択すると便利です
 
-<img src="https://user-images.githubusercontent.com/8536870/115514113-c060fe00-a2be-11eb-9206-58772b5105a8.png" height=500>
+<img src="https://user-images.githubusercontent.com/8536870/115514113-c060fe00-a2be-11eb-9206-58772b5105a8.png" width=50%>
 
 <details>
     <summary>解説</summary>
