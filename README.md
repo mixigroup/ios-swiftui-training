@@ -243,7 +243,7 @@ struct RepoListView: View {
 </details>
 
 ### 前セッションとのDiff
-[session-2.2...session-2.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.2...session-2.3)
+[session-2.2..session-2.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.2..session-2.3)
 
 ## Next
 [3.1. MVVMアーキテクチャ](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
