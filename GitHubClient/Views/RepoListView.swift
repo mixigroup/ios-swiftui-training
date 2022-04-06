@@ -14,11 +14,10 @@ class ReposLoader: ObservableObject {
         ]
 
         let (data, _) = try! await URLSession.shared.data(for: urlRequest)
-
         let value = try! JSONDecoder().decode([Repo].self, from: data)
 
         await MainActor.run {
-            self.repos = value
+            repos = value
         }
     }
 }
