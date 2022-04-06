@@ -4,7 +4,7 @@ import Combine
 class ReposLoader: ObservableObject {
     @MainActor @Published private(set) var repos = [Repo]()
 
-    func call() async throws {
+    func call() async {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -13,16 +13,12 @@ class ReposLoader: ObservableObject {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, _) = try! await URLSession.shared.data(for: urlRequest)
 
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw URLError(.badServerResponse)
-        }
-
-        let repos = try JSONDecoder().decode([Repo].self, from: data)
+        let value = try! JSONDecoder().decode([Repo].self, from: data)
 
         await MainActor.run {
-            self.repos = repos
+            self.repos = value
         }
     }
 }
@@ -44,10 +40,8 @@ struct RepoListView: View {
                 .navigationTitle("Repositories")
             }
         }
-        .onAppear {
-            Task {
-                try await reposLoader.call()
-            }
+        .task {
+            await reposLoader.call()
         }
     }
 }
