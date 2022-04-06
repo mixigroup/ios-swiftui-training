@@ -2,11 +2,9 @@ import SwiftUI
 import Combine
 
 class ReposLoader: ObservableObject {
-    @Published private(set) var repos: Stateful<[Repo]> = .idle
+    @MainActor @Published private(set) var repos: Stateful<[Repo]> = .idle
 
-    private var cancellables = Set<AnyCancellable>()
-
-    func call() {
+    func call() async {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -15,32 +13,27 @@ class ReposLoader: ObservableObject {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        let reposPublisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .tryMap() { element -> Data in
-                guard let httpResponse = element.response as? HTTPURLResponse,
-                      httpResponse.statusCode == 200 else {
-                    throw URLError(.badServerResponse)
-                }
-                return element.data
-            }
-            .decode(type: [Repo].self, decoder: JSONDecoder())
+        await MainActor.run {
+            repos = .loading
+        }
 
-        reposPublisher
-            .receive(on: DispatchQueue.main)
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                self?.repos = .loading
-            })
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    print("Error: \(error)")
-                    self?.repos = .failed(error)
-                case .finished: print("Finished")
-                }
-            }, receiveValue: { [weak self] repos in
-                self?.repos = .loaded(repos)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                throw URLError(.badServerResponse)
             }
-            ).store(in: &cancellables)
+
+            let value = try JSONDecoder().decode([Repo].self, from: data)
+
+            await MainActor.run {
+                repos = .loaded(value)
+            }
+        } catch {
+            await MainActor.run {
+                repos = .failed(error)
+            }
+        }
     }
 }
 
@@ -76,7 +69,9 @@ struct RepoListView: View {
                         .opacity(0.4)
                         Button(
                             action: {
-                                reposLoader.call()
+                                Task {
+                                    await reposLoader.call()
+                                }
                             },
                             label: {
                                 Text("Retry")
@@ -89,8 +84,8 @@ struct RepoListView: View {
             }
             .navigationTitle("Repositories")
         }
-        .onAppear {
-            reposLoader.call()
+        .task {
+            await reposLoader.call()
         }
     }
 }
