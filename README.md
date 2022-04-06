@@ -162,7 +162,7 @@ Preview上部に以下のように名前が表示されます
 </details>
 
 ### 前セッションとのDiff
-[session-3.2...session-3.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-3.2...session-3.3)
+[session-3.2..session-3.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-3.2..session-3.3)
 
 ## Next
 To be continued...
