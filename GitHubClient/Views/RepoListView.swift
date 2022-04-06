@@ -2,11 +2,9 @@ import SwiftUI
 import Combine
 
 class ReposLoader: ObservableObject {
-    @Published private(set) var repos = [Repo]()
+    @MainActor @Published private(set) var repos = [Repo]()
 
-    private var cancellables = Set<AnyCancellable>()
-
-    func call() {
+    func call() async throws {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -15,24 +13,17 @@ class ReposLoader: ObservableObject {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        let reposPublisher = URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .tryMap() { element -> Data in
-                guard let httpResponse = element.response as? HTTPURLResponse,
-                      httpResponse.statusCode == 200 else {
-                    throw URLError(.badServerResponse)
-                }
-                return element.data
-            }
-            .decode(type: [Repo].self, decoder: JSONDecoder())
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-        reposPublisher
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print("Finished: \(completion)")
-            }, receiveValue: { [weak self] repos in
-                self?.repos = repos
-            }
-            ).store(in: &cancellables)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+
+        let repos = try JSONDecoder().decode([Repo].self, from: data)
+
+        await MainActor.run {
+            self.repos = repos
+        }
     }
 }
 
@@ -54,7 +45,9 @@ struct RepoListView: View {
             }
         }
         .onAppear {
-            reposLoader.call()
+            Task {
+                try await reposLoader.call()
+            }
         }
     }
 }
