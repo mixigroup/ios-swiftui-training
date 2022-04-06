@@ -96,7 +96,7 @@ if mockRepos.isEmpty {
 </details>
 
 ### 前セッションとのDiff
-[session-1.4...session-1.5](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.4...session-1.5)
+[session-1.4..session-1.5](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.4..session-1.5)
 
 ## Next
 [2.1. Combineによる非同期処理](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
