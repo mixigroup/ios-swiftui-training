@@ -203,7 +203,7 @@ ScrollView {
 </details>
 
 ### 前セッションとのDiff
-[session-1.3...session-1.4](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.3...session-1.4)
+[session-1.3..session-1.4](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.3..session-1.4)
 
 ## Next
 [1.5. ライフサイクルと状態管理](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
