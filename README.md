@@ -73,7 +73,7 @@ struct RepoAPIClient {
 (今回解説は特に用意していません、 `前セッションとのDiff` を眺めてどのようにコードが整理されたかを俯瞰してみてみてください)
 
 ### 前セッションとのDiff
-[session-2.3...session-3.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.3...session-3.1)
+[session-2.3..session-3.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.3..session-3.1)
 
 ## Next
 [3.2. XCTest](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
