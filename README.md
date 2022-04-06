@@ -163,7 +163,7 @@ struct RepoRow: View {
 </details>
 
 ### 前セッションとのDiff
-[session-1.2...session-1.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.2...session-1.3)
+[session-1.2..session-1.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.2..session-1.3)
 
 ## Next
 [1.4. ナビゲーション](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.4)
