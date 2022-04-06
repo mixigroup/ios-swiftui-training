@@ -239,7 +239,7 @@ func test_onAppear_異常系() {
 </details>
 
 ### 前セッションとのDiff
-[session-3.1...session-3.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-3.1...session-3.2)
+[session-3.1..session-3.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-3.1..session-3.2)
 
 ## Next
 [3.3. Xcode Previewsの再活用](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
