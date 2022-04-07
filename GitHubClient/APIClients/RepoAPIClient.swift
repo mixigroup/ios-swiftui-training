@@ -1,8 +1,7 @@
 import Foundation
-import Combine
 
 struct RepoAPIClient {
-    func getRepos() -> AnyPublisher<[Repo], Error> {
+    func getRepos() async throws -> [Repo] {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -11,15 +10,12 @@ struct RepoAPIClient {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        return URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .tryMap() { element -> Data in
-                guard let httpResponse = element.response as? HTTPURLResponse,
-                      httpResponse.statusCode == 200 else {
-                    throw URLError(.badServerResponse)
-                }
-                return element.data
-            }
-            .decode(type: [Repo].self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+
+        return try JSONDecoder().decode([Repo].self, from: data)
     }
 }
