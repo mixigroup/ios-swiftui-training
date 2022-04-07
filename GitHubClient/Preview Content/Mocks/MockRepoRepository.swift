@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 struct MockRepoRepository: RepoRepository {
     let repos: [Repo]
@@ -10,14 +9,11 @@ struct MockRepoRepository: RepoRepository {
         self.error = error
     }
 
-    func fetchRepos() -> AnyPublisher<[Repo], Error> {
+    func fetchRepos() async throws -> [Repo] {
         if let error = error {
-            return Fail(error: error)
-                .eraseToAnyPublisher()
+            throw error
         }
 
-        return Just(repos)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        return repos
     }
 }

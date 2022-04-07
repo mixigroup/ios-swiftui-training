@@ -36,7 +36,9 @@ struct RepoListView: View {
                         .opacity(0.4)
                         Button(
                             action: {
-                                viewModel.onRetryButtonTapped()
+                                Task {
+                                    await viewModel.onRetryButtonTapped()
+                                }
                             },
                             label: {
                                 Text("Retry")
@@ -49,8 +51,8 @@ struct RepoListView: View {
             }
             .navigationTitle("Repositories")
         }
-        .onAppear {
-            viewModel.onAppear()
+        .task {
+            await viewModel.onAppear()
         }
     }
 }
