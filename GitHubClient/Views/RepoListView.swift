@@ -8,8 +8,7 @@ struct RepoListView: View {
     var body: some View {
         NavigationView {
             List(mockRepos) { repo in
-                NavigationLink(
-                    destination: RepoDetailView(repo: repo)) {
+                NavigationLink(destination: RepoDetailView(repo: repo)) {
                     RepoRow(repo: repo)
                 }
             }
