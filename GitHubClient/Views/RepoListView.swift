@@ -22,7 +22,9 @@ class ReposStore: ObservableObject {
                 throw URLError(.badServerResponse)
             }
 
-            let value = try JSONDecoder().decode([Repo].self, from: data)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let value = try decoder.decode([Repo].self, from: data)
 
             state = .loaded(value)
         } catch {
