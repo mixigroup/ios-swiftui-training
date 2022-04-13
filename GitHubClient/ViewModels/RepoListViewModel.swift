@@ -1,7 +1,8 @@
 import Foundation
 
+@MainActor
 class RepoListViewModel: ObservableObject {
-    @MainActor @Published private(set) var repos: Stateful<[Repo]> = .idle
+    @Published private(set) var repos: Stateful<[Repo]> = .idle
 
     private let repoRepository: RepoRepository
 
@@ -18,20 +19,13 @@ class RepoListViewModel: ObservableObject {
     }
 
     private func loadRepos() async {
-        await MainActor.run {
-            repos = .loading
-        }
+        repos = .loading
 
         do {
             let value = try await repoRepository.fetchRepos()
-
-            await MainActor.run {
-                repos = .loaded(value)
-            }
+            repos = .loaded(value)
         } catch {
-            await MainActor.run {
-                repos = .failed(error)
-            }
+            repos = .failed(error)
         }
     }
 }
