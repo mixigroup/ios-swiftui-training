@@ -46,17 +46,15 @@ struct RepoListView: View {
                 switch reposStore.state {
                 case .idle, .loading:
                     ProgressView("loading...")
+                case .loaded([]):
+                    Text("No repositories")
+                        .fontWeight(.bold)
                 case let .loaded(repos):
-                    if repos.isEmpty {
-                        Text("No repositories")
-                            .fontWeight(.bold)
-                    } else {
-                            List(repos) { repo in
-                                NavigationLink(
-                                    destination: RepoDetailView(repo: repo)) {
-                                    RepoRow(repo: repo)
-                                }
-                            }
+                    List(repos) { repo in
+                        NavigationLink(
+                            destination: RepoDetailView(repo: repo)) {
+                            RepoRow(repo: repo)
+                        }
                     }
                 case .failed:
                     VStack {
