@@ -10,7 +10,7 @@ struct RepoListView: View {
     var body: some View {
         NavigationView {
             Group {
-                switch viewModel.repos {
+                switch viewModel.state {
                 case .idle, .loading:
                     ProgressView("loading...")
                 case .loaded([]):
