@@ -1,26 +1,29 @@
 import SwiftUI
 
-class ReposLoader: ObservableObject {
-    @MainActor @Published private(set) var repos = [Repo]()
+@MainActor
+class ReposStore: ObservableObject {
+    @Published private(set) var repos = [Repo]()
 
-    func call() async {
+    func loadRepos() async {
         try! await Task.sleep(nanoseconds: 1_000_000_000)
 
-        await MainActor.run {
-            repos = [.mock1, .mock2, .mock3, .mock4, .mock5]
-        }
+        repos = [.mock1, .mock2, .mock3, .mock4, .mock5]
     }
 }
 
 struct RepoListView: View {
-    @StateObject private var reposLoader = ReposLoader()
+    @StateObject private var reposStore: ReposStore
+
+    init() {
+        _reposStore = StateObject(wrappedValue: ReposStore())
+    }
 
     var body: some View {
         NavigationView {
-            if reposLoader.repos.isEmpty {
+            if reposStore.repos.isEmpty {
                 ProgressView("loading...")
             } else {
-                List(reposLoader.repos) { repo in
+                List(reposStore.repos) { repo in
                     NavigationLink(
                         destination: RepoDetailView(repo: repo)) {
                         RepoRow(repo: repo)
@@ -29,10 +32,8 @@ struct RepoListView: View {
                 .navigationTitle("Repositories")
             }
         }
-        .onAppear {
-            Task {
-                await reposLoader.call()
-            }
+        .task {
+            await reposStore.loadRepos()
         }
     }
 }
