@@ -14,7 +14,10 @@ class ReposStore: ObservableObject {
         ]
 
         let (data, _) = try! await URLSession.shared.data(for: urlRequest)
-        let value = try! JSONDecoder().decode([Repo].self, from: data)
+
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let value = try! decoder.decode([Repo].self, from: data)
 
         repos = value
     }
