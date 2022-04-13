@@ -13,7 +13,7 @@ class RepoListViewModelTests: XCTestCase {
 
         await viewModel.onAppear()
 
-        switch viewModel.repos {
+        switch viewModel.state {
         case let .loaded(repos):
             XCTAssertEqual(repos, [Repo.mock1, Repo.mock2])
         default:
@@ -31,7 +31,7 @@ class RepoListViewModelTests: XCTestCase {
 
         await viewModel.onAppear()
 
-        switch viewModel.repos {
+        switch viewModel.state {
         case let .failed(error):
             XCTAssert(error is DummyError)
         default:
