@@ -16,6 +16,8 @@ struct RepoAPIClient {
             throw URLError(.badServerResponse)
         }
 
-        return try JSONDecoder().decode([Repo].self, from: data)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try decoder.decode([Repo].self, from: data)
     }
 }
