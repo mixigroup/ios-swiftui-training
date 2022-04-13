@@ -1,9 +1,10 @@
 import SwiftUI
 
-class ReposLoader: ObservableObject {
-    @MainActor @Published private(set) var repos = [Repo]()
+@MainActor
+class ReposStore: ObservableObject {
+    @Published private(set) var repos = [Repo]()
 
-    func call() async {
+    func loadRepos() async {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -15,21 +16,23 @@ class ReposLoader: ObservableObject {
         let (data, _) = try! await URLSession.shared.data(for: urlRequest)
         let value = try! JSONDecoder().decode([Repo].self, from: data)
 
-        await MainActor.run {
-            repos = value
-        }
+        repos = value
     }
 }
 
 struct RepoListView: View {
-    @StateObject private var reposLoader = ReposLoader()
+    @StateObject private var reposStore: ReposStore
+
+    init() {
+        _reposStore = StateObject(wrappedValue: ReposStore())
+    }
 
     var body: some View {
         NavigationView {
-            if reposLoader.repos.isEmpty {
+            if reposStore.repos.isEmpty {
                 ProgressView("loading...")
             } else {
-                List(reposLoader.repos) { repo in
+                List(reposStore.repos) { repo in
                     NavigationLink(
                         destination: RepoDetailView(repo: repo)) {
                         RepoRow(repo: repo)
@@ -39,7 +42,7 @@ struct RepoListView: View {
             }
         }
         .task {
-            await reposLoader.call()
+            await reposStore.loadRepos()
         }
     }
 }
