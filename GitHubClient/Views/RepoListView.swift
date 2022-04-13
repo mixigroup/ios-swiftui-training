@@ -24,8 +24,7 @@ struct RepoListView: View {
                 ProgressView("loading...")
             } else {
                 List(reposStore.repos) { repo in
-                    NavigationLink(
-                        destination: RepoDetailView(repo: repo)) {
+                    NavigationLink(destination: RepoDetailView(repo: repo)) {
                         RepoRow(repo: repo)
                     }
                 }
