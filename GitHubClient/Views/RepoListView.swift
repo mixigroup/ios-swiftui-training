@@ -9,8 +9,7 @@ struct RepoListView: View {
                 ProgressView("loading...")
             } else {
                 List(mockRepos) { repo in
-                    NavigationLink(
-                        destination: RepoDetailView(repo: repo)) {
+                    NavigationLink(destination: RepoDetailView(repo: repo)) {
                         RepoRow(repo: repo)
                     }
                 }
