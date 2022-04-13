@@ -1,9 +1,10 @@
 import SwiftUI
 
-class ReposLoader: ObservableObject {
-    @MainActor @Published private(set) var repos: Stateful<[Repo]> = .idle
+@MainActor
+class ReposStore: ObservableObject {
+    @Published private(set) var state: Stateful<[Repo]> = .idle
 
-    func call() async {
+    func loadRepos() async {
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -12,9 +13,7 @@ class ReposLoader: ObservableObject {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        await MainActor.run {
-            repos = .loading
-        }
+        state = .loading
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
@@ -25,24 +24,24 @@ class ReposLoader: ObservableObject {
 
             let value = try JSONDecoder().decode([Repo].self, from: data)
 
-            await MainActor.run {
-                repos = .loaded(value)
-            }
+            state = .loaded(value)
         } catch {
-            await MainActor.run {
-                repos = .failed(error)
-            }
+            state = .failed(error)
         }
     }
 }
 
 struct RepoListView: View {
-    @StateObject private var reposLoader = ReposLoader()
+    @StateObject private var reposStore: ReposStore
+
+    init() {
+        _reposStore = StateObject(wrappedValue: ReposStore())
+    }
 
     var body: some View {
         NavigationView {
             Group {
-                switch reposLoader.repos {
+                switch reposStore.state {
                 case .idle, .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
@@ -69,7 +68,7 @@ struct RepoListView: View {
                         Button(
                             action: {
                                 Task {
-                                    await reposLoader.call()
+                                    await reposStore.loadRepos()
                                 }
                             },
                             label: {
@@ -84,7 +83,7 @@ struct RepoListView: View {
             .navigationTitle("Repositories")
         }
         .task {
-            await reposLoader.call()
+            await reposStore.loadRepos()
         }
     }
 }
