@@ -36,7 +36,7 @@ SwiftUIでのiOSアプリ開発の基礎知識と実務スキルを身に付け�
 [session-1.5](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.5)
 
 ### 2. WebAPIとの通信
-#### 2.1. Combineによる非同期処理
+#### 2.1. Swift Concurrencyによる非同期処理
 [session-2.1](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
 
 #### 2.2. URLSessionによる通信
