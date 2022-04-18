@@ -1,6 +1,5 @@
 ## 2.2. URLSessionによる通信
 - iOSアプリ開発で通信周りを実装する場合、ライブラリ等を使わない限りは基本 [URLSession](https://developer.apple.com/documentation/foundation/urlsession) を使うことになります
-- URLSessionはもちろん非同期な通信を扱いますが、それらをCombineでハンドリングしやすくするための便利なoperatorが用意されています
 - 例えば、特定のURLに対してリクエストを投げてレスポンスであるJSONをdecodeして返す場合には以下のような実装になります 
 
 ```swift
@@ -24,7 +23,7 @@ print("user: \(user)")
 
 - まずはリクエストを投げる先のURLを [URL.init(string:)](https://developer.apple.com/documentation/foundation/nsurl/1413146-init) で初期化します
 - 作成したURLをもとに [URLRequest](https://developer.apple.com/documentation/foundation/urlrequest) を作成し、http methodやhttp headerを設定します
-- [URLSession.data(for:)](https://developer.apple.com/documentation/foundation/urlsession/3767352-data) は与えられたURLに対してURLSessionのタスクを実行してレスポンスをを返してくれます、これは async 関数なので await で結果を待つようにします
+- [URLSession.data(for:)](https://developer.apple.com/documentation/foundation/urlsession/3767352-data) は与えられたURLに対してURLSessionのタスクを実行してレスポンスを返してくれます、これは async 関数なので await で結果を待つようにします
 - SwiftでJSONをdecodeする際には [Deodable](https://developer.apple.com/documentation/swift/decodable) を使用します
 - 上記の例では `User` の構造体にDecodableを準拠させることで、decodeされたJSONオブジェクトの各フィールドがmappingされるようになります
 - JSONのフィールドとDecodableのproperty名は同じにする必要があります、もし異なる命名をしたければ [CodingKey](https://developer.apple.com/documentation/swift/codingkey) を使用します
@@ -101,7 +100,7 @@ struct User: Codable {
 ```
     
 descriptionをOptionalに変更したため、RepoDetailViewも少し手を加える必要があるので注意してください ( <code>if let description = repo.description</code> でOptional Bindingをしてから説明文を表示するようにしてみてください)<br>
-Repo の場合 `stargazers_count` → `stargazersCount` の変換は命名を変えているわけではなく、スネークケースをキャメルケースに変えているだけなので、デコーダー側の設定で `JSONDecoder.keyDecodingStrategy` に `.convertFromSnakeCase` を指定することができます
+RepoにはCodingKeysを定義していません、Repo の場合 `stargazers_count` → `stargazersCount` の変換は命名を変えているわけではなく、スネークケースをキャメルケースに変えているだけなので、デコーダー側の設定で `JSONDecoder.keyDecodingStrategy` に `.convertFromSnakeCase` を指定することができます
     
 次に、URLRequest を初期化し、http method, http headerを設定します
 そして、用意したURLRequestを引数にURLSession.shared.dataを呼び出してレスポンスを取得します
