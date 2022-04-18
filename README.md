@@ -52,6 +52,7 @@ class ReposStore: ObservableObject {
     @Published private(set) var error: Error? = nil
 
     func loadRepos() {
+        ...
         do {
             ...
         } catch {
