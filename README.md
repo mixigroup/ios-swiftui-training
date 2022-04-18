@@ -1,31 +1,34 @@
 ## 2.3. エラーハンドリング
 - 通信は必ず成功するものではありません、そして仮に失敗した場合にはしっかりエラーをハンドリングしてユーザーがそれを理解できるように示してあげる必要があります
-- 先のセッションで実装したURLSession周りの処理で必ずErrorをthrowするようにしてみましょう
+- まずは `response.statusCode` が 200 以外の場合に `URLError(.badServerResponse)` をthrowするようにしましょう
+- この時、`try!` となっている部分は `do {}` 内に含めつつ `try` に直してエラーをキャッチできるようにします
 
 ```swift
-            .tryMap() { element -> Data in
-//                guard let httpResponse = element.response as? HTTPURLResponse,
-//                      httpResponse.statusCode == 200 else {
-                    throw URLError(.badServerResponse)
-//                }
-//                return element.data
+        ...
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                throw URLError(.badServerResponse)
             }
+
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let value = try decoder.decode([Repo].self, from: data)
+
+            repos = value
+        } catch {
+            print("error: \(error)")
+        }
 ```
-    
+- 次に、`response.statusCode` が 200 以外だった場合を再現するために、必ず `URLError(.badServerResponse)` がthrowされるように変更してみます
+```swift
+//            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+//            }
+```
 - この状態でLive Previewで確認してみてください
 - ずっとloadingのままであることがわかります、これだとユーザーは何が起きたか理解できないどころか、エラーから復帰することもできません
-- throwされたErrorをキャッチするにはSinkの `receiveCompletion` にて処理を記述します
-- 以下のようにSwitch文で [Subscribers.Completion](https://developer.apple.com/documentation/combine/subscribers/completion) からエラーをハンドリングします
-
-```swift
-.sink(receiveCompletion: { completion in
-    switch completion {
-    case .failure(let error):
-        print("Error: \(error)")
-    case .finished: print("Finished")
-    }
-}
-```
 
 ### チャレンジ
 - エラーをキャッチした際には以下のようなエラー画面を表示しましょう
@@ -43,20 +46,19 @@
 まずはキャッチしたエラーをViewに反映させるために、@Publishedでエラーを監視できるようにしましょう
 
 ```swift
-class ReposLoader: ObservableObject {
+@MainActor   
+class ReposStore: ObservableObject {
     @Published private(set) var repos = [Repo]()
     @Published private(set) var error: Error? = nil
-    ...
-    func call() {
-        ...
-        reposPublisher
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    self?.error = error
-                case .finished:
-                    ...
+
+    func loadRepos() {
+        do {
+            ...
+        } catch {
+            self.error = error
+        }
+    }
+}            
 ```
 
 次に、この公開されたエラーをList側で監視します
@@ -66,7 +68,7 @@ struct RepoListView: View {
     ...
     var body: some View {
         NavigationView {
-            if reposLoader.error != nil {
+            if reposStore.error != nil {
                 VStack {
                     Group {
                         Image("GitHubMark")
@@ -77,7 +79,7 @@ struct RepoListView: View {
                     .opacity(0.4)
                     Button(
                         action: {
-                            reposLoader.call() // リトライボタンをタップしたときに再度リクエストを投げる
+                            reposStore.loadRepos() // リトライボタンをタップしたときに再度リクエストを投げる
                         },
                         label: {
                             Text("Retry")
@@ -87,34 +89,35 @@ struct RepoListView: View {
                     .padding(.top, 8)
                 }
             } else {
-                if reposLoader.repos.isEmpty {
+                if reposStore.repos.isEmpty {
                     ...
 ```
 
 次に、読み込み中を表現できるようにします <br>
 現状はreposが空の場合を読み込み中と判定してしまっているので、別途@Publishedで読み込み中を監視できるようにしてあげる必要があります
 
-
 ```swift
-class ReposLoader: ObservableObject {
+@MainActor   
+class ReposStore: ObservableObject {
     @Published private(set) var repos = [Repo]()
     @Published private(set) var error: Error? = nil
     @Published private(set) var isLoading: Bool = false
-    ...
-    func call() {
-        ...
-        reposPublisher
-            .receive(on: DispatchQueue.main)
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                self?.isLoading = true
-            })
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {...}
-                self?.isLoading = false
-            }, receiveValue: {...})
-```
 
-今回は [handleEvents(receiveSubscription:)](https://developer.apple.com/documentation/combine/fail/handleevents(receivesubscription:receiveoutput:receivecompletion:receivecancel:receiverequest:)) でPublisherがsubscribeされたタイミングを受け取ってisLoadingをtrueに、SinkのreceiveCompletionにてfalseに切り替えるように実装しています
+    func loadRepos() {
+        ...
+        isLoading = true
+            
+        do {
+            ...
+            repos = value
+            isLoading = false
+        } catch {
+            self.error = error
+            isLoading = false
+        }
+    }
+}            
+```
 
 あとはこれをList側で監視してあげます
 
@@ -123,17 +126,17 @@ struct RepoListView: View {
     ...
     var body: some View {
         NavigationView {
-            if reposLoader.error != nil {
+            if reposStore.error != nil {
                 ...
             } else {
-                if reposLoader.isLoading {
+                if reposStore.isLoading {
                     ProgressView("loading...")
                 } else {
-                    if reposLoader.repos.isEmpty {
+                    if reposStore.repos.isEmpty {
                         Text("No repositories")
                             .fontWeight(.bold)
                     } else {
-                        List(reposLoader.repos) {...}
+                        List(reposStore.repos) {...}
                         .navigationTitle("Repositories")
                     }
                 }
@@ -142,7 +145,7 @@ struct RepoListView: View {
     }
 ```
 
-(sinkのreceiveValueにてreposに空配列(<code>[]</code>)を代入して一度Live Previewで表示確認してみましょう)
+(reposに空配列(<code>[]</code>)を代入して一度Live Previewで表示確認してみましょう)
 
 現状だと、エラー画面や空画面でナビゲーションが表示されていません <br>
 これを解消するためにはそれぞれの画面に対応するViewに対して <code>.navigationTitle("Repositories")</code> を呼び出してあげると良さそうですが、同じ記述を3箇所書くのはなかなか悪いコードのにおいがします
@@ -153,16 +156,16 @@ struct RepoListView: View {
     var body: some View {
         NavigationView {
             Group {
-                if reposLoader.error != nil {
+                if reposStore.error != nil {
                     ...   
                 } else {
-                    if reposLoader.isLoading {
+                    if reposStore.isLoading {
                         ...
                     } else {
-                        if reposLoader.repos.isEmpty {
+                        if reposStore.repos.isEmpty {
                             ...
                         } else {
-                            List(reposLoader.repos) {...}
+                            List(reposStore.repos) {...}
                         }
                     }
                 }
@@ -189,27 +192,29 @@ enum Stateful<Value> {
 このStatefulを駆使して3つあった@Publishedを1つにしていきます
 
 ```swift
-class ReposLoader: ObservableObject {
+@MainActor
+class ReposStore: ObservableObject {
     @Published private(set) var repos: Stateful<[Repo]> = .idle
-    ...
-    func call() {
+
+    func loadRepos() {
         ...
-        reposPublisher
-            .receive(on: DispatchQueue.main)
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                self?.repos = .loading
-            })
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    self?.repos = .failed(error)
-                case .finished:
-                    print("Finished: \(completion)")
-                }
-            }, receiveValue: { [weak self] repos in
-                self?.repos = .loaded(repos)
+        state = .loading
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                throw URLError(.badServerResponse)
             }
-            ).store(in: &cancellables)
+
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let value = try decoder.decode([Repo].self, from: data)
+
+            state = .loaded(value)
+        } catch {
+            state = .failed(error)
+        }
     }
 }
 
@@ -218,16 +223,16 @@ struct RepoListView: View {
     var body: some View {
         NavigationView {
             Group {
-                switch reposLoader.repos {
+                switch reposStore.state {
                 case .idle, .loading:
                     ProgressView("loading...")
-                case .failed:
+                case .loaded([]):
+                    Text("No repositories")
                     ...
                 case let .loaded(repos):
-                    if repos.isEmpty {
-                        ....
-                    } else {
-                        List(repos) {...}
+                    List(repos) {...}                        
+                case .failed:
+                    ...
                 }
             }
             .navigationTitle("Repositories")
