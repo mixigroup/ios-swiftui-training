@@ -17,7 +17,7 @@
 @testable import GitHubClient
 
 class RepoListViewModelTests: XCTestCase {
-    func test_onAppear_正常系()　acync {
+    func test_onAppear_正常系()　async {
     }
 }
 ```
@@ -41,7 +41,8 @@ struct RepoDataRepository: RepoRepository {
         RepoAPIClient().getRepos()
     }
 }
-
+```
+```swift
 @MainActor
 class RepoListViewModel: ObservableObject {
     @Published private(set) var repos: Stateful<[Repo]> = .idle
