@@ -12,7 +12,7 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115515967-9e687b00-a2c0-11eb-9ace-d1cf74035b20.png">
 
-- 詳細画面は以下のようなレイアウトにしましょう
+- 詳細画面は以下のようなレイアウトを目指していきます
 
 <img src="https://user-images.githubusercontent.com/8536870/115516019-ac1e0080-a2c0-11eb-8577-1d656de4522f.png" width=50%>
 
