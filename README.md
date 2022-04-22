@@ -135,7 +135,7 @@ Image(systemName: "star")
    - ロゴ ... width: 16, height:16
    - ユーザー名 ... font: caption
    - リポジトリ名 ... font: body, weight: bold
-   - リポジトリ説明文 padding top: 4
+   - リポジトリ説明文 ... padding top: 4
    - スター数 ... padding top: 8
 
 <img src="https://user-images.githubusercontent.com/8536870/115516361-00c17b80-a2c1-11eb-9a28-77dd85c46b37.png" width=50%>
