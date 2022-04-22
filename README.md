@@ -9,10 +9,21 @@
 struct RepoListView: View {
     @StateObject private var viewModel: RepoListViewModel
 
-    init(viewModel: RepoListViewModel = RepoListViewModel()) {
+    init(viewModel: RepoListViewModel) {
         self.viewModel = viewModel
     }
     ...
+```
+
+```swift
+strict GitHubClientApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ReposListView(viewModel: RepoListViewModel())
+        }
+    }
+}
+
 ```
     
 - しかし、これだと以下のようなエラーが出てしまいます
@@ -23,7 +34,7 @@ struct RepoListView: View {
 - 少しハックっぽいやり方にはなりますが、@StateObjectの内部実装にアクセスして解決を図ります
 
 ```swift
-init(viewModel: RepoListViewModel = RepoListViewModel()) {
+init(viewModel: RepoListViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
 }
 ```
