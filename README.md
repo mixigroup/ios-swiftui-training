@@ -16,7 +16,7 @@ struct RepoListView: View {
 ```
 
 ```swift
-strict GitHubClientApp: App {
+struct GitHubClientApp: App {
     var body: some Scene {
         WindowGroup {
             ReposListView(viewModel: RepoListViewModel())
