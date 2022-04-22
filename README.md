@@ -80,7 +80,9 @@ struct RepoListView: View {
                     .opacity(0.4)
                     Button(
                         action: {
-                            reposStore.loadRepos() // リトライボタンをタップしたときに再度リクエストを投げる
+                            Task {
+                                await reposStore.loadRepos() // リトライボタンをタップしたときに再度リクエストを投げる
+                            }
                         },
                         label: {
                             Text("Retry")
@@ -195,7 +197,7 @@ enum Stateful<Value> {
 ```swift
 @MainActor
 class ReposStore: ObservableObject {
-    @Published private(set) var repos: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .idle
 
     func loadRepos() {
         ...
