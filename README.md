@@ -82,7 +82,7 @@ struct User: Decodable {
 まずは、レスポンスのJSONをdecodeできるように、対応するRepoおよびUserをDecodableに準拠させます
 
 ```swift
-struct Repo: Identifiable, Codable {
+struct Repo: Identifiable, Decodable {
     var id: Int
     var name: String
     var owner: User
@@ -90,7 +90,7 @@ struct Repo: Identifiable, Codable {
     var stargazersCount: Int
 }
 
-struct User: Codable {
+struct User: Decodable {
     var name: String
 
     private enum CodingKeys: String, CodingKey {
