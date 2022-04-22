@@ -3,7 +3,7 @@
 - APIリクエストを送り、レスポンスを受け取ってその結果をViewに表示する際、その間Main Threadを止めてユーザーの自由を奪ってしまってはかなり体験の悪いアプリになってしまいます
 - よってAPIリクエストは別スレッドで非同期に送り、結果が帰ってきたらMain ThreadでUIを更新する、という実装をするのが良いとされています
 - そこで、API通信周りの実装する前に、まずは非同期処理について学ぶ必要があります
-- 今回は [Swift Concurrency]() という仕組みを用いて実装していきます
+- 今回は [Swift Concurrency](https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html) という仕組みを用いて実装していきます
 - Swift Concurrency とは非同期処理および並行処理のコードを簡潔かつ安全に記述できる機能です
 - 今回の実装でポイントとなる 3 つを簡単に紹介します
 - async/await
@@ -34,7 +34,7 @@ struct RepoListView: View {
     private func loadRepos() async {
         try! await Task.sleep(nanoseconds: 1_000_000_000)
 
-        repos = [.mock1, .mock2, .mock3, .mock4, .mock5]
+        mockRepos = [.mock1, .mock2, .mock3, .mock4, .mock5]
     }
 }
 ```
