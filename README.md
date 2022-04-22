@@ -229,11 +229,15 @@ struct RepoListView: View {
                 switch reposStore.state {
                 case .idle, .loading:
                     ProgressView("loading...")
-                case .loaded([]):
-                    Text("No repositories")
-                    ...
                 case let .loaded(repos):
-                    List(repos) {...}                        
+                    if repos.isEmpty {
+                        Text("No repositories")
+                        ...  
+                    } else {
+                        List(repos) { repo in
+                            ...
+                        }
+                    }
                 case .failed:
                     ...
                 }
@@ -244,6 +248,50 @@ struct RepoListView: View {
     }
 }
 ```
+このままでも良さそうですが、さらに `repos` が空の場合と空でない場合を別の状態として扱うようにしてみます。以下のように switch の機能を活用します。
+  
+```swift
+struct RepoListView: View {
+    ...
+    var body: some View {
+        NavigationView {
+            Group {
+                switch reposStore.state {
+                case .idle, .loading:
+                    ProgressView("loading...")
+                case .loaded([]):
+                    Text("No repositories")
+                    ...  
+                case let .loaded(repos):
+                    List(repos) { repo in
+                        ...
+                    }
+                case .failed:
+                    ...
+                }
+            }
+            .navigationTitle("Repositories")
+        }
+        ...
+    }
+}
+```
+        
+ネストが減り、より直感的に読みやすいコードになったと思います。しかし、このままでは以下のようなエラーが出てしまいます。
+        
+> Operator function '~=' requires that 'Repo' conform to 'Equatable'
+        
+switch 内部で `repos: [Repo]` の等価性を比較するため、`Repo` を `Equatable` に準拠させる必要があります。
+        
+```swift      
+struct Repo: Identifiable, Decodable, Equatable {        
+...   
+```
+```swift
+struct User: Decodable, Equatable {
+...        
+```
+        
 
 このように、型を工夫して必要なpropertyを最小限にすることができると、コードの可読性および保守性を大幅に上げることができます <br>
 最初から一発で理想のコードを書くことは難しいので、一度動くコードを一通りかけたら見直して改善できる余地がないかを検討する癖をつけておきましょう
