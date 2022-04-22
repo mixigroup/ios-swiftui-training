@@ -131,6 +131,12 @@ Image(systemName: "star")
 - [SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/) と呼ばれるアイコン集がAppleによって提供されているため、ここで定義されているSymbolは上記のように使用可能となっています
     - DynamicTypeと連動して大きさが変化したり、フォントのbaselineと揃えて表示できたりと便利なものになっています
 - さて、これまでのSwiftUIの知識でレイアウトを組んでいくと、以下のような表示になるかと思います
+- レイアウト詳細
+   - ロゴ ... width: 16, height:16
+   - ユーザー名 ... font: caption
+   - リポジトリ名 ... font: body, weight: bold
+   - リポジトリ説明文 padding top: 4
+   - スター数 ... padding top: 8
 
 <img src="https://user-images.githubusercontent.com/8536870/115516361-00c17b80-a2c1-11eb-9a28-77dd85c46b37.png" width=50%>
 
