@@ -113,7 +113,7 @@ struct RepoListView: View {
 - `ReposStore` の `repos` という特定のpropertyを監視する必要があります
 - そのためには [ObservableObject](https://developer.apple.com/documentation/combine/observableobject) を使用します
 - `ReposStore` にObservableObjectを適用し、監視させたいpropertyである `repos` には [@Published](https://developer.apple.com/documentation/combine/published) をannotateします
-    - @Publishedでannotateすると、そのpropertyの型でPublisherを生成してくれます、これをView側から監視するわけです
+    - @Publishedでannotateすると、そのpropertyの値の変更をView側から監視できるようになります
 
 ```swift
 class ReposStore: ObservableObject {
