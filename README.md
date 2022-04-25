@@ -127,7 +127,7 @@ let dummyError = DummyError()
     <summary>解説</summary>
 
 異常系のテストを書けるようにするために、まずはモックでエラーを表現できるようにMockRepositoryを修正します <br>
-イニシャライザ引数でErrorをOptionalで受け取れるようにしておき、もしnilでなければそのErrorを [Fail](https://developer.apple.com/documentation/combine/fail) というPublisherで返すようにします
+イニシャライザ引数でErrorをOptionalで受け取れるようにしておき、もしnilでなければそのErrorをthrowします
 
 ```swift
 struct DummyError: Error {}
