@@ -16,7 +16,7 @@ List(0 ..< 5) { item in
 ```
 - いい感じにリスト表示されていることがわかります
 
-<img src="https://user-images.githubusercontent.com/8536870/115513734-6102ee00-a2be-11eb-897e-5084947cf214.png" width=50%>
+<img width="304" alt="スクリーンショット 2022-04-26 21 03 23" src="https://user-images.githubusercontent.com/17004375/165295890-5e1294fc-7c23-4886-999a-7cb60cc1f3dc.png">
 
 - ではこのリストで動的なデータを表示してみましょう
 - まずはリポジトリ名やユーザー名を格納するデータモデルを作成しましょう
