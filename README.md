@@ -4,13 +4,13 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115510465-bd640e80-a2ba-11eb-8490-bacf4df5c012.png">
 
-- `GitHub-Mark-120px-plus.png` を `Assets.xcassets` に向けてdrag&dropしてください
+- `GitHub-Mark-120px-plus.png` を `Assets` に向けてdrag&dropしてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510540-d53b9280-a2ba-11eb-97f7-ebd7345aae59.png">
+<img width="826" alt="スクリーンショット_2022-04-26_20_36_44" src="https://user-images.githubusercontent.com/17004375/165291796-dfa1ef71-3d68-4dc2-834a-c559e1f40293.png">
 
 - 名前を `GitHubMark` に変更しつつ、下図のように `Single Scale` にしてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510613-eb495300-a2ba-11eb-9bf8-8e96b2b3e07b.png">
+<img width="995" alt="スクリーンショット_2022-04-26_20_48_38" src="https://user-images.githubusercontent.com/17004375/165293603-abc9969b-3ab7-492f-a71f-a6404a527c75.png">
 
 - ⚠︎ 本来は `Individual Scales` で解像度ごとに3つのサイズの画像を用意することが望まれますが、今回は研修ということで `Single Scale` にしています
     - さらに言うならば、ロゴのようなベクター形式で吐き出せる画像は `.svg` 形式(iOS13未満サポートの場合は `.pdf` 形式)で追加することで、3枚の画像サイズを用意する必要がなくなるため理想的です
