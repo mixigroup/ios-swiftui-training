@@ -178,7 +178,8 @@ NavigationLink(
 - 最後にRepoDetailViewにて `.navigationBarTitleDisplayMode(.inline)` のmodifierを追加することで表示されるNavigationBarのスタイルをインラインにしておきましょう
 - 一覧画面のPreviewで左上の再生ボタンをタップしてLive Previewにして遷移できるか確認してみましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115516573-35cdce00-a2c1-11eb-9a94-250060d7dff0.png" width=50%>
+<img width="303" alt="スクリーンショット_2022-04-26_22_12_26" src="https://user-images.githubusercontent.com/17004375/165307898-e99905be-ab3d-409a-b555-8d7d881deb0b.png">
+
 
 ### チャレンジ
 - 詳細画面は今後もコンテンツが増えていきそうですね、小さい端末でも内容が全て表示されるように、コンテンツをスクロールできるようにしてください
