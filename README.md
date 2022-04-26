@@ -5,7 +5,15 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115513674-4c265a80-a2be-11eb-8f8b-27ce49fd49fb.png" width=50%>
 
-- HStack が List に置き換わってしまうので、HStack で囲い直します（List で HStack を囲ってほしいところだが）
+- HStack が List に置き換わってしまうので、HStack で囲い直します（List で HStack を囲ってところ）
+
+```swift
+List(0 ..< 5) { item in
+    HStack {
+        ....
+    }
+}
+```
 - いい感じにリスト表示されていることがわかります
 
 <img src="https://user-images.githubusercontent.com/8536870/115513734-6102ee00-a2be-11eb-897e-5084947cf214.png" width=50%>
