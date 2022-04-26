@@ -26,7 +26,8 @@ List(0 ..< 5) { item in
 
 - 2つのファイルを選択して右クリックで `New Group from Selection` を選んで `Models` フォルダにまとめてしまいましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115513909-8b54ab80-a2be-11eb-8a0c-f8efaac0ad4a.png" width=50%>
+<img width="352" alt="スクリーンショット 2022-04-26 21 18 06" src="https://user-images.githubusercontent.com/17004375/165298260-7e826db1-1d6f-49a8-b617-7a49d05dc5e6.png">
+
 
 ```swift
 struct Repo {
@@ -127,7 +128,8 @@ List(mockRepos) { repo in
 }
 ```
 
-<img src="https://user-images.githubusercontent.com/8536870/115514049-acb59780-a2be-11eb-9696-eab9a33c459b.png" width=50%>
+<img width="267" alt="スクリーンショット 2022-04-26 21 32 06" src="https://user-images.githubusercontent.com/17004375/165300552-4db1f576-8f29-4804-b43d-c9b9d2dffad4.png">
+
 
 ### チャレンジ
 - List内で表示されるViewを `RepoRow` という名前で別なファイルに切り出してみましょう
