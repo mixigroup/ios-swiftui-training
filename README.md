@@ -63,7 +63,8 @@ static var previews: some View {
 - Previewを複製して、空状態, エラー状態を表示するPreviewを作成してください
 - Previewは右上のDuplicateボタンから簡単に複製できます
 
-<img src="https://user-images.githubusercontent.com/8536870/115540895-7e918100-a2d9-11eb-97a0-e264500d9712.png">
+<img width="264" alt="スクリーンショット_2022-04-26_22_26_22" src="https://user-images.githubusercontent.com/17004375/165310583-9a9588ab-9bb8-4376-942c-0b64f2c74818.png">
+
 
 - 各Previewには [previewDisplayName](https://developer.apple.com/documentation/avkit/videoplayer/3580241-previewdisplayname) で名前をつけて表示することが可能です
 
@@ -167,8 +168,7 @@ struct RepoListView_Previews: PreviewProvider {
 
 Preview上部に以下のように名前が表示されます
 
-![スクリーンショット 2021-05-03 19 00 48](https://user-images.githubusercontent.com/8536870/116863884-eaf97200-ac41-11eb-8839-60437253d5e3.png)
-
+<img width="303" alt="スクリーンショット 2022-04-26 22 31 04" src="https://user-images.githubusercontent.com/17004375/165311265-63ab9ba9-fddf-463d-8bcb-166ee27b4e3a.png">
 
 </details>
 
