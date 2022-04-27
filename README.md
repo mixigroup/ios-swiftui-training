@@ -66,7 +66,7 @@ static var previews: some View {
 <img width="264" alt="スクリーンショット_2022-04-26_22_26_22" src="https://user-images.githubusercontent.com/17004375/165310583-9a9588ab-9bb8-4376-942c-0b64f2c74818.png">
 
 
-- 各Previewには [previewDisplayName](https://developer.apple.com/documentation/avkit/videoplayer/3580241-previewdisplayname) で名前をつけて表示することが可能です
+- 各Previewには [previewDisplayName](https://developer.apple.com/documentation/swiftui/link/previewdisplayname(_:)) で名前をつけて表示することが可能です
 
 <details>
     <summary>解説</summary>
