@@ -1,6 +1,6 @@
 ## 2.1. Swift Concurrencyによる非同期処理
 
-- APIリクエストを送り、レスポンスを受け取ってその結果をViewに表示する際、その間Main Threadを止めてユーザーの自由を奪ってしまってはかなり体験の悪いアプリになってしまいます
+- APIリクエストを送り、レスポンスを受け取ってその結果をViewに表示する際、その間Main Thread（UIを更新するスレッド）を止めてユーザーの自由を奪ってしまってはかなり体験の悪いアプリになってしまいます
 - よってAPIリクエストは別スレッドで非同期に送り、結果が帰ってきたらMain ThreadでUIを更新する、という実装をするのが良いとされています
 - そこで、API通信周りの実装する前に、まずは非同期処理について学ぶ必要があります
 - 今回は [Swift Concurrency](https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html) という仕組みを用いて実装していきます
