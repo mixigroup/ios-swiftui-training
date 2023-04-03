@@ -1,16 +1,17 @@
 ## 3.3. Xcode Previewsの再活用
 - しばらくXcode Previewsでデバッグしてきましたが、エラー表示や空表示を確認するためにコメントアウトしたりコードを書き換えたりしていました
 - もっとPreviewをうまく活用してこのような非効率的な確認方法を取らずに済むようにしていきましょう
-- そのために `RepoListViewModel` をViewにDependency Injection(DI)できるようにしてRepositoryをモックに置き換えて表示してみましょう
+- そのために `RepoRepository` をViewにDependency Injection(DI)できるようにしてRepositoryをモックに置き換えて表示してみましょう
 - まずは、テストファイルに定義したモックをPreviewでも再利用するために `Preview Content/Mocks` 以下に移動させましょう
-- 次に、 `RepoListView` にてViewModelをDIできるようにイニシャライザ引数から受け取るようにします
+- 次に、 `RepoListView` にてRepositoryをDIできるようにイニシャライザ引数から受け取るようにします
 
 ```swift
 struct RepoListView: View {
     @StateObject private var viewModel: RepoListViewModel
 
-    init(viewModel: RepoListViewModel) {
-        self.viewModel = viewModel
+    init(repoRepository: RepoRepository) {
+        // 参考: https://developer.apple.com/documentation/swiftui/stateobject#Initialize-state-objects-using-external-data
+        _viewModel = StateObject(wrappedValue: RepoListViewModel(repoRepository: repoRepository))
     }
     ...
 ```
@@ -19,41 +20,26 @@ struct RepoListView: View {
 struct GitHubClientApp: App {
     var body: some Scene {
         WindowGroup {
-            ReposListView(viewModel: RepoListViewModel())
+            RepoListView(repoRepository: RepoDataRepository())
         }
     }
 }
 
 ```
-    
-- しかし、これだと以下のようなエラーが出てしまいます
 
-> Cannot assign to property: 'viewModel' is a get-only property
-
-- @StateObjectでannotateされたpropertyはget-onlyの制約が課されてしまうため、イニシャライザ引数によるDIができません
-- 少しハックっぽいやり方にはなりますが、@StateObjectの内部実装にアクセスして解決を図ります
-
-```swift
-init(viewModel: RepoListViewModel) {
-    _viewModel = StateObject(wrappedValue: viewModel)
-}
-```
-
-- (正直あまり直感的な方法ではないのでこれが絶対に良い方法だという自信はありません、もしもっと良い方法を知っている方がいらしたら教えてください) 
-- ひとまずこれでViewにViewModelを外部から渡せるようになりました
-- Previewにて初期化時にモックされたRepositoryを持つViewModelを渡してあげましょう
+- これでViewにRepositoryを外部から渡せるようになりました
+- Previewにて初期化時にモックされたRepositoryを渡してあげましょう
 
 ```swift
 static var previews: some View {
     RepoListView(
-        viewModel: RepoListViewModel(
-            repoRepository: MockRepoRepository(
-                repos: [
-                    .mock1, .mock2, .mock3, .mock4, .mock5
-                ]
-            )
+        repoRepository: MockRepoRepository(
+            repos: [
+                .mock1, .mock2, .mock3, .mock4, .mock5
+            ]
         )
     )
+    .previewDisplayName("Default")
 }
 ```
 
@@ -79,21 +65,17 @@ struct RepoListView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             RepoListView(
-                viewModel: RepoListViewModel(
-                    repoRepository: MockRepoRepository(
-                        repos: [
-                            .mock1, .mock2, .mock3, .mock4, .mock5
-                        ]
-                    )
+                repoRepository: MockRepoRepository(
+                    repos: [
+                        .mock1, .mock2, .mock3, .mock4, .mock5
+                    ]
                 )
             )
             RepoListView(
-                viewModel: RepoListViewModel(
-                    repoRepository: MockRepoRepository(
-                        repos: [
-                            .mock1, .mock2, .mock3, .mock4, .mock5
-                        ]
-                    )
+                repoRepository: MockRepoRepository(
+                    repos: [
+                        .mock1, .mock2, .mock3, .mock4, .mock5
+                    ]
                 )
             )
         }
@@ -110,10 +92,8 @@ struct RepoListView_Previews: PreviewProvider {
         Group {
             RepoListView(...)
             RepoListView(
-                viewModel: RepoListViewModel(
-                    repoRepository: MockRepoRepository(
-                        repos: []
-                    )
+                repoRepository: MockRepoRepository(
+                    repos: []
                 )
             )
         }
@@ -134,11 +114,9 @@ struct RepoListView_Previews: PreviewProvider {
             RepoListView(...)
             RepoListView(...)
             RepoListView(
-                viewModel: RepoListViewModel(
-                    repoRepository: MockRepoRepository(
-                        repos: [],
-                        error: DummyError()
-                    )
+                repoRepository: MockRepoRepository(
+                    repos: [],
+                    error: DummyError()
                 )
             )
         }
