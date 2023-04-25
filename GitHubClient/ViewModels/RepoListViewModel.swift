@@ -16,7 +16,7 @@ class RepoListViewModel: ObservableObject {
         state = .loading
 
         do {
-            let value = try await RepoRepository().fetchRepos()
+            let value = try await RepoAPIClient().getRepos()
             state = .loaded(value)
         } catch {
             state = .failed(error)
