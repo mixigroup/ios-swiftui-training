@@ -14,7 +14,7 @@
 
 - 詳細画面は以下のようなレイアウトを目指していきます
 
-<img src="https://user-images.githubusercontent.com/8536870/115516019-ac1e0080-a2c0-11eb-8577-1d656de4522f.png" width=50%>
+![スクリーンショット 2023-04-25 16 09 01](https://user-images.githubusercontent.com/17004375/234200747-552da349-a8d9-45e2-85c6-7abdb90eb40e.png)
 
 - 新しく以下の要素を表示する必要が出てきました
     - リポジトリの説明文
@@ -122,23 +122,38 @@ struct RepoDetailView_Previews: PreviewProvider {
 ```
 
 - これでようやく詳細画面のレイアウトを組んでいく準備が整いました、まずは試しに実装してみてください
-- ちなみに星マークは以下のコードで表示可能です
+- これまでのSwiftUIの知識でレイアウトを組んでいくと、以下のような表示になるかと思います
 
 ```swift
-Image(systemName: "star")
+HStack {
+    VStack(alignment: .leading) {
+        HStack {
+            Image("GitHubMark")
+                .resizable()
+                .frame(width: 16, height: 16)
+            Text(repo.owner.name)
+                .font(.caption)
+        }
+
+        Text(repo.name)
+            .font(.body)
+            .fontWeight(.bold)
+
+        Text(repo.description)
+            .padding(.top, 4) // .top などの方向と余白の長さを指定することができます
+
+        HStack {
+            Image(systemName: "star")
+            Text("\(repo.stargazersCount) stars")
+        }
+        .padding(.top, 8)
+    }
+}
+.padding(8)
+
 ```
 
-- [SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/) と呼ばれるアイコン集がAppleによって提供されているため、ここで定義されているSymbolは上記のように使用可能となっています
-    - DynamicTypeと連動して大きさが変化したり、フォントのbaselineと揃えて表示できたりと便利なものになっています
-- さて、これまでのSwiftUIの知識でレイアウトを組んでいくと、以下のような表示になるかと思います
-- レイアウト詳細
-   - ロゴ ... width: 16, height:16
-   - ユーザー名 ... font: caption
-   - リポジトリ名 ... font: body, weight: bold
-   - リポジトリ説明文 ... padding top: 4
-   - スター数 ... padding top: 8
-
-<img src="https://user-images.githubusercontent.com/8536870/115516361-00c17b80-a2c1-11eb-9a28-77dd85c46b37.png" width=50%>
+![スクリーンショット 2023-04-25 16 15 05](https://user-images.githubusercontent.com/17004375/234202028-1516124b-3c1f-405c-bcaf-c79dcc7da47d.png)
 
 - 左上に詰めて表示させるにはどうすれば良いでしょうか、答えは [Spacer](https://developer.apple.com/documentation/swiftui/spacer) を使います
 - SpacerをVStack, HStackの中で宣言すれば、Stackが画面いっぱいに広がり、Spacerを宣言した部分に余白ができるレイアウトになります
@@ -175,39 +190,12 @@ NavigationLink(
 }
 ```
 
-- 最後にRepoDetailViewにて `.navigationBarTitleDisplayMode(.inline)` のmodifierを追加することで表示されるNavigationBarのスタイルをインラインにしておきましょう
-- 一覧画面のPreviewで左上の再生ボタンをタップしてLive Previewにして遷移できるか確認してみましょう
-
-<img width="303" alt="スクリーンショット_2022-04-26_22_12_26" src="https://user-images.githubusercontent.com/17004375/165307898-e99905be-ab3d-409a-b555-8d7d881deb0b.png">
-
+- 最後にRepoDetailViewにも `.navigationTitle("Repository Detail")` とタイトルを指定します
+- PreviewをLiveモードにして画面遷移できるか確認してみましょう
 
 ### チャレンジ
-- 詳細画面は今後もコンテンツが増えていきそうですね、小さい端末でも内容が全て表示されるように、コンテンツをスクロールできるようにしてください
 
-<details>
-    <summary>解説</summary>
-やることは単純で、 <a href="https://developer.apple.com/documentation/swiftui/scrollview" rel="nofollow">ScrollView</a> でコンテンツを囲ってあげるだけです
-    
-```swift
-ScrollView {
-    HStack {
-        VStack(alignment: .leading) {
-            ...
-            Spacer()
-        }
-        Spacer()
-    }
-    .padding(8)
-}
-.navigationBarTitleDisplayMode(.inline)
-```
-
-動的なコンテンツを表示するViewでは、必ず小さい端末でも切れずに表示されるかを気にかけておきましょう<br>
-デザインの段階では短い文章だったため収まったが、実際のデータだと長い文章が入力されて下の方が見切れてしまう、というようなことは実務でもよくあります
-
-そういった場合を考慮して、ScrollViewでスクロール可能なコンテンツにしておけると良いでしょう
-
-</details>
+(本セクションではチャレンジはありません)
 
 ### 前セッションとのDiff
 [session-1.3..session-1.4](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.3..session-1.4)
