@@ -1,6 +1,6 @@
 ## 3.2. XCTest
 - MVVMのアーキテクチャを導入したことによるメリットとして、各モジュールをテストしやすくなったという点があります
-- せっかくなので、 `RepoListViewModel` のテストを書いてみましょう
+- `RepoListViewModel` のテストを書いてみましょう
 - テストしたい項目は以下の通りです
     - Viewが表示されたとき(onAppear時)にリポジトリ一覧を取得して表示する
     - 取得時にエラーが発生した場合にはエラー状態をViewに表示する
@@ -8,7 +8,7 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115539731-49d0fa00-a2d8-11eb-85a0-87ec3b6548c0.png">
 
-- `GitHubClientTests.swift` というテストファイルがすでに追加されているはずです、 `RepoListViewModelTests` という名前にrenameしましょう
+- `GitHubClientTests.swift` というテストファイルがすでに追加されているはずなので、 `RepoListViewModelTests` にrenameしましょう
 - `setUpWithError` と `tearDownWithError` は各テストの開始, 終了時にそれぞれ呼ばれます
 - `test` から始まるメソッドがテストケースとして認識されて実行されます
 - とりあえずは `setUpWithError`, `tearDownWithError`を消してしまい、「正しくリポジトリ一覧が読み込まれること」をテストするメソッドを追加しましょう
@@ -24,45 +24,47 @@ class RepoListViewModelTests: XCTestCase {
 
 - テストターゲットからメインターゲットのメソッドやクラスを参照するために `@testable import GitHubClient` を宣言しています
     - 本来ならばpublicで修飾されていなければ外部ターゲットのフィールドにはアクセスできませんが、 `@testable import` によってinternalなフィールドにもアクセス可能になります
-- テストメソッド内で async な関数 `RepoListViewModel.onAppear()` を呼び出したいので、あらかじめテストメソッドに `async` を付与しています
-- まずは、テストメソッド内でテスト対象の `RepoListViewModel` を初期化し、`onAppear` を呼び出してリポジトリが読み込まれるか確認...とその前に、このままだとテストを走らせるたびにAPI通信が走ってしまいます
-- 常套手段として、 `RepoListViewModel` の依存している `RepoRepository` をモックに差し替えましょう
+- テストメソッド内で async な関数 `RepoListViewModel.onAppear()` を呼び出したいので、あらかじめテストメソッドに `async` を付与します
+- まずはテストメソッド内で、テスト対象の `RepoListViewModel` を初期化し、`onAppear` を呼び出してリポジトリが読み込まれるか確認...
+- と、このままだとテストを走らせるたびにAPI通信が走ってしまいます
+- 常套手段として、 `RepoListViewModel` が依存している `RepoAPIClient` をモックに差し替えましょう
 - そのためには、以下の二つのことをしてあげる必要があります
-    - 現在メソッド内で初期化されている `RepoRepository` を外から渡す (Dependency Injection)
-    - `RepoRepository` のI/Fを抽象化したprotocolをイニシャライザ引数とする
+    - 現在メソッド内で初期化されている `RepoAPIClient` を外から渡す (Dependency Injection)
+    - `RepoAPIClient` のI/Fを抽象化したprotocolをイニシャライザ引数とする
 
 ```swift
-protocol RepoRepository {
-    func fetchRepos() async throws -> [Repo]
+protocol RepoAPIClientProtocol {
+    func getRepos() async throws -> [Repo]
 }
 
-struct RepoDataRepository: RepoRepository {
-    func fetchRepos() async throws -> [Repo] {
-        RepoAPIClient().getRepos()
+struct RepoAPIClient: RepoAPIClientProtocol {
+    func getRepos() async throws -> [Repo] {
+        ...
     }
 }
 ```
+
 ```swift
 @MainActor
 class RepoListViewModel: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .loading
 
-    private let repoRepository: RepoRepository
+    private let repoAPIClient: RepoAPIClientProtocol
 
-    init(repoRepository: RepoRepository = RepoDataRepository()) {
-        self.repoRepository = repoRepository
+    init(repoAPIClient: RepoAPIClientProtocol = RepoAPIClient()) {
+        self.repoAPIClient = repoAPIClient
     }
     ...
     private func loadRepos() {
         ...
         do {
-            let value = try await repoRepository.fetchRepos()
+            let value = try await repoAPIClient.getRepos()
         ...
     }
 }
 ```
 
-- これで `RepoRepository` をモックに差し替える準備が整いました、早速モックを作ってみましょう
+- これで `RepoAPIClient` をモックに差し替える準備が整いました、早速モックを作ってみましょう
 
 ```swift
 class RepoListViewModelTests: XCTestCase {
@@ -71,11 +73,7 @@ class RepoListViewModelTests: XCTestCase {
     struct MockRepoRepository: RepoRepository {
         let repos: [Repo]
 
-        init(repos: [Repo]) {
-            self.repos = repos
-        }
-
-        func fetchRepos() async throws -> [Repo] {
+        func getRepos() async throws -> [Repo] {
             repos
         }
     }
@@ -84,35 +82,50 @@ class RepoListViewModelTests: XCTestCase {
 
 - モックはこんな感じになります
     - イニシャライザ引数で返り値となる `Array<Repo>` を受け取る
-    - `fetchRepos` でイニシャライザ引数で受け取った値をそのまま返す
+    - `getRepos` でイニシャライザ引数で受け取った値をそのまま返す
 
 - では、モックを使って実際にテストを書いていきましょう
 - Viewに反映されるデータは `RepoListViewModel.state` です、テストメソッドでもこの値を監視して想定通りに更新されていることを確認します
 
-```swift    
-func test_onAppear_正常系() async {
-    let viewModel = RepoListViewModel(
-        repoRepository: MockRepoRepository(
-            repos: [.mock1, .mock2]
+```swift
+@MainActor
+class RepoListViewModelTests: XCTestCase {
+    func test_onAppear_正常系() async {
+        let viewModel = RepoListViewModel(
+            repoAPIClient: MockRepoAPIClient(
+                repos: [.mock1, .mock2],
+                error: nil
+            )
         )
-    )
 
-    await viewModel.onAppear()
+        await viewModel.onAppear()
 
-    switch viewModel.state {
-    case let .loaded(repos):
-        XCTAssertEqual(repos, [Repo.mock1, Repo.mock2])
-    default:
-        XCTFail()
+        switch viewModel.state {
+        case let .loaded(repos):
+            XCTAssertEqual(repos, [Repo.mock1, Repo.mock2])
+        default:
+            XCTFail()
+        }
     }
+    
+    ...
 }
 ```
+
+<details>
+    <summary>Test classに@MainActorを付与している理由(余裕があれば確認してみましょう)</summary>
+    
+- @MainActorを付与しない場合、RepoListViewModel初期化のところで　`Expression is 'async' but is not marked with 'await'`　というエラーが出てしまいます
+- エラーの原因は、async関数内で@MainActorでマークされたクラスを初期化する際に、awaitを使用していないことです
+- awaitが必要な理由は、@MainActorが付与されたRepoListViewModelの初期化はメインスレッドで実行されるため、@MainActorなしのテストメソッド内で実行されると、非同期処理になる場合があるためです
+- Test classに@MainActorを付与することで、テストメソッドもメインスレッドで実行されることが保証され、RepoListViewModel初期化時のawaitを不要にしています
+
+</details>
 
 - 順番に見ていきましょう
 - `await viewModel.onAppear()` で `onAppear()` を実行しつつその結果を待ちます
 - `onAppear()` が完了すると await 以下のコードが実行され、 `viewModel.state` に対する検証が行われます
 - `⌘ + U` でテストが通ることを確認しましょう
-- 以上がViewModelのテストの書き方です
 
 ### チャレンジ
 - 異常系のテストを書いてみましょう
@@ -136,11 +149,6 @@ struct MockRepoRepository: RepoRepository {
     let repos: [Repo]
     let error: Error?
 
-    init(repos: [Repo], error: Error? = nil) {
-        self.repos = repos
-        self.error = error
-    }
-
     func fetchRepos() async throws -> [Repo] {
         if let error = error {
             throw error
@@ -156,7 +164,7 @@ struct MockRepoRepository: RepoRepository {
 ```swift
 func test_onAppear_異常系() async {
     let viewModel = RepoListViewModel(
-        repoRepository: MockRepoRepository(
+        repoAPIClient: MockRepoAPIClient(
             repos: [],
             error: DummyError()
         )
@@ -174,6 +182,7 @@ func test_onAppear_異常系() async {
 ```
 
 テストが通ることが確認できれば完了です
+
 </details>
 
 ### 前セッションとのDiff
