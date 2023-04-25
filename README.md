@@ -29,7 +29,7 @@ print("user: \(user)")
 - JSONのフィールドとDecodableのproperty名は同じにする必要があります、もし異なる命名をしたければ [CodingKey](https://developer.apple.com/documentation/swift/codingkey) を使用します
 - 例えば、以下のような使い方になります
     
-```
+```ruby
 {
     user: {
         "name": "octocat",
@@ -50,18 +50,32 @@ struct User: Decodable {
 }
 ```
 
+- では、`ReposStore.loadRepos` メソッドに手を加えて [MIXI GROUPのOrganization](https://github.com/mixigroup) にあるpublicなリポジトリを取得して一覧表示できるようにしてみましょう
+- [特定のOrganizationのリポジトリを取得するGitHubのAPIの仕様](https://docs.github.com/en/rest/reference/repos#list-organization-repositories)を参考にリクエスト処理を実装すると次のようになります
+
+```swift
+let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
+
+var urlRequest = URLRequest(url: url)
+urlRequest.httpMethod = "GET"
+urlRequest.allHTTPHeaderFields = [
+    "Accept": "application/vnd.github+json"
+]
+// GitHub API のリクエスト数制限(60回/h)回避のためのキャッシュ設定 ※研修内容とは直接関係ありません
+urlRequest.cachePolicy = .returnCacheDataElseLoad
+
+let (data, _) = try! await URLSession.shared.data(for: urlRequest)
+// デコード処理
+```
+
 ### チャレンジ
-- `ReposStore.loadRepos` メソッドに手を加えて [mixi GROUPのOrganization](https://github.com/mixigroup) にあるpublicなリポジトリを取得して一覧表示できるようにしてください
-- 特定のOrganizationのリポジトリを取得するGitHubのREST APIの仕様はこちらです: https://docs.github.com/en/rest/reference/repos#list-organization-repositories
+- 続きのデコード処理を実装し、APIレスポンスの結果をリストに表示できるようにしてください
 
 #### ヒント
-- APIドキュメントを読む限り
-  - 対象となるURLは `https://api.github.com/orgs/mixigroup/repos` になりそうです
-  - URLRequestを作って、http methodには `GET` を、http headerには `"Accept": "application/vnd.github.v3+json"` を設定する必要がありそうです
-  - Repo, Userそれぞれに対応するJSONは以下のようなフォーマットになっていそうなので、CodingKeyを使用して命名の異なるpropertyを揃える必要がありそうです
-  - `JSONDecoder.keyDecodingStrategy` を使うことでRepoはCodingKeyを使用せずともmappingできるかもしれません
 
-  ```
+- APIドキュメントのレスポンスの仕様から、本アプリで利用するフィールドを抽出すると下記になります
+
+ ```ruby
   [
     {
       id: Int,
@@ -72,9 +86,17 @@ struct User: Decodable {
         login: String // ユーザー名を表す
       }
     },
+    {
+      id: Int,
+      ...
+    },
     ...
   ]
-  ```
+```
+
+- レスポンスはスネークケースで返ってくるようです
+- スネークケースをキャメルケースに変換するだけであれば、CodingKeyを実装せずとも、[JSONDecoder.keyDecodingStrategy](https://developer.apple.com/documentation/foundation/jsondecoder/2949119-keydecodingstrategy)を使えそうです
+- Userの `login` → `name` の変換はCodingKeyを使用して命名の異なるpropertyをmappingする必要がありそうです
 
 <details>
     <summary>解説</summary>
@@ -99,35 +121,19 @@ struct User: Decodable {
 }
 ```
     
-descriptionをOptionalに変更したため、RepoDetailViewも少し手を加える必要があるので注意してください ( <code>if let description = repo.description</code> でOptional Bindingをしてから説明文を表示するようにしてみてください)<br>
-RepoにはCodingKeysを定義していません、Repo の場合 `stargazers_count` → `stargazersCount` の変換は命名を変えているわけではなく、スネークケースをキャメルケースに変えているだけなので、デコーダー側の設定で `JSONDecoder.keyDecodingStrategy` に `.convertFromSnakeCase` を指定することができます
-    
-次に、URLRequest を初期化し、http method, http headerを設定します
-そして、用意したURLRequestを引数にURLSession.shared.dataを呼び出してレスポンスを取得します
-
-```swift
-let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
-
-var urlRequest = URLRequest(url: url)
-urlRequest.httpMethod = "GET"
-urlRequest.allHTTPHeaderFields = [
-    "Accept": "application/vnd.github.v3+json"
-]
-
-let (data, _) = try! await URLSession.shared.data(for: urlRequest)    
-```
-
-次に、デコードです。前述の通りデコーダーの `keyDecodingStrategy` に `.convertFromSnakeCase` を指定します<br>
+RepoにはCodingKeysを定義していません、Repo の場合 `stargazers_count` → `stargazersCount` の変換は命名を変えているわけではなく、スネークケースをキャメルケースに変えているだけなので、デコーダー側の設定で `JSONDecoder.keyDecodingStrategy` に `.convertFromSnakeCase` を指定することができます<br>
 decodeの引数typeには、受け取るJSONに対応するDecodableの型情報 <code>[Repo].self</code> を渡してあげます 
 
 ```swift
+...
+let (data, _) = try! await URLSession.shared.data(for: urlRequest)
+
 let decoder = JSONDecoder()
 decoder.keyDecodingStrategy = .convertFromSnakeCase
-let value = try! decoder.decode([Repo].self, from: data)
-repos = value
+repos = try! decoder.decode([Repo].self, from: data)
 ```
 
-さて、これでXcode PreviewsをLive Previewで実行してみて、ちゃんとAPIからデータを取得して表示できているかを確認してみましょう
+さて、これでLive PreviewでAPIからデータを取得して表示できているかを確認してみましょう
 </details>
 
 ### 前セッションとのDiff
