@@ -14,9 +14,9 @@ List(0 ..< 5) { item in
     }
 }
 ```
-- いい感じにリスト表示されていることがわかります
+- いい感じにリスト表示されていそうです
 
-<img width="304" alt="スクリーンショット 2022-04-26 21 03 23" src="https://user-images.githubusercontent.com/17004375/165295890-5e1294fc-7c23-4886-999a-7cb60cc1f3dc.png">
+![スクリーンショット 2023-04-25 13 37 59](https://user-images.githubusercontent.com/17004375/234175630-d01e9cce-fe8f-4381-8569-813a79085132.png)
 
 - ではこのリストで動的なデータを表示してみましょう
 - まずはリポジトリ名やユーザー名を格納するデータモデルを作成しましょう
@@ -78,35 +78,34 @@ struct Repo: Identifiable {
 
 ```swift
 private let mockRepos = [
-        Repo(
-            id: 1,
-            name: "Test Repo1",
-            owner: User(name: "Test User1")
-        ),
-        Repo(
-            id: 2,
-            name: "Test Repo2",
-            owner: User(name: "Test User2")
-        ),
-        Repo(
-            id: 3,
-            name: "Test Repo3",
-            owner: User(name: "Test User3")
-        ),
-        Repo(
-            id: 4,
-            name: "Test Repo4",
-            owner: User(name: "Test User4")
-        ),
-        Repo(
-            id: 5,
-            name: "Test Repo5",
-            owner: User(name: "Test User5")
-        )
+    Repo(
+        id: 1,
+        name: "Test Repo1",
+        owner: User(name: "Test User1")
+    ),
+    Repo(
+        id: 2,
+        name: "Test Repo2",
+        owner: User(name: "Test User2")
+    ),
+    Repo(
+        id: 3,
+        name: "Test Repo3",
+        owner: User(name: "Test User3")
+    ),
+    Repo(
+        id: 4,
+        name: "Test Repo4",
+        owner: User(name: "Test User4")
+    ),
+    Repo(
+        id: 5,
+        name: "Test Repo5",
+        owner: User(name: "Test User5")
+    )
 ]
 ```
 
-- Previewの `Try Again` ボタンを押すとビルドが通ることを確認できます
 - あとはリストで表示する各行の内容をモックデータのものにしてあげます
 - Listでは与えたデータモデルの配列の各要素が順番に取り出されてcontentに渡されています、以下のようにリポジトリ名とユーザー名を動的にしてみましょう
 
@@ -128,31 +127,34 @@ List(mockRepos) { repo in
 }
 ```
 
-<img width="267" alt="スクリーンショット 2022-04-26 21 32 06" src="https://user-images.githubusercontent.com/17004375/165300552-4db1f576-8f29-4804-b43d-c9b9d2dffad4.png">
+
+![スクリーンショット 2023-04-25 13 42 22](https://user-images.githubusercontent.com/17004375/234176258-c35db5e5-39c7-4060-8f76-aa5635ec56bd.png)
 
 
 ### チャレンジ
-- List内で表示されるViewを `RepoRow` という名前で別なファイルに切り出してみましょう
-- ちなみに他のViewにSubviewを切り出す場合は `⌘ + Click` で `Extract Subview` を選択すると便利です
+- List内で表示されるViewを `RepoRow.swift` という別ファイルに切り出してみましょう
+- Subviewを他のViewに切り出す場合は `⌘ + Click` で `Extract Subview` を選択すると便利です
 
 <img src="https://user-images.githubusercontent.com/8536870/115514113-c060fe00-a2be-11eb-9206-58772b5105a8.png" width=50%>
 
 <details>
     <summary>解説</summary>
-まずはListの中身であるImageとVStackをHStackで囲み、それに対して <code>⌘ + Click</code> で<code>Extract Subview</code> を選択して <code>RepoRow</code> という名前の新しいViewに切り出してみましょう <br>
 
-<img src="https://user-images.githubusercontent.com/8536870/116015634-f1518200-a674-11eb-8fb5-bd1e3252ffcb.png">
-
-
-すると、以下のようなエラーが出るはずです
+`Extract Subview`、以下のようなエラーが出るはずです
 > Cannot find 'repo' in scope
 
-Listから配られるRepoを受け取ってくる必要がありそうですね
+Listから配られるrepoを受け取ってくる必要がありそうですね
 
 切り出した <code>RepoRow</code> がイニシャライザ引数で <code>Repo</code> を受け取れるように、propertyを追加します
 
 
 ```diff
+struct RepoRow: View {
++   let repo: Repo
+
+    var body: some View {...}
+}
+
 struct ContentView: View {
     ...
     var body: some View {
@@ -161,12 +163,6 @@ struct ContentView: View {
 +           RepoRow(repo: repo)
         }
     }
-}
-
-struct RepoRow: View {
-+   let repo: Repo
-
-    var body: some View {...}
 }
 ```
 
