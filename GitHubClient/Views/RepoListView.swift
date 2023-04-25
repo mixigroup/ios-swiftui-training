@@ -10,8 +10,10 @@ class ReposStore: ObservableObject {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         urlRequest.allHTTPHeaderFields = [
-            "Accept": "application/vnd.github.v3+json"
+            "Accept": "application/vnd.github+json"
         ]
+        // GitHub API のリクエスト数制限(60回/h)回避のためのキャッシュ設定
+        urlRequest.cachePolicy = .returnCacheDataElseLoad
 
         state = .loading
 
