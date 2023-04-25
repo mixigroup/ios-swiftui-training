@@ -2,25 +2,32 @@
 - Assetsを追加して画像を表示してみましょう
 - https://github.com/logos からGitHub markをダウンロードしてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510465-bd640e80-a2ba-11eb-8490-bacf4df5c012.png">
+<img width="964" alt="GitHub_Logos_and_Usage" src="https://user-images.githubusercontent.com/17004375/234170917-342ee0fb-bfe6-48ab-bc26-90432dea3dab.png">
 
-- `GitHub-Mark-120px-plus.png` を `Assets` に向けてdrag&dropしてください
+- `github-mark.svg` を `Assets` に向けてdrag&dropしてください
 
-<img width="826" alt="スクリーンショット_2022-04-26_20_36_44" src="https://user-images.githubusercontent.com/17004375/165291796-dfa1ef71-3d68-4dc2-834a-c559e1f40293.png">
+![github-mark_と_GitHubClient_—_Assets_xcassets](https://user-images.githubusercontent.com/17004375/234171283-26d86057-6caf-40b2-a4cc-b64e18e3d4aa.png)
 
 - 名前を `GitHubMark` に変更しつつ、下図のように `Single Scale` にしてください
+    - 今回はsvg形式の画像を追加しているので、3枚の画像サイズを用意する必要がないためです
 
-<img width="995" alt="スクリーンショット_2022-04-26_20_48_38" src="https://user-images.githubusercontent.com/17004375/165293603-abc9969b-3ab7-492f-a71f-a6404a527c75.png">
-
-- ⚠︎ 本来は `Individual Scales` で解像度ごとに3つのサイズの画像を用意することが望まれますが、今回は研修ということで `Single Scale` にしています
-    - さらに言うならば、ロゴのようなベクター形式で吐き出せる画像は `.svg` 形式(iOS13未満サポートの場合は `.pdf` 形式)で追加することで、3枚の画像サイズを用意する必要がなくなるため理想的です
+![スクリーンショット_2023-04-25_13_03_10](https://user-images.githubusercontent.com/17004375/234171708-1b7898b7-0b8b-4a90-9083-4dfb5218f0ce.png)
 
 - さて、画像の準備ができたので実際に表示してみましょう
-- `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) をVStackの先頭に追加してください
-- Imageへの引数には先ほど追加した `GitHubMark` を指定します
+- `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) に`GitHubMark`を指定し、modifierは一旦全て消します
 
-<img src="https://user-images.githubusercontent.com/8536870/115510706-061bc780-a2bb-11eb-82e6-00404eef74cf.png" width=50%>
+```swift
+...
+HStack {
+    Image("GitHubMark")
+    Text("Hello, world!")
+}
+...
+```
 
+![スクリーンショット 2023-04-25 13 14 42](https://user-images.githubusercontent.com/17004375/234172933-2bad056a-0b4c-45c7-8fe0-81b7d9ade1c2.png)
+
+- 画像が大きいので、サイズを指定しましょう
 - PreviewからImageを選択して右側のペインのFrameにてWidth, Heightをそれぞれ44に設定しましょう
 - 設定したのに画像のサイズが変わらないことに気づくでしょう
 - 画像がリサイズ可能になるように、 `.resizable` のmodifierをImageに追加しましょう
@@ -31,12 +38,14 @@ Image("GitHubMark")
     .frame(width: 44.0, height: 44.0)
 ```
 
-<img src="https://user-images.githubusercontent.com/8536870/115510756-16cc3d80-a2bb-11eb-9983-c212dc188003.png" width=50%>
+![スクリーンショット 2023-04-25 13 17 20](https://user-images.githubusercontent.com/17004375/234173284-f39e0018-2503-4651-9716-477dd0165c01.png)
+
+- 意図したサイズに調整できました👍
 
 ### チャレンジ
 - 下図のようなレイアウトになるように修正してみてください
 
-<img src="https://user-images.githubusercontent.com/8536870/115510855-319eb200-a2bb-11eb-806e-bb2cc45bd923.png" width=50%>
+![スクリーンショット 2023-04-25 13 23 25](https://user-images.githubusercontent.com/17004375/234174095-de50bdff-3157-4f3a-9f8a-b843a9118891.png)
 
 - Textのフォントとウエイトはそれぞれ以下のような設定にしています
   - Owner Name:
