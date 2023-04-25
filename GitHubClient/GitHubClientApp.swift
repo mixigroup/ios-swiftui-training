@@ -4,7 +4,7 @@ import SwiftUI
 struct GitHubClientApp: App {
     var body: some Scene {
         WindowGroup {
-            RepoListView(repoRepository: RepoDataRepository())
+            RepoListView(repoAPIClient: RepoAPIClient())
         }
     }
 }

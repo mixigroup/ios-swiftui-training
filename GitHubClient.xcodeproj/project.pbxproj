@@ -22,7 +22,6 @@
 		DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EEB262FF30F003642C7 /* RepoDetailView.swift */; };
 		DF938EF7262FF439003642C7 /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EF6262FF439003642C7 /* Stateful.swift */; };
 		DFDE10BA262FF55700E709EA /* RepoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDE10B9262FF55700E709EA /* RepoListViewModel.swift */; };
-		DFDE10BE262FF56400E709EA /* RepoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDE10BD262FF56400E709EA /* RepoRepository.swift */; };
 		DFDE10C2262FF56E00E709EA /* RepoAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDE10C1262FF56E00E709EA /* RepoAPIClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +55,6 @@
 		DF938EEB262FF30F003642C7 /* RepoDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoDetailView.swift; sourceTree = "<group>"; };
 		DF938EF6262FF439003642C7 /* Stateful.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
 		DFDE10B9262FF55700E709EA /* RepoListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoListViewModel.swift; sourceTree = "<group>"; };
-		DFDE10BD262FF56400E709EA /* RepoRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoRepository.swift; sourceTree = "<group>"; };
 		DFDE10C1262FF56E00E709EA /* RepoAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoAPIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,7 +103,6 @@
 				DF938EE8262FF30F003642C7 /* Views */,
 				DFDE10B8262FF55700E709EA /* ViewModels */,
 				DF938ED8262FF242003642C7 /* Models */,
-				DFDE10BC262FF56400E709EA /* Repositories */,
 				DFDE10C0262FF56E00E709EA /* APIClients */,
 				DF938EF5262FF439003642C7 /* Utilities */,
 				DF1AB529262F0FBF002A9028 /* Preview Content */,
@@ -175,14 +172,6 @@
 				DFDE10B9262FF55700E709EA /* RepoListViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		DFDE10BC262FF56400E709EA /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				DFDE10BD262FF56400E709EA /* RepoRepository.swift */,
-			);
-			path = Repositories;
 			sourceTree = "<group>";
 		};
 		DFDE10C0262FF56E00E709EA /* APIClients */ = {
@@ -298,7 +287,6 @@
 				DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */,
 				DF938EF7262FF439003642C7 /* Stateful.swift in Sources */,
 				DF228A45262FF76C00C69CDC /* MockRepoRepository.swift in Sources */,
-				DFDE10BE262FF56400E709EA /* RepoRepository.swift in Sources */,
 				DF938EE5262FF304003642C7 /* User+mock.swift in Sources */,
 				DF938EDC262FF242003642C7 /* Repo.swift in Sources */,
 				DF938EEC262FF30F003642C7 /* RepoRow.swift in Sources */,

@@ -6,8 +6,9 @@ import Combine
 class RepoListViewModelTests: XCTestCase {
     func test_onAppear_正常系() async {
         let viewModel = RepoListViewModel(
-            repoRepository: MockRepoRepository(
-                repos: [.mock1, .mock2]
+            repoAPIClient: MockRepoAPIClient(
+                repos: [.mock1, .mock2],
+                error: nil
             )
         )
 
@@ -23,7 +24,7 @@ class RepoListViewModelTests: XCTestCase {
 
     func test_onAppear_異常系() async {
         let viewModel = RepoListViewModel(
-            repoRepository: MockRepoRepository(
+            repoAPIClient: MockRepoAPIClient(
                 repos: [],
                 error: DummyError()
             )
