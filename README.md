@@ -14,36 +14,24 @@
 
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let value = try decoder.decode([Repo].self, from: data)
-
-            repos = value
+            repos = try decoder.decode([Repo].self, from: data)
         } catch {
             print("error: \(error)")
         }
 ```
+
 - 次に、`response.statusCode` が 200 以外だった場合を再現するために、必ず `URLError(.badServerResponse)` がthrowされるように変更してみます
+
 ```swift
 //            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 throw URLError(.badServerResponse)
 //            }
 ```
+
 - この状態でLive Previewで確認してみてください
-- ずっとloadingのままであることがわかります、これだとユーザーは何が起きたか理解できないどころか、エラーから復帰することもできません
-
-### チャレンジ
-- エラーをキャッチした際には以下のようなエラー画面を表示しましょう
-<img src="https://user-images.githubusercontent.com/8536870/115537014-5869e200-a2d5-11eb-976b-ca4612adfba7.png" width=50%>
-
-- リトライボタンの表示には [Button](https://developer.apple.com/documentation/swiftui/button) を使用してください
-- リトライボタンを押すと再びリポジトリ一覧を取得しつつ、その最中はloadingを表示させてください
-- もし取得したリポジトリが空の場合には以下のように空であることを示してください
-
-<img src="https://user-images.githubusercontent.com/8536870/115537090-6e77a280-a2d5-11eb-801a-03e8b99fc87d.png" width=50%>
-
-<details>
-    <summary>解説</summary>
-
-まずはキャッチしたエラーをViewに反映させるために、@Publishedでエラーを監視できるようにしましょう
+- ずっとloadingのままであることがわかります
+- これだとユーザーは何が起きたか理解できないので、エラーをユーザーに表示できるようにましょう
+- まずはキャッチしたエラーをViewに反映させるために、@Publishedでエラーを監視できるようにします
 
 ```swift
 @MainActor   
@@ -62,7 +50,7 @@ class ReposStore: ObservableObject {
 }            
 ```
 
-次に、この公開されたエラーをList側で監視します
+- 次に、公開された`error`をList側で監視し、[Button](https://developer.apple.com/documentation/swiftui/button)を使ってリトライ可能なUIを表示します
 
 ```swift
 struct RepoListView: View {
@@ -71,33 +59,27 @@ struct RepoListView: View {
         NavigationView {
             if reposStore.error != nil {
                 VStack {
-                    Group {
-                        Image("GitHubMark")
-                        Text("Failed to load repositories")
-                            .padding(.top, 4)
-                    }
-                    .foregroundColor(.black)
-                    .opacity(0.4)
+                    Text("Failed to load repositories")
                     Button(
                         action: {
                             Task {
-                                await reposStore.loadRepos() // リトライボタンをタップしたときに再度リクエストを投げる
+                            　　　　　　　　// リトライボタンをタップしたときに再度リクエストを投げる
+                                await reposStore.loadRepos()
                             }
                         },
                         label: {
                             Text("Retry")
-                                .fontWeight(.bold)
                         }
                     )
-                    .padding(.top, 8)
+                    .padding()
                 }
             } else {
                 if reposStore.repos.isEmpty {
                     ...
 ```
 
-次に、読み込み中を表現できるようにします <br>
-現状はreposが空の場合を読み込み中と判定してしまっているので、別途@Publishedで読み込み中を監視できるようにしてあげる必要があります
+- 次に、読み込み中をより正しく表現できるようにします
+- 現状はreposが空の場合を読み込み中と判定してしまっているので、別途@Publishedで読み込み中を監視できるようにします
 
 ```swift
 @MainActor   
@@ -107,9 +89,9 @@ class ReposStore: ObservableObject {
     @Published private(set) var isLoading: Bool = false
 
     func loadRepos() {
-        ...
         isLoading = true
-            
+        ...
+ 
         do {
             ...
             repos = value
@@ -122,7 +104,7 @@ class ReposStore: ObservableObject {
 }            
 ```
 
-あとはこれをList側で監視してあげます
+- そしてこれもList側で監視します
 
 ```swift
 struct RepoListView: View {
@@ -137,23 +119,22 @@ struct RepoListView: View {
                 } else {
                     if reposStore.repos.isEmpty {
                         Text("No repositories")
-                            .fontWeight(.bold)
                     } else {
                         List(reposStore.repos) {...}
-                        .navigationTitle("Repositories")
+                        　　　　.navigationTitle("Repositories")
                     }
                 }
             }
         }
     }
 ```
+- 一度Live Previewで表示確認してみましょう
 
-(reposに空配列(<code>[]</code>)を代入して一度Live Previewで表示確認してみましょう)
+![スクリーンショット 2023-04-26 6 06 06](https://user-images.githubusercontent.com/17004375/234403886-3bf65068-a03f-4c3c-a3a7-16e36ceaf904.png)
 
-現状だと、エラー画面や空画面でナビゲーションが表示されていません <br>
-これを解消するためにはそれぞれの画面に対応するViewに対して <code>.navigationTitle("Repositories")</code> を呼び出してあげると良さそうですが、同じ記述を3箇所書くのはなかなか悪いコードのにおいがします
-
-そんな時は [Group](https://developer.apple.com/documentation/swiftui/group) を使って複数のViewを一つにまとめて一括でmodifierを付与してあげましょう
+- 現状だと、エラーや読み込みの画面でナビゲーションタイトルが表示されていません
+- これを解消するためにはそれぞれの画面に対応するViewに対して <code>.navigationTitle("Repositories")</code> を呼び出してあげると良さそうですが、同じ記述を3箇所書くのはなかなか悪いコードのにおいがします
+- このような場合は [Group](https://developer.apple.com/documentation/swiftui/group) を使って複数のViewを一つにまとめて一括でmodifierを付与してあげましょう
 
 ```swift
     var body: some View {
@@ -177,31 +158,41 @@ struct RepoListView: View {
         }
 ```
 
-さて、振り返ってみてみると、Repoの配列を読み込むという状態を表現するためだけに@Publishedなpropertyが3つも定義されてしまいました
+- ナビゲーションタイトルが表示されるようになりました
 
-これを1つのpropertyのみで表現できるように改善してみます
+![スクリーンショット 2023-04-26 6 04 44](https://user-images.githubusercontent.com/17004375/234403615-297b6a01-0b48-48bf-ab44-138dc6c999d2.png)
 
-そのためには、読み込み中の状態を表現できる型として <code>Stateful</code> というものを定義します
+### チャレンジ
+
+- Repoの配列を読み込むという状態を表現するためだけに@Publishedなpropertyが3つも定義されてしまいました
+- これでもでも問題なく動作していますが、コードが複雑になり可読性が下がっている気がします
+- これを1つのpropertyのみで表現できるようにリファクタリングしてみましょう
+
+#### ヒント
+
+- 状態を表現できる型として <code>Stateful</code> という enum を定義し、これを使うようにしてみましょう
 
 ```swift
 enum Stateful<Value> {
-    case idle // まだデータを取得しにいっていない
     case loading // 読み込み中
     case failed(Error) // 読み込み失敗、遭遇したエラーを保持
-    case loaded(Value) // 読み込み完了、読み込まれたデータを保持
+    case loaded(Value) // 読み込み完了、読み込まれた値を保持
 }
 ```
 
-このStatefulを駆使して3つあった@Publishedを1つにしていきます
+<details>
+    <summary>解説</summary>
+
+Statefulを駆使して3つあった@Publishedを1つにしていきます
 
 ```swift
 @MainActor
 class ReposStore: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .loading
 
     func loadRepos() {
-        ...
         state = .loading
+        ...
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
@@ -227,12 +218,11 @@ struct RepoListView: View {
         NavigationView {
             Group {
                 switch reposStore.state {
-                case .idle, .loading:
+                case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
                     if repos.isEmpty {
                         Text("No repositories")
-                        ...  
                     } else {
                         List(repos) { repo in
                             ...
@@ -248,53 +238,11 @@ struct RepoListView: View {
     }
 }
 ```
-このままでも良さそうですが、さらに `repos` が空の場合と空でない場合を別の状態として扱うようにしてみます。以下のように switch の機能を活用します。
-  
-```swift
-struct RepoListView: View {
-    ...
-    var body: some View {
-        NavigationView {
-            Group {
-                switch reposStore.state {
-                case .idle, .loading:
-                    ProgressView("loading...")
-                case .loaded([]):
-                    Text("No repositories")
-                    ...  
-                case let .loaded(repos):
-                    List(repos) { repo in
-                        ...
-                    }
-                case .failed:
-                    ...
-                }
-            }
-            .navigationTitle("Repositories")
-        }
-        ...
-    }
-}
-```
         
-ネストが減り、より直感的に読みやすいコードになったと思います。しかし、このままでは以下のようなエラーが出てしまいます。
+ネストが減り、より直感的に読みやすいコードになったと思います<br>
         
-> Operator function '~=' requires that 'Repo' conform to 'Equatable'
-        
-switch 内部で `repos: [Repo]` の等価性を比較するため、`Repo` を `Equatable` に準拠させる必要があります。
-        
-```swift      
-struct Repo: Identifiable, Decodable, Equatable {        
-...   
-```
-```swift
-struct User: Decodable, Equatable {
-...        
-```
-        
-
-このように、型を工夫して必要なpropertyを最小限にすることができると、コードの可読性および保守性を大幅に上げることができます <br>
-最初から一発で理想のコードを書くことは難しいので、一度動くコードを一通りかけたら見直して改善できる余地がないかを検討する癖をつけておきましょう
+このように、型を工夫して必要なpropertyを最小限にすることで、コードの可読性および保守性を大幅に上げることができます <br>
+最初から理想のコードを書くことは難しいので、一度動くコードを一通りかけたら見直して改善できる余地がないかを検討する癖をつけておきましょう
 
 </details>
 
