@@ -29,9 +29,7 @@
 
 ### チャレンジ
 
-- 以下のような構成になるように、MVVMの設計を適用してみましょう
-
-<img src="https://user-images.githubusercontent.com/8536870/115538875-4ab55c00-a2d7-11eb-8904-b240f36ce06b.png">
+- 以下のような責務になるように、MVVMの設計を適用してみましょう
 
 - RepoListView
     - RepoListViewModelのStateをバインドしてリポジトリ一覧を表示
