@@ -28,7 +28,7 @@ let photo = await downloadPhoto(named: name)
 show(photo)
 ```
 - 同じ内容の処理でもSwift Concurrencyを使った実装ではネストがなくなり、直感的に理解しやすくなっていると思います
-- 本セクションでポイントとなるSwift Concurrencyの3つの要素を簡単に紹介します
+- 本セッションでポイントとなるSwift Concurrencyの3つの要素を簡単に紹介します
 - async/await
    - 関数に `async` キーワードを付けることで、その関数内が「非同期なコンテキスト」になる
    - 「非同期なコンテキスト」では、他の `async` な関数を呼び出すことができる
