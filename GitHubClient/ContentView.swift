@@ -3,16 +3,14 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Hello, world!")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(Color.gray)
-                .padding()
+            HStack {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                Text("Hello, world!")
+            }
+
             Text("Good evening, world!")
-                .font(.body)
-                .fontWeight(.semibold)
-                .foregroundColor(Color.black)
-                .padding()
         }
     }
 }
