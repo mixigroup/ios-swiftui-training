@@ -9,9 +9,6 @@ struct RepoListView: View {
                 switch viewModel.state {
                 case .loading:
                     ProgressView("loading...")
-                case .loaded([]):
-                    Text("No repositories")
-                        .fontWeight(.bold)
                 case let .loaded(repos):
                     List(repos) { repo in
                         NavigationLink(destination: RepoDetailView(repo: repo)) {
