@@ -69,7 +69,8 @@ var body: some View {
 ### チャレンジ
 - `mockRepos` を読み込み中(== 空のとき)には以下のように [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) が表示されるようにしてみましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115532071-6832f780-a2d0-11eb-93d6-5e3fa44200d2.png" width=50%>
+![スクリーンショット 2023-04-25 16 35 09](https://user-images.githubusercontent.com/17004375/234207047-7a37d068-eeda-4970-8af6-0e5c33bc3eb5.png)
+
 
 <details>
     <summary>解説</summary>
