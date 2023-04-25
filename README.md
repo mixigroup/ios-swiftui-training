@@ -24,12 +24,8 @@
     - Stateを加工してViewへOutput
 
 - これだとModel部分の実装方針がやや抽象的ですね
-- MVVMはAndroidアプリを開発する上でも推奨されているアーキテクチャであるため、そちらで説明する際に用いられている図も引用します (https://developer.android.com/jetpack/guide#recommended-app-arch より)
-
-<img src="https://user-images.githubusercontent.com/8536870/115537744-18572f00-a2d6-11eb-8d24-1e4f22d2701b.png">
-
-- Repositoryは、Webやlocal DBで処理した結果をViewModelへ返す役割をしています
-- これにより、ViewModelは与えられたデータがWeb or DBからの値かを意識せずに、Viewの状態管理に専念できます
+- 実務では、Model部分をデータソースを抽象化する`Repository`やアプリケーションロジックを持つ`UseCase`など具体的にレイヤー化されているケースが多いと思います
+- 本アプリにおいては、API通信周りの処理がModelに当たります
 
 ### チャレンジ
 
@@ -40,10 +36,8 @@
 - RepoListView
     - RepoListViewModelのStateをバインドしてリポジトリ一覧を表示
 - RepoListViewModel
-    - RepoListViewからonAppearのイベントを受け取って、RepoRepositoryにリポジトリ一覧を取得させる
+    - RepoListViewからonAppearのイベントを受け取って、RepoAPIClientでリポジトリ一覧を取得する
     - 取得したリポジトリ一覧を@PublishedでViewに公開
-- RepoRepository
-    - RepoAPIClientを呼び出して、リポジトリ一覧を取得する
 - RepoAPIClient
     - GitHub APIを叩いてmixi GroupのOrganizationにあるpublicなリポジトリ一覧を取得する
 
@@ -54,10 +48,6 @@
 class RepoListViewModel: ObservableObject {
     func onAppear()
     func onRetryButtonTapped()
-}
-    
-struct RepoRepository {
-    func fetchRepos() async throws -> [Repo]
 }
 
 struct RepoAPIClient {
