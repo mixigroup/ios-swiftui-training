@@ -2,9 +2,11 @@ import SwiftUI
 
 @MainActor
 class ReposStore: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .loading
 
     func loadRepos() async {
+        state = .loading
+
         let url = URL(string: "https://api.github.com/orgs/mixigroup/repos")!
 
         var urlRequest = URLRequest(url: url)
@@ -14,8 +16,6 @@ class ReposStore: ObservableObject {
         ]
         // GitHub API のリクエスト数制限(60回/h)回避のためのキャッシュ設定
         urlRequest.cachePolicy = .returnCacheDataElseLoad
-
-        state = .loading
 
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
@@ -42,7 +42,7 @@ struct RepoListView: View {
         NavigationView {
             Group {
                 switch reposStore.state {
-                case .idle, .loading:
+                case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
                     List(repos) { repo in
