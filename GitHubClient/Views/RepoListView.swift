@@ -12,11 +12,7 @@ class ReposStore: ObservableObject {
 }
 
 struct RepoListView: View {
-    @StateObject private var reposStore: ReposStore
-
-    init() {
-        _reposStore = StateObject(wrappedValue: ReposStore())
-    }
+    @StateObject private var reposStore = ReposStore()
 
     var body: some View {
         NavigationView {
