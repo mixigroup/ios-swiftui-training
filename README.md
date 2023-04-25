@@ -32,7 +32,6 @@ struct Repo: Identifiable {
 }
 ```
 
-- モックデータの初期化時にも `description` と `stargazersCount` を追加しましょう
 - 詳細画面で表示する `Repo` を初期化時に受け取れるようにします
 
 ```swift
