@@ -7,8 +7,10 @@ struct RepoAPIClient {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         urlRequest.allHTTPHeaderFields = [
-            "Accept": "application/vnd.github.v3+json"
+            "Accept": "application/vnd.github+json"
         ]
+        // GitHub API のリクエスト数制限(60回/h)回避のためのキャッシュ設定 ※研修内容とは直接関係ありません
+        urlRequest.cachePolicy = .returnCacheDataElseLoad
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 

@@ -11,7 +11,7 @@ struct RepoListView: View {
         NavigationView {
             Group {
                 switch viewModel.state {
-                case .idle, .loading:
+                case .loading:
                     ProgressView("loading...")
                 case .loaded([]):
                     Text("No repositories")
@@ -24,13 +24,7 @@ struct RepoListView: View {
                     }
                 case .failed:
                     VStack {
-                        Group {
-                            Image("GitHubMark")
-                            Text("Failed to load repositories")
-                                .padding(.top, 4)
-                        }
-                        .foregroundColor(.black)
-                        .opacity(0.4)
+                        Text("Failed to load repositories")
                         Button(
                             action: {
                                 Task {
@@ -39,10 +33,9 @@ struct RepoListView: View {
                             },
                             label: {
                                 Text("Retry")
-                                    .fontWeight(.bold)
                             }
                         )
-                        .padding(.top, 8)
+                        .padding()
                     }
                 }
             }
