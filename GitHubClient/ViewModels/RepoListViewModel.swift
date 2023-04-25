@@ -6,9 +6,9 @@ class RepoListViewModel: ObservableObject {
 
     private let repoAPIClient: RepoAPIClientProtocol
 
-     init(repoAPIClient: RepoAPIClientProtocol) {
-         self.repoAPIClient = repoAPIClient
-     }
+    init(repoAPIClient: RepoAPIClientProtocol) {
+        self.repoAPIClient = repoAPIClient
+    }
 
     func onAppear() async {
         await loadRepos()
