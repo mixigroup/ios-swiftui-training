@@ -45,7 +45,7 @@ struct RepoDataRepository: RepoRepository {
 ```swift
 @MainActor
 class RepoListViewModel: ObservableObject {
-    @Published private(set) var repos: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .idle
 
     private let repoRepository: RepoRepository
 
@@ -154,7 +154,7 @@ struct MockRepoRepository: RepoRepository {
 あとは正常系のテストと同じ要領でテストを書いていきます
 
 ```swift
-func test_onAppear_異常系() {
+func test_onAppear_異常系() async {
     let viewModel = RepoListViewModel(
         repoRepository: MockRepoRepository(
             repos: [],
