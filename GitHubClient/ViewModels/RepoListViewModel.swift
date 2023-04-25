@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 class RepoListViewModel: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .idle
+    @Published private(set) var state: Stateful<[Repo]> = .loading
 
     func onAppear() async {
         await loadRepos()
