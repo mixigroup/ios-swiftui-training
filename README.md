@@ -140,7 +140,7 @@ List(mockRepos) { repo in
 <details>
     <summary>解説</summary>
 
-`Extract Subview`、以下のようなエラーが出るはずです
+`Extract Subview`　を実行すると以下のようなエラーが出るはずです
 > Cannot find 'repo' in scope
 
 Listから配られるrepoを受け取ってくる必要がありそうですね
