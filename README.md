@@ -94,6 +94,8 @@ if mockRepos.isEmpty {
     List(mockRepos) {...}
 }
 ```
+このように、状態に応じてどのようなUIが表示されるか直感的にわかりやすく実装できる点がSwiftUI(宣言的UI)の魅力のひとつです
+
 </details>
 
 ### 前セッションとのDiff
