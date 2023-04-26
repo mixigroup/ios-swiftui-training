@@ -221,12 +221,8 @@ struct RepoListView: View {
                 case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
-                    if repos.isEmpty {
-                        Text("No repositories")
-                    } else {
-                        List(repos) { repo in
-                            ...
-                        }
+                    List(repos) { repo in
+                        ...
                     }
                 case .failed:
                     ...
