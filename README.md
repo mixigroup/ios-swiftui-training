@@ -27,11 +27,11 @@ struct Repo: Identifiable {
     var id: Int
     var name: String
     var owner: User
-+   var description: String
++   var description: String?
 +   var stargazersCount: Int
 }
 ```
-
+- `description`がオプショナルな理由は、GitHubAPIのレスポンスの仕様合わせているためです
 - 詳細画面で表示する `Repo` を初期化時に受け取れるようにします
 
 ```swift
