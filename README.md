@@ -57,6 +57,13 @@ if let value = optionalValue {
 } else {
     print("Couldn't bind an optional value")
 }
+
+// 変数名を変えない場合、このように書くこともできます
+if let optionalValue {
+    print("Value: '\(optionalValue)'")
+} else {
+    print("Couldn't bind an optional value")
+}
 ```
 
 - 「わざわざ値をOptionalから取り出さずに値を参照したい...」という機会も多いでしょう、その場合は `Optional Chaining` を使います
