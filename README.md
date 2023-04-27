@@ -94,7 +94,7 @@ class ReposStore: ObservableObject {
  
         do {
             ...
-            repos = value
+            repos = ...
             isLoading = false
         } catch {
             self.error = error
@@ -117,12 +117,8 @@ struct RepoListView: View {
                 if reposStore.isLoading {
                     ProgressView("loading...")
                 } else {
-                    if reposStore.repos.isEmpty {
-                        Text("No repositories")
-                    } else {
-                        List(reposStore.repos) {...}
-                        　　　　.navigationTitle("Repositories")
-                    }
+                    List(reposStore.repos) {...}
+                     　　　.navigationTitle("Repositories")
                 }
             }
         }
