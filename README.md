@@ -34,7 +34,7 @@
 - RepoListView
     - RepoListViewModelのStateをバインドしてリポジトリ一覧を表示
 - RepoListViewModel
-    - RepoListViewからonAppearのイベントを受け取って、RepoAPIClientでリポジトリ一覧を取得する
+    - RepoListViewからonAppearのイベントを受け取り、RepoAPIClientを使ってリポジトリ一覧を取得する
     - 取得したリポジトリ一覧を@PublishedでViewに公開
 - RepoAPIClient
     - GitHub APIを叩いてmixi GroupのOrganizationにあるpublicなリポジトリ一覧を取得する
@@ -44,8 +44,8 @@
 
 ```swift
 class RepoListViewModel: ObservableObject {
-    func onAppear()
-    func onRetryButtonTapped()
+    func onAppear() async
+    func onRetryButtonTapped() async
 }
 
 struct RepoAPIClient {
