@@ -70,7 +70,7 @@ class RepoListViewModel: ObservableObject {
 class RepoListViewModelTests: XCTestCase {
     ...
     
-    struct MockRepoRepository: RepoRepository {
+    struct MockRepoAPIClient: RepoAPIClientProtocol {
         let repos: [Repo]
 
         func getRepos() async throws -> [Repo] {
@@ -93,8 +93,7 @@ class RepoListViewModelTests: XCTestCase {
     func test_onAppear_正常系() async {
         let viewModel = RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [.mock1, .mock2],
-                error: nil
+                repos: [.mock1, .mock2]
             )
         )
 
@@ -139,17 +138,17 @@ let dummyError = DummyError()
 <details>
     <summary>解説</summary>
 
-異常系のテストを書けるようにするために、まずはモックでエラーを表現できるようにMockRepositoryを修正します <br>
+異常系のテストを書けるようにするために、まずはモックでエラーを表現できるようにMockRepoAPIClientを修正します <br>
 イニシャライザ引数でErrorをOptionalで受け取れるようにしておき、もしnilでなければそのErrorをthrowします
 
 ```swift
 struct DummyError: Error {}
 
-struct MockRepoRepository: RepoRepository {
+struct MockRepoAPIClient: RepoAPIClientProtocol {
     let repos: [Repo]
     let error: Error?
 
-    func fetchRepos() async throws -> [Repo] {
+    func getRepos() async throws -> [Repo] {
         if let error = error {
             throw error
         }
