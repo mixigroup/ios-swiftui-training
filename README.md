@@ -138,9 +138,11 @@ HStack {
             .font(.body)
             .fontWeight(.bold)
 
-        Text(repo.description)
-            .padding(.top, 4) // .top などの方向と余白の長さを指定することができます
-
+        if description = repo.description {
+            Text(repo.description)
+                .padding(.top, 4) // .top などの方向と余白の長さを指定することができます
+        }
+        
         HStack {
             Image(systemName: "star")
             Text("\(repo.stargazersCount) stars")
