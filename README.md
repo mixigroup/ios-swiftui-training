@@ -29,7 +29,7 @@ struct GitHubClientApp: App {
 ```
 
 - これでViewにRepoAPIClientを外部から渡せるようになりました
-- Previewにて初期化時にモックされたRepositoryを渡してあげましょう
+- Previewにて初期化時にモックされたAPIClientを渡してあげましょう
 
 ```swift
 static var previews: some View {
