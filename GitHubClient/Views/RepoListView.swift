@@ -46,24 +46,19 @@ struct RepoListView: View {
     }
 }
 
-struct RepoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListView(
-            repoAPIClient: MockRepoAPIClient(
-                repos: [
-                    .mock1, .mock2, .mock3, .mock4, .mock5
-                ],
-                error: nil
-            )
+#Preview("Default") {
+    RepoListView(
+        repoAPIClient: MockRepoAPIClient(
+            repos: .mock,
+            error: nil
         )
-        .previewDisplayName("Default")
-
-        RepoListView(
-            repoAPIClient: MockRepoAPIClient(
-                repos: [],
-                error: DummyError()
-            )
+    )
+}
+#Preview("Error") {
+    RepoListView(
+        repoAPIClient: MockRepoAPIClient(
+            repos: [],
+            error: DummyError()
         )
-        .previewDisplayName("Error")
-    }
+    )
 }
