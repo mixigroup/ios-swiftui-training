@@ -2,7 +2,7 @@
 
 ## 概要
 
-簡易的なGitHubクライアントアプリの開発を通して、SwiftUIを使ったiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。iOSアプリ開発未経験者でもSwift言語の基礎から学んでいけるように構成されています。各セッションはそれぞれブランチに分かれていて、セッションごとの差分を確認することができます。
+簡易的なGitHubクライアントアプリの開発を通して、SwiftUIを使ったiOSアプリ開発の基礎知識と実務スキルを身に付けるための研修です。iOSアプリ開発未経験者でもSwiftの基礎から学んでいけるように構成されています。各セッションはそれぞれブランチに分かれていて、セッションごとの差分を確認することができます。
 
 ## 環境
 
@@ -10,7 +10,7 @@
 - Swift 5.9.2
 
 ## セッション
-### [0. Swift言語の基本](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
+### [0. Swiftの基本](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
 
 ### 1. SwiftUIの基本
 #### [前準備](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
