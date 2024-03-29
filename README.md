@@ -1,5 +1,5 @@
-## 0. Swift言語の基本
-- このセッションでは以降のセッションを円滑に進められるように最低限必要なSwift言語周りの知識について説明します
+## 0. Swiftの基本
+- このセッションでは以降のセッションを円滑に進められるように最低限必要なSwift周りの知識について説明します
 - 時間のある方は [公式のガイド](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html) を一読することをお勧めします
 
 ### Playgroundの準備
@@ -8,8 +8,8 @@
     
 <img width="396" alt="Notification_Center" src="https://user-images.githubusercontent.com/17004375/234561635-6baafc83-ef12-4719-b4e5-555de545accd.png">
 
-- XcodeのPlaygroundでは、Swift言語を簡単に実行することが可能です
-- Swift言語を学ぶにあたって、まずはPlaygroundを作成しましょう
+- XcodeのPlaygroundでは、Swiftを簡単に実行することが可能です
+- Swiftを学ぶにあたって、まずはPlaygroundを作成しましょう
 - Xcodeを開いて `File > New > Playground` を選択します
 
 <img src="https://user-images.githubusercontent.com/8536870/115705723-d696b900-a3a7-11eb-950f-8ad5fb63a71c.png" width=50%>
@@ -18,7 +18,7 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115705834-f8903b80-a3a7-11eb-876e-2301dd05af52.png">
 
-- これで準備完了です、以降Swift言語を学ぶ上で試したいコードがあればPlaygroundを開いて実行してみましょう
+- これで準備完了です、以降Swiftを学ぶ上で試したいコードがあればPlaygroundを開いて実行してみましょう
 
 <img src="https://user-images.githubusercontent.com/8536870/115705899-0e9dfc00-a3a8-11eb-933c-319db443afbf.png">
 
