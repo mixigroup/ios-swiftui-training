@@ -1,6 +1,6 @@
 import Foundation
 
-struct User: Decodable, Equatable, Hashable {
+struct User: Decodable, Hashable {
     var name: String
 
     private enum CodingKeys: String, CodingKey {
