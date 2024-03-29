@@ -1,13 +1,7 @@
 import SwiftUI
 
 struct RepoListView: View {
-    @StateObject private var viewModel: RepoListViewModel
-
-    init(repoAPIClient: RepoAPIClientProtocol) {
-        _viewModel = StateObject(
-            wrappedValue: RepoListViewModel(repoAPIClient: repoAPIClient)
-        )
-    }
+    @State var viewModel: RepoListViewModel
 
     var body: some View {
         NavigationView {
@@ -48,17 +42,21 @@ struct RepoListView: View {
 
 #Preview("Default") {
     RepoListView(
-        repoAPIClient: MockRepoAPIClient(
-            repos: .mock,
-            error: nil
+        viewModel: RepoListViewModel(
+            repoAPIClient: MockRepoAPIClient(
+                repos: .mock,
+                error: nil
+            )
         )
     )
 }
 #Preview("Error") {
     RepoListView(
-        repoAPIClient: MockRepoAPIClient(
-            repos: [],
-            error: DummyError()
+        viewModel: RepoListViewModel(
+            repoAPIClient: MockRepoAPIClient(
+                repos: [],
+                error: DummyError()
+            )
         )
     )
 }
