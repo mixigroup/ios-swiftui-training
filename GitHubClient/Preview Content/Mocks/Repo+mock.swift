@@ -38,6 +38,6 @@ extension Repo {
     )
 }
 
-extension Array where Element == Repo {
+extension [Repo] {
     static let mock: Self = [.mock1, .mock2, .mock3, .mock4, .mock5]
 }
