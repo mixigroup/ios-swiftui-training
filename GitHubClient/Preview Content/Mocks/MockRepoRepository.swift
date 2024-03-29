@@ -1,14 +1,9 @@
 import Foundation
 
 struct MockRepoAPIClient: RepoAPIClientProtocol {
-    let repos: [Repo]
-    let error: Error?
+    var getRepos: () async throws -> [Repo]
 
     func getRepos() async throws -> [Repo] {
-        if let error = error {
-            throw error
-        }
-
-        return repos
+        try await getRepos()
     }
 }

@@ -47,8 +47,22 @@ struct RepoListView: View {
     RepoListView(
         viewModel: RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: .mock,
-                error: nil
+                getRepos: {
+                    .mock
+                }
+            )
+        )
+    )
+}
+#Preview("Loading") {
+    RepoListView(
+        viewModel: RepoListViewModel(
+            repoAPIClient: MockRepoAPIClient(
+                getRepos: {
+                    while true {
+                        try await Task.sleep(until: .now + .seconds(1))
+                    }
+                }
             )
         )
     )
@@ -57,8 +71,9 @@ struct RepoListView: View {
     RepoListView(
         viewModel: RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [],
-                error: DummyError()
+                getRepos: {
+                    throw DummyError()
+                }
             )
         )
     )
