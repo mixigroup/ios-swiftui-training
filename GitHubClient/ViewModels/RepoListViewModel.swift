@@ -2,7 +2,7 @@ import Observation
 
 @MainActor
 @Observable
-class RepoListViewModel {
+final class RepoListViewModel {
     private(set) var state: Stateful<[Repo]> = .loading
 
     private let repoAPIClient: RepoAPIClientProtocol
