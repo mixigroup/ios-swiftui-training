@@ -1,6 +1,5 @@
 import XCTest
 @testable import GitHubClient
-import Combine
 
 @MainActor
 class RepoListViewModelTests: XCTestCase {
