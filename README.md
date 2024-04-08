@@ -158,6 +158,9 @@ sortedNames = names.sorted(by: { $0 > $1 } )
 
 // 引数の最後がクロージャの場合、省略可能
 sortedNames = names.sorted { $0 > $1 }
+
+// sorted(by:)に大なりオペレータだけを渡す書き方もできる
+sortedNames = names.sorted(by: >)
 ```
 
 ### enum
