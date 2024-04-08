@@ -48,7 +48,7 @@ struct RepoListView: View {
         viewModel: RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
                 getRepos: {
-                    .mock
+                    [.mock1, .mock2, .mock3, .mock4, .mock5]
                 }
             )
         )

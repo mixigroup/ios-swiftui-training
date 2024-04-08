@@ -37,7 +37,3 @@ extension Repo {
         stargazersCount: 10
     )
 }
-
-extension [Repo] {
-    static let mock: Self = [.mock1, .mock2, .mock3, .mock4, .mock5]
-}
