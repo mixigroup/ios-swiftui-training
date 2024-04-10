@@ -1,23 +1,17 @@
 import SwiftUI
 
 struct RepoListView: View {
-    @StateObject private var viewModel: RepoListViewModel
-
-    init(repoAPIClient: RepoAPIClientProtocol) {
-        _viewModel = StateObject(
-            wrappedValue: RepoListViewModel(repoAPIClient: repoAPIClient)
-        )
-    }
+    @State var viewModel: RepoListViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch viewModel.state {
                 case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
                     List(repos) { repo in
-                        NavigationLink(destination: RepoDetailView(repo: repo)) {
+                        NavigationLink(value: repo) {
                             RepoRow(repo: repo)
                         }
                     }
@@ -39,6 +33,9 @@ struct RepoListView: View {
                 }
             }
             .navigationTitle("Repositories")
+            .navigationDestination(for: Repo.self) { repo in
+                RepoDetailView(repo: repo)
+            }
         }
         .task {
             await viewModel.onAppear()
@@ -46,24 +43,38 @@ struct RepoListView: View {
     }
 }
 
-struct RepoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListView(
+#Preview("Default") {
+    RepoListView(
+        viewModel: RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [
-                    .mock1, .mock2, .mock3, .mock4, .mock5
-                ],
-                error: nil
+                getRepos: {
+                    [.mock1, .mock2, .mock3, .mock4, .mock5]
+                }
             )
         )
-        .previewDisplayName("Default")
-
-        RepoListView(
+    )
+}
+#Preview("Loading") {
+    RepoListView(
+        viewModel: RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [],
-                error: DummyError()
+                getRepos: {
+                    while true {
+                        try await Task.sleep(until: .now + .seconds(1))
+                    }
+                }
             )
         )
-        .previewDisplayName("Error")
-    }
+    )
+}
+#Preview("Error") {
+    RepoListView(
+        viewModel: RepoListViewModel(
+            repoAPIClient: MockRepoAPIClient(
+                getRepos: {
+                    throw DummyError()
+                }
+            )
+        )
+    )
 }
