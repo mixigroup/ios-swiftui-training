@@ -6,7 +6,7 @@ class RepoListViewModelTests: XCTestCase {
     func test_onAppear_正常系() async {
         let viewModel = RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                getRepos: { .mock }
+                getRepos: { [.mock1, .mock2] }
             )
         )
 
@@ -14,7 +14,7 @@ class RepoListViewModelTests: XCTestCase {
 
         switch viewModel.state {
         case let .loaded(repos):
-            XCTAssertEqual(repos, .mock)
+            XCTAssertEqual(repos, [.mock1, .mock2])
         default:
             XCTFail()
         }
