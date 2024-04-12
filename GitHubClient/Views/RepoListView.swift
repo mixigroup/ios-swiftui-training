@@ -20,7 +20,7 @@ class ReposStore {
         urlRequest.cachePolicy = .returnCacheDataElseLoad
 
         do {
-            let (data, response) = try await send(urlRequest: urlRequest)
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 throw URLError(.badServerResponse)
@@ -34,10 +34,6 @@ class ReposStore {
         } catch {
             state = .failed(error)
         }
-    }
-
-    private nonisolated func send(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
-        try await URLSession.shared.data(for: urlRequest)
     }
 }
 
