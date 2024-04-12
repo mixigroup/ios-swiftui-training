@@ -1,8 +1,9 @@
-import Foundation
+import Observation
 
 @MainActor
-class RepoListViewModel: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .loading
+@Observable
+final class RepoListViewModel {
+    private(set) var state: Stateful<[Repo]> = .loading
 
     private let repoAPIClient: RepoAPIClientProtocol
 
