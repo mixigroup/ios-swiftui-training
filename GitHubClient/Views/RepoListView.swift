@@ -4,14 +4,14 @@ struct RepoListView: View {
     @StateObject private var viewModel = RepoListViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch viewModel.state {
                 case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
                     List(repos) { repo in
-                        NavigationLink(destination: RepoDetailView(repo: repo)) {
+                        NavigationLink(value: repo) {
                             RepoRow(repo: repo)
                         }
                     }
@@ -33,6 +33,9 @@ struct RepoListView: View {
                 }
             }
             .navigationTitle("Repositories")
+            .navigationDestination(for: Repo.self) { repo in
+                RepoDetailView(repo: repo)
+            }
         }
         .task {
             await viewModel.onAppear()
