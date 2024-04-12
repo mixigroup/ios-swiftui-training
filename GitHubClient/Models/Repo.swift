@@ -1,6 +1,6 @@
 import Foundation
 
-struct Repo: Identifiable {
+struct Repo: Identifiable, Hashable {
     var id: Int
     var name: String
     var owner: User

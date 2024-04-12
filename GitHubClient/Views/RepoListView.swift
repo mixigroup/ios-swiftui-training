@@ -4,16 +4,19 @@ struct RepoListView: View {
     @State private var mockRepos: [Repo] = []
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if mockRepos.isEmpty {
                 ProgressView("loading...")
             } else {
                 List(mockRepos) { repo in
-                    NavigationLink(destination: RepoDetailView(repo: repo)) {
+                    NavigationLink(value: repo) {
                         RepoRow(repo: repo)
                     }
                 }
                 .navigationTitle("Repositories")
+                .navigationDestination(for: Repo.self) { repo in
+                    RepoDetailView(repo: repo)
+                }
             }
         }
         .onAppear {
