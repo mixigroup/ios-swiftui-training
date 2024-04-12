@@ -21,3 +21,7 @@ struct RepoRow: View {
         }
     }
 }
+
+#Preview {
+    RepoRow(repo: .mock1)
+}
