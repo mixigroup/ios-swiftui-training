@@ -17,16 +17,19 @@ struct RepoListView: View {
     @State var reposStore: ReposStore
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if reposStore.repos.isEmpty {
                 ProgressView("loading...")
             } else {
                 List(reposStore.repos) { repo in
-                    NavigationLink(destination: RepoDetailView(repo: repo)) {
+                    NavigationLink(value: repo) {
                         RepoRow(repo: repo)
                     }
                 }
                 .navigationTitle("Repositories")
+                .navigationDestination(for: Repo.self) { repo in
+                    RepoDetailView(repo: repo)
+                }
             }
         }
         .task {
