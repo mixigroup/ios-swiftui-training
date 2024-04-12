@@ -1,8 +1,10 @@
 import SwiftUI
+import Observation
 
 @MainActor
-class ReposStore: ObservableObject {
-    @Published private(set) var repos = [Repo]()
+@Observable
+class ReposStore {
+    private(set) var repos = [Repo]()
 
     func loadRepos() async {
         try! await Task.sleep(nanoseconds: 1_000_000_000)
@@ -12,7 +14,7 @@ class ReposStore: ObservableObject {
 }
 
 struct RepoListView: View {
-    @StateObject private var reposStore = ReposStore()
+    @State var reposStore: ReposStore
 
     var body: some View {
         NavigationView {
@@ -35,6 +37,6 @@ struct RepoListView: View {
 
 struct RepoListView_Previews: PreviewProvider {
     static var previews: some View {
-        RepoListView()
+        RepoListView(reposStore: ReposStore())
     }
 }
