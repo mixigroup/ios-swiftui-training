@@ -1,14 +1,12 @@
 import XCTest
 @testable import GitHubClient
-import Combine
 
 @MainActor
 class RepoListViewModelTests: XCTestCase {
     func test_onAppear_正常系() async {
         let viewModel = RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [.mock1, .mock2],
-                error: nil
+                getRepos: { [.mock1, .mock2] }
             )
         )
 
@@ -25,8 +23,9 @@ class RepoListViewModelTests: XCTestCase {
     func test_onAppear_異常系() async {
         let viewModel = RepoListViewModel(
             repoAPIClient: MockRepoAPIClient(
-                repos: [],
-                error: DummyError()
+                getRepos: {
+                    throw DummyError()
+                }
             )
         )
 
@@ -41,15 +40,10 @@ class RepoListViewModelTests: XCTestCase {
     }
 
     struct MockRepoAPIClient: RepoAPIClientProtocol {
-        let repos: [Repo]
-        let error: Error?
+        var getRepos: () async throws -> [Repo]
 
         func getRepos() async throws -> [Repo] {
-            if let error = error {
-                throw error
-            }
-
-            return repos
+            try await getRepos()
         }
     }
 
