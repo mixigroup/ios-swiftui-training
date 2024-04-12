@@ -1,5 +1,5 @@
 import Foundation
 
-struct User {
+struct User: Hashable {
     var name: String
 }
