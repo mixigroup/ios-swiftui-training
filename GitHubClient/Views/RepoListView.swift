@@ -1,8 +1,10 @@
 import SwiftUI
+import Observation
 
 @MainActor
-class ReposStore: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .loading
+@Observable
+class ReposStore {
+    private(set) var state: Stateful<[Repo]> = .loading
 
     func loadRepos() async {
         state = .loading
@@ -18,7 +20,7 @@ class ReposStore: ObservableObject {
         urlRequest.cachePolicy = .returnCacheDataElseLoad
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            let (data, response) = try await send(urlRequest: urlRequest)
 
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 throw URLError(.badServerResponse)
@@ -33,10 +35,14 @@ class ReposStore: ObservableObject {
             state = .failed(error)
         }
     }
+
+    private nonisolated func send(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
+        try await URLSession.shared.data(for: urlRequest)
+    }
 }
 
 struct RepoListView: View {
-    @StateObject private var reposStore = ReposStore()
+    @State var reposStore: ReposStore
 
     var body: some View {
         NavigationView {
@@ -75,8 +81,6 @@ struct RepoListView: View {
     }
 }
 
-struct RepoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListView()
-    }
+#Preview {
+    RepoListView(reposStore: ReposStore())
 }
