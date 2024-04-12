@@ -37,8 +37,6 @@ struct RepoDetailView: View {
     }
 }
 
-struct RepoDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoDetailView(repo: .mock1)
-    }
+#Preview {
+    RepoDetailView(repo: .mock1)
 }
