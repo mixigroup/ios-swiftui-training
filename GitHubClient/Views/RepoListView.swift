@@ -38,8 +38,6 @@ struct RepoListView: View {
     }
 }
 
-struct RepoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListView(reposStore: ReposStore())
-    }
+#Preview {
+    RepoListView(reposStore: ReposStore())
 }
