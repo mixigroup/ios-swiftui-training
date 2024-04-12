@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RepoListView: View {
-    @StateObject private var viewModel = RepoListViewModel()
+    @State var viewModel: RepoListViewModel
 
     var body: some View {
         NavigationView {
@@ -40,8 +40,6 @@ struct RepoListView: View {
     }
 }
 
-struct RepoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListView()
-    }
+#Preview {
+    RepoListView(viewModel: RepoListViewModel())
 }
