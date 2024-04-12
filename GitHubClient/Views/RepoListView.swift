@@ -17,15 +17,11 @@ class ReposStore {
         // GitHub API のリクエスト数制限(60回/h)回避のためのキャッシュ設定
         urlRequest.cachePolicy = .returnCacheDataElseLoad
 
-        let (data, _) = try! await send(urlRequest: urlRequest)
+        let (data, _) = try! await URLSession.shared.data(for: urlRequest)
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         repos = try! decoder.decode([Repo].self, from: data)
-    }
-
-    private nonisolated func send(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
-        try await URLSession.shared.data(for: urlRequest)
     }
 }
 
