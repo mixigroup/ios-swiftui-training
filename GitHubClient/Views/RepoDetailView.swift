@@ -7,7 +7,7 @@ struct RepoDetailView: View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Image("GitHubMark")
+                    Image(.gitHubMark)
                         .resizable()
                         .frame(width: 16, height: 16)
                     Text(repo.owner.name)
