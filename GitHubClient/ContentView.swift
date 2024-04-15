@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         HStack {
-            Image("GitHubMark")
+            Image(.gitHubMark)
                 .resizable()
                 .frame(
                     width: 44.0,
