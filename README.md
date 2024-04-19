@@ -13,7 +13,7 @@
 ### [0. Swiftの基本](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
 
 ### 1. SwiftUIの基本
-#### [前準備](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.0)
+#### [1.0. 前準備](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.0)
 
 #### [1.1. 簡単なレイアウトを組む](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1)
 
