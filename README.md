@@ -229,8 +229,8 @@ case let .failure(error): print("Failure: \(error)")
 }
 ```
 
-### 構造体とクラス
-- 構造体(struct)とクラス(class)はデータをモデリングする上で必ず必要となってくる機能です
+### struct と class
+- structとclassはデータをモデリングする上で必ず必要となってくる機能です
 - どちらもpropertyを定義して値を保持したり、メソッドを定義して処理を実行したりできます
 
 ```swift
@@ -398,7 +398,7 @@ class Person {
 - 弱参照は参照カウントに加算されません、よって循環参照を防ぎメモリリークを解消してくれます
 
 ### Protocols
-- protocolは、特定の機能に適したメソッドやproperty等のI/Fを定義し、それをクラスや構造体, enumに適用することができます
+- protocolは、特定の機能に適したメソッドやproperty等のI/Fを定義し、それをclassやstruct, enumに適用することができます
 
 ```swift
 protocol SomeProtocol {
