@@ -229,6 +229,37 @@ case let .failure(error): print("Failure: \(error)")
 }
 ```
 
+### 式と文
+- 式は、評価されると1つの値になるプログラムの要素のことです。
+  - `1 + 1`, `if`, `switch` など
+- 文は、式とは違って評価されても値にはなりません。
+  - `let x = 2`, `for-in`, `while`, `if`, `switch` など
+- ifとswitchは場合によって、式と文のそれぞれに解釈されることがあります。
+
+```swift
+// 式
+let number: Double = if Bool.random() { 2.718 } else { 3.14 }
+let word: String = switch state {
+    case .success: "guitar"
+    case .failure: "piano"
+}
+
+// 文
+let number: Double
+if Bool.random {
+    number = 2.718
+else {
+    number = 3.14
+}
+let word: String
+switch state {
+case .success:
+    word = 2.718
+case .failure:
+    word = 3.14
+}
+```
+
 ### struct と class
 - structとclassはデータをモデリングする上で必ず必要となってくる機能です
 - どちらもpropertyを定義して値を保持したり、メソッドを定義して処理を実行したりできます
