@@ -1,6 +1,6 @@
 ## 0. Swiftの基本
 - このセッションでは以降のセッションを円滑に進められるように最低限必要なSwift周りの知識について説明します
-- 時間のある方は [公式のガイド](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html) を一読することをお勧めします
+- 時間のある方は [公式のガイド](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/) を一読することをお勧めします
 
 ### Playgroundの準備
 - FinderでXcodeを見つけ、右クリックで出てくるWindowにある`Rosettaを使用して開く`のチェックを外します
