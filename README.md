@@ -1,7 +1,7 @@
 ## 1.1. 簡単なレイアウトを組む
 - `ContentView` を開くと、Previewsが表示されるはずです
 
-![スクリーンショット 2023-04-25 6 39 26](https://user-images.githubusercontent.com/17004375/234122644-83f316e9-59f1-4d99-9c46-8f10d9bb7833.png)
+<img width="1179" alt="スクリーンショット 2024-04-21 0 06 03" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/841a4eda-e251-4fde-91c5-3ac9e2ac68a3">
 
 - 今 `ContentView` には地球のようなアイコンとHello, world!というテキストが配置されているだけになっています
 - コードを見ると[Image](https://developer.apple.com/documentation/swiftui/image)と[Text](https://developer.apple.com/documentation/swiftui/text)が[VStack](https://developer.apple.com/documentation/swiftui/vstack)で囲われていることがわかります
@@ -15,9 +15,10 @@
 ![スクリーンショット 2023-04-25 10 56 37](https://user-images.githubusercontent.com/17004375/234155549-166b8e65-ee23-4d58-a5a8-1889e79bff6a.png)
 
 - 横並びになりましたね
-- 次に`⌘`を押しながらHStackをクリックし、`Embed in VStack` を選択してください
+- 次にHStackを右クリックし、`Embed in VStack` を選択してください
 
-![スクリーンショット_2023-04-25_11_02_08](https://user-images.githubusercontent.com/17004375/234156434-ef413c9b-4a56-4bc0-b201-09fcbf70710f.png)
+<img width="408" alt="スクリーンショット 2024-04-21 0 12 41" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/f0cf8810-e902-4870-857a-470a9518bb72">
+
 
 - これで、HStackがVStackに囲われました
 - Good evening, world!というテキストをHStackの下に追加して縦に並べてみましょう
@@ -43,7 +44,8 @@
 
 - 次にVStackを選択し、右側のペインの `Alignment` という項目で左寄せのアイコンを選択します
 
-![スクリーンショット_2023-04-25_12_35_16](https://user-images.githubusercontent.com/17004375/234168552-c2121184-293d-4b35-95f9-2ffa7437c0e5.png)
+<img width="1179" alt="スクリーンショット 2024-04-21 0 16 22" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/911b13a4-bdd5-4b07-8463-464bbfbc9335">
+
 
 ```swift
 VStack(alignment: .leading) {
@@ -63,7 +65,7 @@ VStack(alignment: .leading) {
 - Preview経由で編集した際にコードベースでどういった差分が追加されたかもしっかり見て覚えておきましょう
 
 ### チャレンジ
-- それぞれのTextのフォントサイズ, ウエイト, 色を変更してみましょう
+- それぞれのTextのfont size, weight, colorを変更してみましょう
 
 <details>
  <summary>解説</summary>
