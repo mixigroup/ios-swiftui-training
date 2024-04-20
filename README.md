@@ -1,7 +1,7 @@
 ## 2.1. Swift Concurrencyによる非同期処理
 
 - APIリクエストを送り、レスポンスを受け取ってその結果をViewに表示する際、その間Main Thread（UIを更新するスレッド）を止めてユーザーの自由を奪ってしまってはかなり体験の悪いアプリになってしまいます
-- よってAPIリクエストは別スレッドで非同期に送り、結果が帰ってきたらMain ThreadでUIを更新する、という実装をするのが良いとされています
+- よってAPIリクエストは別スレッドで非同期に送り、結果が返ってきたらMain ThreadでUIを更新する、という実装をするのが良いとされています
 - そこで、API通信周りの実装する前に、まずは非同期処理について学ぶ必要があります
 - 今回は [Swift Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) という仕組みを用いて実装していきます
 - Swift Concurrency とは非同期処理および並行処理のコードを簡潔かつ安全に記述できる機能です
@@ -28,6 +28,8 @@ let photo = await downloadPhoto(named: name)
 show(photo)
 ```
 - 同じ内容の処理でもSwift Concurrencyを使った実装ではネストがなくなり、直感的に理解しやすくなっていると思います
+- 親子関係をもつ複数の非同期処理を構造的に扱うStructured Concurrencyという仕組みも存在しますが、本セッションでは詳しくは述べません
+  - 詳しくは[Tasks and Task Groups](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency#Tasks-and-Task-Groups)というドキュメントをご覧ください
 - 本セッションでポイントとなるSwift Concurrencyの3つの要素を簡単に紹介します
 - async/await
    - 関数に `async` キーワードを付けることで、その関数内が「非同期なコンテキスト」になる
