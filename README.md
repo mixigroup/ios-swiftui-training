@@ -3,11 +3,6 @@
 - 時間のある方は [公式のガイド](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/) を一読することをお勧めします
 
 ### Playgroundの準備
-- FinderでXcodeを見つけ、右クリックで出てくるWindowにある`Rosettaを使用して開く`のチェックを外します
-    - チェックがついているとPlaygroundがうまく動作しない不具合があるため
-    
-<img width="396" alt="Notification_Center" src="https://user-images.githubusercontent.com/17004375/234561635-6baafc83-ef12-4719-b4e5-555de545accd.png">
-
 - XcodeのPlaygroundでは、Swiftを簡単に実行することが可能です
 - Swiftを学ぶにあたって、まずはPlaygroundを作成しましょう
 - Xcodeを開いて `File > New > Playground` を選択します
