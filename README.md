@@ -74,7 +74,7 @@ if optionalImagePath?.hasSuffix(".png") == true {
 }
 ```
 
-- また、nilだった場合にはデフォルト値を返したい場合、 `??` を使うことで簡潔に書けます
+- また、Optional型の変数がnilならデフォルト値を返したい場合、 `??` を使うことで簡潔に書けます
 ```swift
 // Optional Bindingを使った書き方
 var result: Int
@@ -121,7 +121,7 @@ func greet(person: String) -> String {
 }
 ```
 
-- 関数の引数に呼び出し用の名前をつけて可読性をあげることも可能です
+- 関数の引数には、「引数ラベル」という呼び出し用の名前をつけて可読性をあげることも可能です
 
 ```swift
 func greet(person: String, from hometown: String) -> String {
