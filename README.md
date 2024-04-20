@@ -246,6 +246,21 @@ class SomeClass {
 - classは、保持するデータの一意性を担保する必要がある場合、あるいはObjective-Cとの互換性が必要な場合に使用するようにしてください
   - 参考: https://developer.apple.com/documentation/swift/choosing_between_structures_and_classes
 
+- 仮に上記のStateをstructを使って表現する場合、例えば以下のような実装が考えられます。
+```swift
+struct AnotherState {
+  var state: State
+  var error: Error?
+
+  enum State {
+    case success
+    case failure
+  }
+}
+```
+- この実装ではstateが`.success`かつ errorが非nilという、本来表現できるはずのない状態を含んでしまいます。
+- Associated Valuesを使用することで、状態を必要十分に表現することが可能になります。
+
 ### 値型と参照型
 - クラスとクロージャ以外で定義された型はすべて **値型** です、値の受け渡しはすべてコピーした上で行われます
 
