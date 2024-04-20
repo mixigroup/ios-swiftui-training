@@ -14,12 +14,14 @@
 ![スクリーンショット_2023-04-25_13_03_10](https://user-images.githubusercontent.com/17004375/234171708-1b7898b7-0b8b-4a90-9083-4dfb5218f0ce.png)
 
 - さて、画像の準備ができたので実際に表示してみましょう
-- `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) に`GitHubMark`を指定し、modifierは一旦全て消します
+- `ContentView` を開いて [Image](https://developer.apple.com/documentation/swiftui/image) に`.gitHubMark`を指定し、modifierは一旦全て消します
+  - `github-mark`というリソースに`.gitHubMark`というインターフェースでアクセスできるのは、Xcodeが該当リソースへの参照を型安全に行うコードを自動生成してくれるからです
+  - これにより、リソースにアクセスする際に"github-mark"などという文字列を手打ちする必要がなくなり、typoが原因でリソースにアクセスできないといったミスを予防することができます
 
 ```swift
 ...
 HStack {
-    Image("GitHubMark")
+    Image(.gitHubMark)
     Text("Hello, world!")
 }
 ...
@@ -33,7 +35,7 @@ HStack {
 - 画像がリサイズ可能になるように、 `.resizable` のmodifierをImageに追加しましょう
 
 ```swift
-Image("GitHubMark")
+Image(.gitHubMark)
     .resizable()
     .frame(width: 44.0, height: 44.0)
 ```
@@ -60,7 +62,7 @@ Image("GitHubMark")
 
 ```swift
 HStack {
-    Image("GitHubMark")
+    Image(.gitHubMark)
         .resizable()
         .frame(
             width: 44.0,
