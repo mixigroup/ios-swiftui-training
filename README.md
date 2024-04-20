@@ -1,9 +1,9 @@
 ## 1.3. リスト表示
 - 先のセッションで組み立てたレイアウトをリスト形式で表示してみましょう
 - SwiftUIでリスト表示を実装する場合には [List](https://developer.apple.com/documentation/swiftui/list) を使うと良いでしょう
-- 一番外側のHStackを `⌘ + Click` で選択して、 `Embed in List` を選択してください
+- 一番外側のHStackを 右クリックして、 `Embed in List` を選択してください
 
-<img src="https://user-images.githubusercontent.com/8536870/115513674-4c265a80-a2be-11eb-8f8b-27ce49fd49fb.png" width=50%>
+<img width="376" alt="スクリーンショット 2024-04-21 0 37 50" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/477c1a11-0eb7-4109-9c5b-eba772bae44b">
 
 - HStack が List に置き換わってしまうので、HStack で囲い直します（List で HStack を囲ってところ）
 
@@ -135,7 +135,9 @@ List(mockRepos) { repo in
 - List内で表示されるViewを `RepoRow.swift` という別ファイルに切り出してみましょう
 - Subviewを他のViewに切り出す場合は `⌘ + Click` で `Extract Subview` を選択すると便利です
 
-<img src="https://user-images.githubusercontent.com/8536870/115514113-c060fe00-a2be-11eb-9206-58772b5105a8.png" width=50%>
+<img width="399" alt="スクリーンショット 2024-04-21 0 44 50" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/8f8f0b9b-44cc-4968-b3fc-f929cd0c2dfd">
+
+
 
 <details>
     <summary>解説</summary>
