@@ -24,7 +24,7 @@ print("user: \(user)")
 - まずはリクエストを投げる先のURLを [URL.init(string:)](https://developer.apple.com/documentation/foundation/nsurl/1413146-init) で初期化します
 - 作成したURLをもとに [URLRequest](https://developer.apple.com/documentation/foundation/urlrequest) を作成し、http methodやhttp headerを設定します
 - [URLSession.data(for:)](https://developer.apple.com/documentation/foundation/urlsession/3767352-data) は与えられたURLに対してURLSessionのタスクを実行してレスポンスを返してくれます、これは async 関数なので await で結果を待つようにします
-- SwiftでJSONをdecodeする際には [Deodable](https://developer.apple.com/documentation/swift/decodable) を使用します
+- SwiftでJSONをdecodeする際には [Decodable](https://developer.apple.com/documentation/swift/decodable) を使用します
 - 上記の例では `User` の構造体にDecodableを準拠させることで、decodeされたJSONオブジェクトの各フィールドがmappingされるようになります
 - JSONのフィールドとDecodableのproperty名は同じにする必要があります、もし異なる命名をしたければ [CodingKey](https://developer.apple.com/documentation/swift/codingkey) を使用します
 - 例えば、以下のような使い方になります
