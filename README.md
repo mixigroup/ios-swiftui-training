@@ -44,8 +44,8 @@ immutable = "Lemon"
 - シンタックスシュガーとして `?` が用意されていて、直感的に宣言していくことが可能です
 
 ```swift
-let longForm: Optional<Int> = Int("42")
-let shortForm: Int? = Int("42")
+let longForm: Optional<Int> = 42
+let shortForm: Int? = 42
 ```
 
 - 「もし `nil` ではなければ...」という分岐を書く機会は多いでしょう、Swiftでは `Optional Binding` と呼ばれる書き方でスマートに処理を書くことができます
