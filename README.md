@@ -104,7 +104,7 @@ let (data, _) = try! await URLSession.shared.data(for: urlRequest)
 まずは、レスポンスのJSONをdecodeできるように、対応するRepoおよびUserをDecodableに準拠させます
 
 ```swift
-struct Repo: Identifiable, Decodable {
+struct Repo: Identifiable, Decodable, Hashable {
     var id: Int
     var name: String
     var owner: User
@@ -112,7 +112,7 @@ struct Repo: Identifiable, Decodable {
     var stargazersCount: Int
 }
 
-struct User: Decodable {
+struct User: Decodable, Hashable {
     var name: String
 
     private enum CodingKeys: String, CodingKey {
