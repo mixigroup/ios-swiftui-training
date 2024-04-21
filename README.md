@@ -1,51 +1,48 @@
-## 3.1. MVVMアーキテクチャ
+## 3.1. Single Source of Truth
 - SwiftUIが発表されたWWDC19のセッションの一つである [Data Flow Through SwiftUI](https://developer.apple.com/videos/play/wwdc2019/226) では以下のような図を用いてSwiftUIにおけるデータのフローについて説明されました
 
 <img src="https://user-images.githubusercontent.com/8536870/115537484-cf9f7600-a2d5-11eb-8b60-0847e186f288.png">
 
-- 手続き的にUIを更新するのではなく、宣言的に定義されたView関数がStateを入力として受け取りレイアウトを構築するSwiftUIでは、「Single source of truth」の概念が謳われており、Viewに反映されるデータは常に一意になることを原則としています
-- 先のセッションのように何の規約もなく自由にViewのファイルに通信処理周りを書いたりしていけば、ロジックや画面数が増えるほどに管理される状態は煩雑になり、管理コストが増していくことでしょう
-- そうならないためにも、設計の力を借りてコードに規約を課していくのが良いです
-- 今回みなさんに導入していただく設計はMVVMです
-- Model View ViewModelの略称であるMVVMですが、図にすると以下のようなアーキテクチャになります
+- 手続き的にUIを更新するのではなく、宣言的に定義されたView関数がStateを入力として受け取りレイアウトを構築するSwiftUIでは、「Single Source of Truth」の概念が謳われており、Viewに反映されるデータは常に一意になることを原則としています
+- これまで書いてきたコードを見てみると、リポジトリ一覧画面とリポジトリ詳細画面のどちらも`ReposStore`にある(`state`に含まれている)リポジトリ情報を参照しており、実はSingle Source of Truthに則っていることがわかります。
+  - 何が嬉しいかというと、将来リポジトリ詳細画面にリポジトリ情報を更新する機能をもたせたとしても、リポジトリ一覧画面にもその変更が反映&viewが更新されることが保障されます。リポジトリ一覧画面とリポジトリ詳細画面とでデータの不整合が生じることはありません。
+  - 本研修では時間の都合上深掘りしませんが、プロパティとViewとを双方向に連携する[@Binding](https://developer.apple.com/documentation/swiftui/binding)という機能を使用します。興味がある方はドキュメントにあるサンプルコードを読んでみてください。
 
-<img src="https://user-images.githubusercontent.com/8536870/115537612-f2ca2580-a2d5-11eb-937a-98ea74da920f.png">
+![image](https://github.com/mixigroup/ios-swiftui-training/assets/13087887/69be15b9-c834-44f1-9794-a79abaf04fd3)
 
-- それぞれの責務は以下のようになります
+- また、大規模アプリケーションの開発現場では、UIロジックを担うPresentation Layer、業務ロジックを担うDomain Layer、永続化やAPIとのやりとり等を担うData Layerの3つに処理を分類し、必要に応じて更に責務の分離とクラスの作成を行うことが多いです。
+- この研修で開発するアプリの要件は極めてシンプルであるため、上記のレイヤー分けを適用せずに必要最小限の責務の分離を行うことにしましょう。
 
-  - Model
-    - データの処理
-  - View
-    - UIのレイアウト
-    - ユーザーのアクションをViewModelへInput
-    - ViewModelのOutputをUIへバインド
-  - ViewModel
-    - ViewのInputに応じてModelを呼び出してViewのStateを管理
-    - Stateを加工してViewへOutput
-
-- これだとModel部分の実装方針がやや抽象的ですね
-- 実務では、Model部分をデータソースを抽象化する`Repository`やアプリケーションロジックを持つ`UseCase`など具体的にレイヤー化されているケースが多いと思います
-- 本アプリにおいては、API通信周りの処理がModelに当たります
+|名称|責務|
+|---|---|
+|View|・ユーザーのアクションや画面描画イベントを通知<br/>・データを画面に表示するために加工し
+|Store|アクションを受け取ってstateを更新し、viewに更新が必要な旨を通知|
+|APIClient|WebAPIへのリクエスト、レスポンスとHTTP関連のエラーハンドリング|
 
 ### チャレンジ
 
-- 以下のような責務になるように、MVVMの設計を適用してみましょう
+- 以下のように責務の分離を行いリファクタリングしてみましょう。
 
-- RepoListView
-    - RepoListViewModelのStateをバインドしてリポジトリ一覧を表示
-- RepoListViewModel
-    - RepoListViewからonAppearのイベントを受け取り、RepoAPIClientを使ってリポジトリ一覧を取得する
-    - 取得したリポジトリ一覧を@PublishedでViewに公開
-- RepoAPIClient
-    - GitHub APIを叩いてmixi GroupのOrganizationにあるpublicなリポジトリ一覧を取得する
+|名称|責務|
+|---|---|
+|RepoListView|・UIイベントReposStoreに通知<br/>・ReposStoreのStateをバインドしてリポジトリ一覧を表示|
+|ReposStore|・RepoListViewからonAppearのイベントを受け取り、RepoAPIClientを使ってリポジトリ一覧を取得する<br/>・取得したリポジトリ一覧をもとにstateを計算し、Viewに公開|
+|RepoAPIClient|GitHub APIを叩いてmixi GroupのOrganizationにあるpublicなリポジトリ一覧を取得する|
 
 #### ヒント
 - 各モジュールのI/Fは以下のようになる想定です
 
 ```swift
-class RepoListViewModel: ObservableObject {
-    func onAppear() async
-    func onRetryButtonTapped() async
+@Observable
+class ReposStore {
+    enum Action {
+        case onAppear
+        case onRetryButtonTapped
+    }
+
+    ...
+
+    func send(_ action: Action) async {...}
 }
 
 struct RepoAPIClient {
