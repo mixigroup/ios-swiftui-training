@@ -31,7 +31,7 @@ struct Repo: Identifiable {
 +   var stargazersCount: Int
 }
 ```
-- `description`がオプショナルな理由は、GitHubAPIのレスポンスの仕様合わせているためです
+- `description`がオプショナルな理由は、GitHubAPIのレスポンスの仕様に合わせているためです
 - 詳細画面で表示する `Repo` を初期化時に受け取れるようにします
 
 ```swift
@@ -125,7 +125,7 @@ struct RepoListView: View {
 HStack {
     VStack(alignment: .leading) {
         HStack {
-            Image("GitHubMark")
+            Image(.gitHubMark")
                 .resizable()
                 .frame(width: 16, height: 16)
             Text(repo.owner.name)
@@ -172,7 +172,7 @@ HStack {
 - 詳細画面も実装できたところで、一覧画面から遷移できるようにしてみましょう
 - ナビゲーションを実装するためには、まずは一覧画面のViewを [NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack) のなかに組み込みます
 - さらに、ナビゲーションのタイトルバーに表示される文字列を `.navigationTitle("Repositories")` のように指定します
-    - NavigationStackwに対してではなく、その内部のViewに対して `navigationTitle` のmodifierを宣言することに違和感を感じるかもしれませんが、NavigationViewの中のViewは画面遷移をするごとに変わるため、その中身に応じてタイトルを決めると考えるならばむしろ自然な定義といえます
+    - NavigationStackに対してではなく、その内部のViewに対して `navigationTitle` のmodifierを宣言することに違和感を感じるかもしれませんが、NavigationViewの中のViewは画面遷移をするごとに変わるため、その中身に応じてタイトルを決めると考えるならばむしろ自然な定義といえます
 
 ```swift
 NavigationStack {
