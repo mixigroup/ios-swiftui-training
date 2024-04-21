@@ -107,12 +107,14 @@ struct RepoListView: View {
                 ProgressView("loading...")
             } else {
                 List(reposStore.repos) { repo in
-                    NavigationLink(
-                        destination: RepoDetailView(repo: repo)) {
+                    NavigationLink(value: repo) {
                         RepoRow(repo: repo)
                     }
                 }
                 .navigationTitle("Repositories")
+                .navigationDestination(for: Repo.self) { repo in
+                    RepoDetailView(repo: repo)
+                }
             }
         }
         .task {
@@ -125,21 +127,14 @@ struct RepoListView: View {
 - この状態でLive Previewを試してみましょう
 - loadingのまま何も中身が更新されないことがわかるはずです
 - @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `ReposStore` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
-- `ReposStore` の `repos` という特定のpropertyを監視する必要があります
-- そのためには [ObservableObject](https://developer.apple.com/documentation/combine/observableobject) を使用します
-- `ReposStore` にObservableObjectを適用し、監視させたいpropertyである `repos` には [@Published](https://developer.apple.com/documentation/combine/published) をannotateします
-    - @Publishedでannotateすると、そのpropertyの値の変更をView側から監視できるようになります
+- `ReposStore` のインスタンス内の変更を監視できるようにする必要があります
+- そのためには　[Observation](https://developer.apple.com/documentation/observation)　フレームワークの　[@Observable](https://developer.apple.com/documentation/observation/observable()) を使用します
+- Observableマクロは、対象の型に監視サポートを追加し、[Observableプロトコル](https://developer.apple.com/documentation/observation/observable)　に準拠させてこれを監視可能にします
 
 ```swift
-class ReposStore: ObservableObject {
-    @Published private(set) var repos = [Repo]()
-```
-    
-- そして最後に、 `RepoListView` のproperty `reposStore` には [@StateObject](https://developer.apple.com/documentation/swiftui/stateobject) をannotateします
-
-```swift
-struct RepoListView: View {
-    @StateObject private var reposStore = ReposStore()
+@Observable
+class ReposStore {
+    private(set) var repos = [Repo]()
 ```
     
 - Live Previewでリポジトリがリスト表示されることを確認しましょう
@@ -169,7 +164,8 @@ iOSアプリでUIを更新する場合、必ずMain Threadから実行する必�
 
 ```swift
 @MainActor
-class ReposStore: ObservableObject {
+@Observable
+class ReposStore　{
     ...
 ```
 
