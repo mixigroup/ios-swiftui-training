@@ -2,17 +2,17 @@ import XCTest
 @testable import GitHubClient
 
 @MainActor
-class RepoListViewModelTests: XCTestCase {
+class ReposStoreTests: XCTestCase {
     func test_onAppear_正常系() async {
-        let viewModel = RepoListViewModel(
+        let store = ReposStore(
             repoAPIClient: MockRepoAPIClient(
                 getRepos: { [.mock1, .mock2] }
             )
         )
 
-        await viewModel.onAppear()
+        await store.send(.onAppear)
 
-        switch viewModel.state {
+        switch store.state {
         case let .loaded(repos):
             XCTAssertEqual(repos, [.mock1, .mock2])
         default:
@@ -21,7 +21,7 @@ class RepoListViewModelTests: XCTestCase {
     }
 
     func test_onAppear_異常系() async {
-        let viewModel = RepoListViewModel(
+        let store = ReposStore(
             repoAPIClient: MockRepoAPIClient(
                 getRepos: {
                     throw DummyError()
@@ -29,9 +29,9 @@ class RepoListViewModelTests: XCTestCase {
             )
         )
 
-        await viewModel.onAppear()
+        await store.send(.onAppear)
 
-        switch viewModel.state {
+        switch store.state {
         case let .failed(error):
             XCTAssert(error is DummyError)
         default:
