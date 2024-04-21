@@ -127,7 +127,7 @@ struct RepoListView: View {
 - この状態でLive Previewを試してみましょう
 - loadingのまま何も中身が更新されないことがわかるはずです
 - @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `ReposStore` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
-- `ReposStore` のインスタンス内の変更を監視できるようにする必要があります
+- 適切にViewが更新されるようにするために　`ReposStore`　インスタンス内部の変更を監視できるようにする必要があります
 - そのためには　[Observation](https://developer.apple.com/documentation/observation)　フレームワークの　[@Observable](https://developer.apple.com/documentation/observation/observable()) を使用します
 - Observableマクロは、対象の型に監視サポートを追加し、[Observableプロトコル](https://developer.apple.com/documentation/observation/observable)　に準拠させてこれを監視可能にします
 
