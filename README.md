@@ -111,7 +111,7 @@ private let mockRepos = [
 
 ```swift
 List(mockRepos) { repo in
-    Image("GitHubMark")
+    Image(.gitHubMark)
         .resizable()
         .frame(
             width: 44.0,
@@ -133,7 +133,7 @@ List(mockRepos) { repo in
 
 ### チャレンジ
 - List内で表示されるViewを `RepoRow.swift` という別ファイルに切り出してみましょう
-- Subviewを他のViewに切り出す場合は `⌘ + Click` で `Extract Subview` を選択すると便利です
+- Subviewを他のViewに切り出す場合は対象のViewを右クリックして `Extract Subview` を選択すると便利です
 
 <img width="399" alt="スクリーンショット 2024-04-21 0 44 50" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/8f8f0b9b-44cc-4968-b3fc-f929cd0c2dfd">
 
