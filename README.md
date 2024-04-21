@@ -113,10 +113,8 @@ struct RepoListView: View {
 - 詳細画面のPreviewに渡すモックデータも以下のように書けます
 
 ```swift
-struct RepoDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoDetailView(repo: .mock1)
-    }
+#Preview {
+    RepoDetailView(repo: .mock1)
 }
 ```
 
@@ -172,12 +170,12 @@ HStack {
 ```
 
 - 詳細画面も実装できたところで、一覧画面から遷移できるようにしてみましょう
-- ナビゲーションを実装するためには、まずは一覧画面のViewを [NavigationView](https://developer.apple.com/documentation/swiftui/navigationview) のなかに組み込みます
+- ナビゲーションを実装するためには、まずは一覧画面のViewを [NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack) のなかに組み込みます
 - さらに、ナビゲーションのタイトルバーに表示される文字列を `.navigationTitle("Repositories")` のように指定します
-    - NavigationViewに対してではなく、その内部のViewに対して `navigationTitle` のmodifierを宣言することに違和感を感じるかもしれませんが、NavigationViewの中のViewは画面遷移をするごとに変わるため、その中身に応じてタイトルを決めると考えるならばむしろ自然な定義といえます
+    - NavigationStackwに対してではなく、その内部のViewに対して `navigationTitle` のmodifierを宣言することに違和感を感じるかもしれませんが、NavigationViewの中のViewは画面遷移をするごとに変わるため、その中身に応じてタイトルを決めると考えるならばむしろ自然な定義といえます
 
 ```swift
-NavigationView {
+NavigationStack {
     List(mockRepos) { ... }
       .navigationTitle("Repositories")
 }
@@ -186,9 +184,16 @@ NavigationView {
 - 各Rowをタップすると詳細画面へ遷移するように実装するためには、 `RepoRow` を [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink) で囲ってあげます、その際NavigationLinkの初期化時の引数として `RepoDetailView` を渡してあげます
 
 ```swift
-NavigationLink(
-    destination: RepoDetailView(repo: repo)) {
+NavigationLink(value: repo) {
     RepoRow(repo: repo)
+}
+```
+
+- そして、`[navigationDestination(for:destination:]()`を使用して、遷移先の画面を設定します。
+
+```swift
+.navigationDestination(for: Repo.self) { repo in
+    RepoDetailView(repo: repo)
 }
 ```
 
