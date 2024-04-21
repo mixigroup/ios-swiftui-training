@@ -34,10 +34,10 @@
 - まずはキャッチしたエラーをViewに反映させるために、@Publishedでエラーを監視できるようにします
 
 ```swift
-@MainActor   
-class ReposStore: ObservableObject {
-    @Published private(set) var repos = [Repo]()
-    @Published private(set) var error: Error? = nil
+@Observable   
+class ReposStore {
+    private(set) var repos = [Repo]()
+    private(set) var error: Error? = nil
 
     func loadRepos() {
         ...
@@ -56,7 +56,7 @@ class ReposStore: ObservableObject {
 struct RepoListView: View {
     ...
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if reposStore.error != nil {
                 VStack {
                     Text("Failed to load repositories")
@@ -79,14 +79,14 @@ struct RepoListView: View {
 ```
 
 - 次に、読み込み中をより正しく表現できるようにします
-- 現状はreposが空の場合を読み込み中と判定してしまっているので、別途@Publishedで読み込み中を監視できるようにします
+- 現状はreposが空の場合を読み込み中と判定してしまっているので、別途読み込み中を監視できるようにします
 
 ```swift
-@MainActor   
-class ReposStore: ObservableObject {
-    @Published private(set) var repos = [Repo]()
-    @Published private(set) var error: Error? = nil
-    @Published private(set) var isLoading: Bool = false
+@Observable   
+class ReposStore {
+    private(set) var repos = [Repo]()
+    private(set) var error: Error? = nil
+    private(set) var isLoading: Bool = false
 
     func loadRepos() {
         isLoading = true
@@ -110,7 +110,7 @@ class ReposStore: ObservableObject {
 struct RepoListView: View {
     ...
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if reposStore.error != nil {
                 ...
             } else {
@@ -119,6 +119,7 @@ struct RepoListView: View {
                 } else {
                     List(reposStore.repos) {...}
                      　　　.navigationTitle("Repositories")
+                    ...
                 }
             }
         }
@@ -134,7 +135,7 @@ struct RepoListView: View {
 
 ```swift
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 if reposStore.error != nil {
                     ...   
@@ -151,6 +152,9 @@ struct RepoListView: View {
                 }
             }
             .navigationTitle("Repositories")
+            .navigationDestination(for: Repo.self) { repo in
+                RepoDetailView(repo: repo)
+            }
         }
 ```
 
@@ -160,7 +164,7 @@ struct RepoListView: View {
 
 ### チャレンジ
 
-- Repoの配列を読み込むという状態を表現するためだけに@Publishedなpropertyが3つも定義されてしまいました
+- Repoの配列を読み込むという状態を表現するためだけに3つものpropertyが定義されてしまいました
 - これでもでも問題なく動作していますが、コードが複雑になり可読性が下がっている気がします
 - これを1つのpropertyのみで表現できるようにリファクタリングしてみましょう
 
@@ -182,9 +186,9 @@ enum Stateful<Value> {
 Statefulを駆使して3つあった@Publishedを1つにしていきます
 
 ```swift
-@MainActor
-class ReposStore: ObservableObject {
-    @Published private(set) var state: Stateful<[Repo]> = .loading
+@Observable
+class ReposStore {
+    private(set) var state: Stateful<[Repo]> = .loading
 
     func loadRepos() {
         state = .loading
@@ -211,7 +215,7 @@ class ReposStore: ObservableObject {
 struct RepoListView: View {
     ...
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch reposStore.state {
                 case .loading:
@@ -225,6 +229,9 @@ struct RepoListView: View {
                 }
             }
             .navigationTitle("Repositories")
+            .navigationDestination(for: Repo.self) { repo in
+                RepoDetailView(repo: repo)
+            }
         }
         ...
     }
