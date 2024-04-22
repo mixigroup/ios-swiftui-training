@@ -17,10 +17,10 @@ struct RepoListView: View {
 
     var body: some View {
         NavigationStack {
-            if reposStore.repos.isEmpty {
+            if store.repos.isEmpty {
                 ProgressView("loading...")
             } else {
-                List(reposStore.repos) { repo in
+                List(store.repos) { repo in
                     NavigationLink(value: repo) {
                         RepoRow(repo: repo)
                     }
@@ -32,7 +32,7 @@ struct RepoListView: View {
             }
         }
         .task {
-            await reposStore.loadRepos()
+            await store.loadRepos()
         }
     }
 }
