@@ -15,8 +15,8 @@ final class ReposStore {
             state = .loading
 
             do {
-                let value = try await RepoAPIClient().getRepos()
-                state = .loaded(value)
+                let repos = try await RepoAPIClient().getRepos()
+                state = .loaded(repos)
             } catch {
                 state = .failed(error)
             }
