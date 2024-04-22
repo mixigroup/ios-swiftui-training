@@ -30,7 +30,7 @@ show(photo)
 - 同じ内容の処理でもSwift Concurrencyを使った実装ではネストがなくなり、直感的に理解しやすくなっていると思います
 - 親子関係をもつ複数の非同期処理を構造的に扱うStructured Concurrencyという仕組みも存在しますが、本セッションでは詳しくは述べません
   - 詳しくは[Tasks and Task Groups](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency#Tasks-and-Task-Groups)というドキュメントをご覧ください
-- Swift Concurrencyで重量な3つの要素について簡単に紹介します
+- Swift Concurrencyにおいて重要な3つのキーワードについて簡単に紹介します
 - async/await
    - 関数に `async` キーワードを付けることで、その関数内が「非同期なコンテキスト」になる
    - 「非同期なコンテキスト」では、他の `async` な関数を呼び出すことができる
