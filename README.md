@@ -55,7 +55,7 @@ struct RepoListView: View {
 
 ```swift
 var body: some View {
-    NavigationView {
+    NavigationStack {
         ...
     }
     .onAppear {
