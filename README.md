@@ -105,7 +105,7 @@ class ReposStoreTests: XCTestCase {
 
         switch store.state {
         case let .loaded(repos):
-            XCTAssertEqual(repos, [Repo.mock1, Repo.mock2])
+            XCTAssertEqual(repos, [.mock1, .mock2])
         default:
             XCTFail()
         }
