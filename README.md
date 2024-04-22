@@ -181,7 +181,7 @@ NavigationStack {
 }
 ```
 
-- 各Rowをタップすると詳細画面へ遷移するように実装するためには、 `RepoRow` を [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink) で囲ってあげます、その際NavigationLinkの初期化時の引数として `RepoDetailView` を渡してあげます
+- 各Rowをタップすると詳細画面へ遷移するように実装するためには、 `RepoRow` を [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink) で囲ってあげます。その際NavigationLinkの初期化時の第一引数として `repository` を渡してあげます
 
 ```swift
 NavigationLink(value: repo) {
@@ -189,11 +189,34 @@ NavigationLink(value: repo) {
 }
 ```
 
-- そして、`[navigationDestination(for:destination:]()`を使用して、遷移先の画面を設定します。
+- `Initializer 'init(value:label:)' requires that 'Repo' conform to 'Hashable'`というエラーが出ます
+- 素直に従ってRepoをHashableに準拠させます。
+  - RepoはUserも保持しているので、UserもHashableに準拠させます。Repoが持っているowner以外のプロパティの型は既にHashableに準拠しているので、何もしなくても大丈夫です。
 
-```swift
-.navigationDestination(for: Repo.self) { repo in
-    RepoDetailView(repo: repo)
+```diff
+- struct Repo: Identifiable {
++ struct Repo: Identifiable, Hashable {
+```
+
+```diff
+- struct User {
++ struct User: Hashable {
+```
+
+- これでエラーを解消することができました
+- そして、[.navigationDestination(for:destination:)](https://developer.apple.com/documentation/swiftui/view/navigationdestination(for:destination:))を使用して、遷移先の画面を設定します
+
+```diff
+ NavigationStack {
+     List(mockRepos) { repo in
+         NavigationLink(value: repo) {
+             RepoRow(repo: repo)
+         }
+     }
+    .navigationTitle("Repositories")
++   .navigationDestination(for: Repo.self) { repo in
++       RepoDetailView(repo: repo)
++   }
 }
 ```
 
