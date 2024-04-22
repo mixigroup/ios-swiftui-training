@@ -60,10 +60,10 @@ final class ReposStore {
         self.repoAPIClient = repoAPIClient
     }
     ...
-    private func loadRepos() {
+    func send(_ action: Action) async {
         ...
         do {
-            let value = try await repoAPIClient.getRepos()
+            let repos = try await repoAPIClient.getRepos()
         ...
     }
 }
