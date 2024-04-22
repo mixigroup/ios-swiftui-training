@@ -33,7 +33,7 @@
 #### [2.3. エラーハンドリング](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
 
 ### 3. 設計とテスト
-#### [3.1. MVVMアーキテクチャ](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+#### [3.1. Single Source of Truth](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
 
 #### [3.2. XCTest](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
 
