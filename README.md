@@ -52,13 +52,13 @@ struct RepoListView: View {
         ...
         .onAppear() {
             Task {
-               await store.loadRepos()
+               await loadRepos()
             }
         }
     }
     
     private func loadRepos() async {        
-        try! await Task.sleep(nanoseconds: 1_000_000_000)　// 1秒待つ
+        try! await Task.sleep(nanoseconds: 1_000_000_000) // 1秒待つ
 
         mockRepos = [.mock1, .mock2, .mock3, .mock4, .mock5]
     }
