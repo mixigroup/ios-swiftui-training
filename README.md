@@ -45,7 +45,6 @@ struct RepoAPIClient: RepoAPIClientProtocol {
 ```
 
 ```swift
-@MainActor
 @Observable
 final class ReposStore {
     enum Action {
@@ -94,7 +93,6 @@ class ReposStoreTests: XCTestCase {
 - Viewに反映されるデータは `ReposStore.state` です、テストメソッドでもこの値を監視して想定通りに更新されていることを確認します
 
 ```swift
-@MainActor
 class ReposStoreTests: XCTestCase {
     func test_onAppear_正常系() async {
         let store = ReposStore(
@@ -116,16 +114,6 @@ class ReposStoreTests: XCTestCase {
     ...
 }
 ```
-
-<details>
-    <summary>Test classに@MainActorを付与している理由(余裕があれば確認してみましょう)</summary>
-    
-- @MainActorを付与しない場合、ReposStore初期化のところで　`Expression is 'async' but is not marked with 'await'`　というエラーが出てしまいます
-- エラーの原因は、async関数内で@MainActorでマークされたクラスを初期化する際に、awaitを使用していないことです
-- awaitが必要な理由は、@MainActorが付与されたReposStoreの初期化はメインスレッドで実行されるため、@MainActorなしのテストメソッド内で実行されると、非同期処理になる場合があるためです
-- Test classに@MainActorを付与することで、テストメソッドもメインスレッドで実行されることが保証され、ReposStore初期化時のawaitを不要にしています
-
-</details>
 
 - 順番に見ていきましょう
 - `await store.send(.onAppear)` を呼び出し、Viewの`onAppear(_:)` が呼ばれたことをシミュレートし、リポジトリ情報の取得を開始しその結果を待ちます
