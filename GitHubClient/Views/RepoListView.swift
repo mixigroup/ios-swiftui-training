@@ -25,7 +25,7 @@ class ReposStore {
 }
 
 struct RepoListView: View {
-    @State var reposStore: ReposStore
+    @State var reposStore = ReposStore()
 
     var body: some View {
         NavigationStack {
@@ -50,5 +50,5 @@ struct RepoListView: View {
 }
 
 #Preview {
-    RepoListView(reposStore: ReposStore())
+    RepoListView()
 }
