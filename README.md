@@ -242,17 +242,17 @@ let word: String = switch state {
 
 // 文
 let number: Double
-if Bool.random {
+if Bool.random() {
     number = 2.718
-else {
+} else {
     number = 3.14
 }
 let word: String
 switch state {
 case .success:
-    word = 2.718
+    word = "guitar"
 case .failure:
-    word = 3.14
+    word = "piano"
 }
 ```
 
