@@ -249,4 +249,4 @@ struct RepoListView: View {
 [session-2.2..session-2.3](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.2..session-2.3)
 
 ## Next
-[3.1. MVVMアーキテクチャ](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
+[3.1. Single Source of Truth](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
