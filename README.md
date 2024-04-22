@@ -30,7 +30,7 @@ class ReposStoreTests: XCTestCase {
 - 常套手段として、 `ReposStore` が依存している `RepoAPIClient` をモックに差し替えましょう
 - そのためには、以下の二つのことをしてあげる必要があります
     - 現在メソッド内で初期化されている `RepoAPIClient` を外から渡す (Dependency Injection)
-    - `RepoAPIClient` のI/Fを抽象化したprotocolをイニシャライザ引数とする
+    - `RepoAPIClient` のI/Fを抽象化したprotocolを`ReposStore`のイニシャライザ引数とする
 
 ```swift
 protocol RepoAPIClientProtocol {
@@ -101,7 +101,7 @@ class ReposStoreTests: XCTestCase {
             )
         )
 
-        await store.onAppear()
+        await store.send(.onAppear)
 
         switch store.state {
         case let .loaded(repos):
@@ -138,12 +138,11 @@ let dummyError = DummyError()
 func test_onAppear_異常系() async {
     let store = ReposStore(
         repoAPIClient: MockRepoAPIClient(
-            repos: [],
-            error: DummyError()
+            getRepos: { throw DummyError() }
         )
     )
 
-    await store.onAppear()
+    await store.send(.onAppear)
 
     switch store.state {
     case let .failed(error):
