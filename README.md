@@ -181,7 +181,7 @@ NavigationStack {
 }
 ```
 
-- 各Rowをタップすると詳細画面へ遷移するように実装するためには、 `RepoRow` を [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink) で囲ってあげます。その際NavigationLinkの初期化時の第一引数として `repository` を渡してあげます
+- 各Rowをタップすると詳細画面へ遷移するように実装するためには、 `RepoRow` を [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink) で囲ってあげます。その際NavigationLinkの初期化時の第一引数として `repo` を渡してあげます
 
 ```swift
 NavigationLink(value: repo) {
