@@ -30,7 +30,7 @@ show(photo)
 - 同じ内容の処理でもSwift Concurrencyを使った実装ではネストがなくなり、直感的に理解しやすくなっていると思います
 - 親子関係をもつ複数の非同期処理を構造的に扱うStructured Concurrencyという仕組みも存在しますが、本セッションでは詳しくは述べません
   - 詳しくは[Tasks and Task Groups](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency#Tasks-and-Task-Groups)というドキュメントをご覧ください
-- 本セッションでポイントとなるSwift Concurrencyの3つの要素を簡単に紹介します
+- Swift Concurrencyで重量な3つの要素について簡単に紹介します
 - async/await
    - 関数に `async` キーワードを付けることで、その関数内が「非同期なコンテキスト」になる
    - 「非同期なコンテキスト」では、他の `async` な関数を呼び出すことができる
@@ -39,9 +39,9 @@ show(photo)
    - `Task` とは非同期で実行できる処理の単位
    - 「非同期なコンテキスト」を提供し、Backgroud Threadで実行される
 - actor
-   - `actor` とは `struct` や `class` と並ぶスレッドセーフなオブジェクト
-   - 非同期処理であっても競合状態を回避しより安全な並行処理を実現できる
-   - オブジェクトや関数に `@MainActor` を付与することで、その部分の処理が必ずメインスレッド（`MainActor` という特殊なactorのコンテキスト）で実行される
+   - `actor` とは `struct` や `class` と並ぶオブジェクトの一種
+   - マルチスレッドにおけるデータ競合を回避し、より安全な並行処理を実現できる
+   - 本セッションでは直接利用することがないので解説は省略します（気になる方は[ドキュメント](https://developer.apple.com/documentation/swift/actor)をご覧ください）
 - では、Concurrencyを使った実装に置き換えてみましょう
 
 ```swift
@@ -140,40 +140,7 @@ class ReposStore {
 - Live Previewでリポジトリがリスト表示されることを確認しましょう
 
 ### チャレンジ
-- この状態でSimulatorを起動してみてください
-- 紫色の警告が表示されるはずなので、なぜ警告が出たのかを理解しつつエラーメッセージの通りに修正してください
-
-#### ヒント
-- エラーメッセージで提案される通りの修正方法ではありません
-
-<details>
-    <summary>解説</summary>
-
-Simulatorで実行すると、以下のようなエラーが出るはずです
-
-<img width="412" alt="スクリーンショット 2022-04-18 8 51 42" src="https://user-images.githubusercontent.com/17004375/163737497-4502dc70-449b-4cfa-852d-24a8d1894f33.png">
-
-> Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
-
-iOSアプリでUIを更新する場合、必ずMain Threadから実行する必要があります
-@PublishedはViewにbindされることを前提として作られているため、Backgroud Threadから値を更新しようとするとランタイムに上記のような紫色の警告が出て叱ってくれるというわけです
-
-`Task` のクロージャ内はBackgroud Threadで実行さるので、 `repos` もBackgroud Threadで更新されていたんですね
-
-以下のように `ReposStore` に `@MainActor` を指定してあげましょう
-
-```swift
-@MainActor
-@Observable
-class ReposStore　{
-    ...
-```
-
-これでSimulatorを起動しても紫色の警告が出なくなったことがわかるかと思います
-
-ネットワークとの通信処理はMain ThreadをブロックしないようにBackground Threadで実行されます
-通信によって得られた結果をViewに反映させる際に誤ってBackground Threadのまま更新しないように注意しましょう
-</details>
+(本セクションではチャレンジはありません)
 
 ### 前セッションとのDiff
 [session-1.5..session-2.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.5..session-2.1)
