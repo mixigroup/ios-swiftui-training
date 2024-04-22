@@ -37,12 +37,12 @@ class ReposStore {
 }
 
 struct RepoListView: View {
-    @State var reposStore = ReposStore()
+    @State var store = ReposStore()
 
     var body: some View {
         NavigationStack {
             Group {
-                switch reposStore.state {
+                switch store.state {
                 case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
@@ -57,7 +57,7 @@ struct RepoListView: View {
                         Button(
                             action: {
                                 Task {
-                                    await reposStore.loadRepos()
+                                    await store.loadRepos()
                                 }
                             },
                             label: {
@@ -74,7 +74,7 @@ struct RepoListView: View {
             }
         }
         .task {
-            await reposStore.loadRepos()
+            await store.loadRepos()
         }
     }
 }
