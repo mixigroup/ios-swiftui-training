@@ -35,7 +35,7 @@ struct MockRepoAPIClient: RepoAPIClientProtocol {
 
 ```diff
 struct RepoListView: View {
-+    @State var store = ReposStore()
+-    @State var store = ReposStore()
 +    @State var store: ReposStore
 ```
 
