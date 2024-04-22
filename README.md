@@ -102,7 +102,7 @@ struct RepoListView: View {
     @State var store = ReposStore()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if store.repos.isEmpty {
                 ProgressView("loading...")
             } else {
