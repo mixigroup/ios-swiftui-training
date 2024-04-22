@@ -125,7 +125,7 @@ struct RepoListView: View {
 HStack {
     VStack(alignment: .leading) {
         HStack {
-            Image(.gitHubMark")
+            Image(.gitHubMark)
                 .resizable()
                 .frame(width: 16, height: 16)
             Text(repo.owner.name)
@@ -137,8 +137,8 @@ HStack {
             .fontWeight(.bold)
             
         　// Optional Binding を使って、descriptionがnilじゃない場合のみUIを表示する
-        if description = repo.description {
-            Text(repo.description)
+        if let description = repo.description {
+            Text(description)
                 .padding(.top, 4) // .top などの方向と余白の長さを指定することができます
         }
         
