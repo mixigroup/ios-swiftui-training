@@ -99,7 +99,7 @@ class ReposStore {
 
 ```swift
 struct RepoListView: View {
-    @State private var store = ReposStore()
+    @State var store = ReposStore()
 
     var body: some View {
         NavigationView {
