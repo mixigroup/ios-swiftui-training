@@ -39,8 +39,8 @@ show(photo)
    - `Task` とは非同期で実行できる処理の単位
    - 「非同期なコンテキスト」を提供し、Backgroud Threadで実行される
 - actor
-   - `actor` とは `struct` や `class` と並ぶオブジェクトの一種
-   - マルチスレッドにおけるデータ競合を回避し、より安全な並行処理を実現できる
+   - `actor` とは `struct` や `class` と並ぶ型の一種
+   - マルチスレッドにおけるデータ競合を回避し、より安全な並行処理を実現するための型
    - 本セッションでは直接利用することがないので解説は省略します（気になる方は[ドキュメント](https://developer.apple.com/documentation/swift/actor)をご覧ください）
 - では、Concurrencyを使った実装に置き換えてみましょう
 
