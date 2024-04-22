@@ -99,6 +99,7 @@ RepoListViewを追加して、MockRepoAPIClientのerrorに`DummyError()`を渡�
 ```
 
 Previewの上部にErrorというタブが表示されました、これをクリックすればエラー状態のPreviewを確認することができます
+
 <img src="https://user-images.githubusercontent.com/17004375/234429326-f8a275c4-3f92-409a-9562-61998df9fb95.png" width="300" />
 
 #### 読み込み状態のPreview
