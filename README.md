@@ -52,7 +52,7 @@ struct RepoListView: View {
         ...
         .onAppear() {
             Task {
-               await reposStore.loadRepos()
+               await store.loadRepos()
             }
         }
     }
@@ -66,25 +66,25 @@ struct RepoListView: View {
 ```
 
 - 以下の流れになります
-    1. `await reposStore.loadRepos()` で `loadRepos()` を開始しつつ、その結果を待つ状態に
+    1. `await store.loadRepos()` で `loadRepos()` を開始しつつ、その結果を待つ状態に
     2. `loadRepos()` 内部では `Task.sleep(nanoseconds:)` を開始しつつ、その結果を待つ状態に
     3. 1秒後に `Task.sleep(nanoseconds:)` が完了し、`mockRepos` に mock の配列が代入され、`loadRepos()` 完了
-    4. `await reposStore.loadRepos()` に返ってきて、一連の処理が終わる
+    4. `await store.loadRepos()` に返ってきて、一連の処理が終わる
 
 - `onAppear() { Task {...} }` は下記と同等なので置き換えます
 
 ```swift
         ...
         .task {
-            await reposStore.loadRepos()
+            await store.loadRepos()
         }
 ```
 
 - 次に `loadRepos()` メソッドを別のクラスに切り出してみます
-- `ReposStore` というクラスを作ってみてください (ファイルは `RepoListView` と同じで構いません)
+- `store` というクラスを作ってみてください (ファイルは `RepoListView` と同じで構いません)
 
 ```swift
-class ReposStore {
+class store {
     private(set) var repos = [Repo]()
 
     func loadRepos() async {
@@ -95,18 +95,18 @@ class ReposStore {
 }
 ```
 
-- `ReposStore` を `RepoListView` のpropertyとして初期化して、 `mockRepos` を参照していた箇所を置き換えていきます
+- `store` を `RepoListView` のpropertyとして初期化して、 `mockRepos` を参照していた箇所を置き換えていきます
 
 ```swift
 struct RepoListView: View {
-    @State private var reposStore = ReposStore()
+    @State private var store = store()
 
     var body: some View {
         NavigationView {
-            if reposStore.repos.isEmpty {
+            if store.repos.isEmpty {
                 ProgressView("loading...")
             } else {
-                List(reposStore.repos) { repo in
+                List(store.repos) { repo in
                     NavigationLink(value: repo) {
                         RepoRow(repo: repo)
                     }
@@ -118,7 +118,7 @@ struct RepoListView: View {
             }
         }
         .task {
-            await reposStore.loadRepos()
+            await store.loadRepos()
         }
     }
 }
@@ -126,14 +126,14 @@ struct RepoListView: View {
     
 - この状態でLive Previewを試してみましょう
 - loadingのまま何も中身が更新されないことがわかるはずです
-- @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `ReposStore` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
-- 適切にViewが更新されるようにするために　`ReposStore`　インスタンス内部の変更を監視できるようにする必要があります
+- @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `store` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
+- 適切にViewが更新されるようにするために　`store`　インスタンス内部の変更を監視できるようにする必要があります
 - そのためには　[Observation](https://developer.apple.com/documentation/observation)　フレームワークの　[@Observable](https://developer.apple.com/documentation/observation/observable()) を使用します
 - Observableマクロは、対象の型に監視サポートを追加し、[Observableプロトコル](https://developer.apple.com/documentation/observation/observable)　に準拠させてこれを監視可能にします
 
 ```swift
 @Observable
-class ReposStore {
+class store {
     private(set) var repos = [Repo]()
 ```
     
