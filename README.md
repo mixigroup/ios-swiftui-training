@@ -17,7 +17,7 @@
 @testable import GitHubClient
 
 class ReposStoreTests: XCTestCase {
-    func test_onAppear_正常系()　async {
+    func test_onAppear_正常系() async {
     }
 }
 ```
