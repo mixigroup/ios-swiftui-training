@@ -57,14 +57,14 @@ struct RepoListView: View {
     ...
     var body: some View {
         NavigationStack {
-            if reposStore.error != nil {
+            if store.error != nil {
                 VStack {
                     Text("Failed to load repositories")
                     Button(
                         action: {
                             Task {
                             　　　　　　　　// リトライボタンをタップしたときに再度リクエストを投げる
-                                await reposStore.loadRepos()
+                                await store.loadRepos()
                             }
                         },
                         label: {
@@ -74,7 +74,7 @@ struct RepoListView: View {
                     .padding()
                 }
             } else {
-                if reposStore.repos.isEmpty {
+                if store.repos.isEmpty {
                     ...
 ```
 
@@ -111,13 +111,13 @@ struct RepoListView: View {
     ...
     var body: some View {
         NavigationStack {
-            if reposStore.error != nil {
+            if store.error != nil {
                 ...
             } else {
-                if reposStore.isLoading {
+                if store.isLoading {
                     ProgressView("loading...")
                 } else {
-                    List(reposStore.repos) {...}
+                    List(store.repos) {...}
                      　　　.navigationTitle("Repositories")
                     ...
                 }
@@ -137,16 +137,16 @@ struct RepoListView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if reposStore.error != nil {
+                if store.error != nil {
                     ...   
                 } else {
-                    if reposStore.isLoading {
+                    if store.isLoading {
                         ...
                     } else {
-                        if reposStore.repos.isEmpty {
+                        if store.repos.isEmpty {
                             ...
                         } else {
-                            List(reposStore.repos) {...}
+                            List(store.repos) {...}
                         }
                     }
                 }
@@ -217,7 +217,7 @@ struct RepoListView: View {
     var body: some View {
         NavigationStack {
             Group {
-                switch reposStore.state {
+                switch store.state {
                 case .loading:
                     ProgressView("loading...")
                 case let .loaded(repos):
