@@ -22,8 +22,7 @@ struct MockRepoAPIClient: RepoAPIClientProtocol {
     }
 }
 ```
-
-- また、`ReposStore`のイニシャライザ引数のデフォルト値として `RepoAPIClient()` をセットしていましたが、これを機にReposStoreのインスタンスを作る度に明示的に`RepoAPIClientProtocol`に準拠したインスタンスを渡す形に変更しましょう
+- 次に、`ReposStore`のイニシャライザ引数のデフォルト値として `RepoAPIClient()` をセットしていましたが、これを機にReposStoreのインスタンスを作る度に明示的に`RepoAPIClientProtocol`に準拠したインスタンスを渡す形に変更しましょう
 ```diff 
      private let repoAPIClient: RepoAPIClientProtocol
  
@@ -31,6 +30,13 @@ struct MockRepoAPIClient: RepoAPIClientProtocol {
 +    init(repoAPIClient: RepoAPIClientProtocol) {
          self.repoAPIClient = repoAPIClient
      }
+```
+- また、`RepoListView`に`ReposStore`をDIするため、初期値を削除しておきます
+
+```diff
+struct RepoListView: View {
++    @State var store = ReposStore()
++    @State var store: ReposStore
 ```
 
 - アプリ起動時にRepoListViewを生成する際は、本物のAPIClientを渡してあげます
