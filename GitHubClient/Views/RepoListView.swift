@@ -1,7 +1,6 @@
 import SwiftUI
 import Observation
 
-@MainActor
 @Observable
 class ReposStore {
     private(set) var repos = [Repo]()
