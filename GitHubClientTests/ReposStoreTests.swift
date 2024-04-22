@@ -1,7 +1,6 @@
 import XCTest
 @testable import GitHubClient
 
-@MainActor
 class ReposStoreTests: XCTestCase {
     func test_onAppear_正常系() async {
         let store = ReposStore(
