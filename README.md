@@ -111,18 +111,20 @@ private let mockRepos = [
 
 ```swift
 List(mockRepos) { repo in
-    Image(.gitHubMark)
-        .resizable()
-        .frame(
-            width: 44.0,
-            height: 44.0
-        )
-    VStack(alignment: .leading) {
-        Text(repo.owner.name)
-            .font(.caption)
-        Text(repo.name)
-            .font(.body)
-            .fontWeight(.semibold)
+    HStack {
+        Image(.gitHubMark)
+            .resizable()
+            .frame(
+                width: 44.0,
+                height: 44.0
+            )
+        VStack(alignment: .leading) {
+            Text(repo.owner.name)
+                .font(.caption)
+            Text(repo.name)
+                .font(.body)
+                .fontWeight(.semibold)
+        }
     }
 }
 ```
