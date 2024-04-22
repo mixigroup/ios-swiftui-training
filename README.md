@@ -66,17 +66,17 @@ struct RepoListView: View {
 ```
 
 - 以下の流れになります
-    1. `await store.loadRepos()` で `loadRepos()` を開始しつつ、その結果を待つ状態に
+    1. `await loadRepos()` で `loadRepos()` を開始しつつ、その結果を待つ状態に
     2. `loadRepos()` 内部では `Task.sleep(nanoseconds:)` を開始しつつ、その結果を待つ状態に
     3. 1秒後に `Task.sleep(nanoseconds:)` が完了し、`mockRepos` に mock の配列が代入され、`loadRepos()` 完了
-    4. `await store.loadRepos()` に返ってきて、一連の処理が終わる
+    4. `await loadRepos()` に返ってきて、一連の処理が終わる
 
 - `onAppear() { Task {...} }` は下記と同等なので置き換えます
 
 ```swift
         ...
         .task {
-            await store.loadRepos()
+            await loadRepos()
         }
 ```
 
