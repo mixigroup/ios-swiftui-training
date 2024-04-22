@@ -27,9 +27,9 @@ class ReposStore {
 
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let value = try decoder.decode([Repo].self, from: data)
+            let repos = try decoder.decode([Repo].self, from: data)
 
-            state = .loaded(value)
+            state = .loaded(repos)
         } catch {
             state = .failed(error)
         }
