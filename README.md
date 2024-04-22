@@ -31,7 +31,7 @@
 - この状態でLive Previewで確認してみてください
 - ずっとloadingのままであることがわかります
 - これだとユーザーは何が起きたか理解できないので、エラーをユーザーに表示できるようにましょう
-- まずはキャッチしたエラーをViewに反映させるために、@Publishedでエラーを監視できるようにします
+- まずはキャッチしたエラーをViewに反映させるために、`ReposStore`のインスタンスプロパティに`error`を設置しましょう
 
 ```swift
 @Observable   
@@ -50,7 +50,7 @@ class ReposStore {
 }            
 ```
 
-- 次に、公開された`error`をList側で監視し、[Button](https://developer.apple.com/documentation/swiftui/button)を使ってリトライ可能なUIを表示します
+- 次に、公開された`error`を`RepoListView`側で監視し、[Button](https://developer.apple.com/documentation/swiftui/button)を使ってリトライ可能なUIを表示します
 
 ```swift
 struct RepoListView: View {
@@ -63,7 +63,7 @@ struct RepoListView: View {
                     Button(
                         action: {
                             Task {
-                            　　　　　　　　// リトライボタンをタップしたときに再度リクエストを投げる
+                                // リトライボタンをタップしたときに再度リクエストを投げる
                                 await store.loadRepos()
                             }
                         },
@@ -104,7 +104,7 @@ class ReposStore {
 }            
 ```
 
-- そしてこれもList側で監視します
+- そしてこれも`RepoListView`側で監視します
 
 ```swift
 struct RepoListView: View {
@@ -126,11 +126,10 @@ struct RepoListView: View {
     }
 ```
 - 一度Live Previewで表示確認してみましょう
-
-![スクリーンショット 2023-04-26 6 06 06](https://user-images.githubusercontent.com/17004375/234403886-3bf65068-a03f-4c3c-a3a7-16e36ceaf904.png)
+<img src="https://user-images.githubusercontent.com/17004375/234403886-3bf65068-a03f-4c3c-a3a7-16e36ceaf904.png" width="300" />
 
 - 現状だと、エラーや読み込みの画面でナビゲーションタイトルが表示されていません
-- これを解消するためにはそれぞれの画面に対応するViewに対して <code>.navigationTitle("Repositories")</code> を呼び出してあげると良さそうですが、同じ記述を3箇所書くのはなかなか悪いコードのにおいがします
+- これを解消するためにはそれぞれの画面に対応するViewに対して `.navigationTitle("Repositories")` を呼び出してあげると良さそうですが、同じ記述を3箇所書くのはなかなか悪いコードのにおいがします
 - このような場合は [Group](https://developer.apple.com/documentation/swiftui/group) を使って複数のViewを一つにまとめて一括でmodifierを付与してあげましょう
 
 ```swift
@@ -159,18 +158,21 @@ struct RepoListView: View {
 ```
 
 - ナビゲーションタイトルが表示されるようになりました
-
-![スクリーンショット 2023-04-26 6 04 44](https://user-images.githubusercontent.com/17004375/234403615-297b6a01-0b48-48bf-ab44-138dc6c999d2.png)
+<img src="https://user-images.githubusercontent.com/17004375/234403615-297b6a01-0b48-48bf-ab44-138dc6c999d2.png" width="300" />
 
 ### チャレンジ
 
 - Repoの配列を読み込むという状態を表現するためだけに3つものpropertyが定義されてしまいました
-- これでもでも問題なく動作していますが、コードが複雑になり可読性が下がっている気がします
-- これを1つのpropertyのみで表現できるようにリファクタリングしてみましょう
+- これでもでも問題なく動作していますが、コードが複雑になり可読性が下がっています
+  - また、repoの取得が成功したにも関わらずerrorが非nilである状態や、読み込み中である状態を潜在的に抱えてしまっているという問題もあります
+  - 現状、repoが空かどうか、errorがnilかどうか、読み込み中かどうか、の`2^3 = 8`通りの状態が存在します
+- 表現したい状態は、読み込み中 or 読み込み失敗 or 読み込み完了 の3通りだけです
+- 状態を必要十分に表現するため、1つのpropertyにまとめる方針でリファクタリングしてみましょう
 
 #### ヒント
 
-- 状態を表現できる型として <code>Stateful</code> という enum を定義し、これを使うようにしてみましょう
+- [session-0](https://github.com/mixigroup/ios-swiftui-training/blob/session-0/README.md)では、状態を必要十分に表現するためにenumとassociated valuesを活用する例をご紹介しました
+- 状態を表現できる型として `Stateful` という enum を定義し、これを使うようにしてみましょう
 
 ```swift
 enum Stateful<Value> {
@@ -183,7 +185,7 @@ enum Stateful<Value> {
 <details>
     <summary>解説</summary>
 
-Statefulを駆使して3つあった@Publishedを1つにしていきます
+Statefulを駆使して3つあったインスタンスプロパティを1つにしていきます
 
 ```swift
 @Observable
@@ -203,9 +205,9 @@ class ReposStore {
 
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let value = try decoder.decode([Repo].self, from: data)
+            let repos = try decoder.decode([Repo].self, from: data)
 
-            state = .loaded(value)
+            state = .loaded(repos)
         } catch {
             state = .failed(error)
         }
@@ -238,10 +240,10 @@ struct RepoListView: View {
 }
 ```
         
-ネストが減り、より直感的に読みやすいコードになったと思います<br>
+ネストが減り、より直感的に読みやすいコードになったと思います。
         
-このように、型を工夫して必要なpropertyを最小限にすることで、コードの可読性および保守性を大幅に上げることができます <br>
-最初から理想のコードを書くことは難しいので、一度動くコードを一通りかけたら見直して改善できる余地がないかを検討する癖をつけておきましょう
+このように、型を工夫して必要なpropertyを最小限にすることで、コードの可読性および保守性を大幅に上げることができます。
+最初から理想のコードを書くことは難しいので、一度動くコードを一通りかけたら見直して改善できる余地がないかを検討する癖をつけておきましょう。
 
 </details>
 
