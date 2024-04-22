@@ -10,12 +10,12 @@
 - Appearing
   - 画面が表示されるタイミングで、まずはStateの監視を開始します
   - `View.body` メソッドの出力を元にレンダリングが走ります
-  - その後、 [onAppear](https://developer.apple.com/documentation/swiftui/text/onappear(perform:)) メソッドが呼び出されます
+  - その後、 [onAppear](https://developer.apple.com/documentation/swiftui/view/onappear(perform:)) メソッドが呼び出されます
 - Updating
   - Stateに更新が走ると現在のViewGraphに差分が生じるかの確認が入り、変更がなければ再レンダリングは走りません
   - ViewGraphに変更がある場合には `View.body` の出力をもとにレンダリングが走ります
 - Disappearing
-  - 画面が消えるタイミングで [onDisappear](https://developer.apple.com/documentation/swiftui/text/ondisappear(perform:)) が呼ばれます
+  - 画面が消えるタイミングで [onDisappear](https://developer.apple.com/documentation/swiftui/view/ondisappear(perform:)) が呼ばれます
 
 - あまりピンとこないかもしれないので、実際にコードを書いて学んでみましょう
 - 今 `RepoListView` には `mockRepos` が最初から定義されていてリポジトリ一覧が表示されています
