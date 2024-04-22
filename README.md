@@ -64,6 +64,7 @@ if let optionalValue {
 - 「わざわざ値をOptionalから取り出さずに値を参照したい...」という機会も多いでしょう、その場合は `Optional Chaining` を使います
 
 ```swift
+let optionalImagePath: String? = "logo.png"
 if optionalImagePath?.hasSuffix(".png") == true {
   print("The image is in PNG format")
 }
