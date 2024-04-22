@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RepoListView: View {
-    @State var store: ReposStore
+    @State var store = ReposStore()
 
     var body: some View {
         NavigationStack {
@@ -44,5 +44,5 @@ struct RepoListView: View {
 }
 
 #Preview {
-    RepoListView(store: ReposStore())
+    RepoListView()
 }
