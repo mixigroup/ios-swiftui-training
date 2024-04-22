@@ -31,16 +31,16 @@ immutable = "Lemon"
 
 ### Optional
 - `nil` (null)を安全に扱うための型として [Optional](https://developer.apple.com/documentation/swift/optional) が提供されています
-```swift
-@frozen enum Optional<Wrapped>
-```
-
 - この型は「値があるかもしれないしnilかもしれない」という状態を表現してくれます
-- シンタックスシュガーとして `?` が用意されていて、直感的に宣言していくことが可能です
+- 非Optional型のインスタンスにはnilをセットするコードはコンパイルすることができません
 
 ```swift
-let longForm: Optional<Int> = 42
-let shortForm: Int? = 42
+var age: Int? = 42
+age = nil
+
+var userId: Int = 1234
+userId = nil
+// Error -  'nil' cannot be assigned to type 'Int'
 ```
 
 - 「もし `nil` ではなければ...」という分岐を書く機会は多いでしょう、Swiftでは `Optional Binding` と呼ばれる書き方でスマートに処理を書くことができます
@@ -91,7 +91,8 @@ optionalValue = 1
 let value = optionalValue!
 ```
 
-- しかし、万が一nilに対して強制アンラップをしてしまうとexceptionを吐いてアプリがランタイムにクラッシュしてしまうので注意が必要です
+- しかし、万が一nilに対して強制アンラップをしてしまうとexceptionを吐いてしまいます。
+- Playground上ではわかりづらいですが、アプリではクラッシュが発生し、ユーザ体験を損ねる一因となります。
 
 ```swift
 optionalValue = nil
@@ -120,21 +121,22 @@ func greet(person: String) -> String {
 - 関数の引数には、「引数ラベル」という呼び出し用の名前をつけて可読性をあげることも可能です
 
 ```swift
-func greet(person: String, from hometown: String) -> String {
-    "Hello \(person)!  Glad you could visit from \(hometown)."
+func move(to office: String, from home: String) {
+    print("\(home)から\(office)に移動")
 }
-print(greet(person: "Bill", from: "Cupertino"))
-// Prints "Hello Bill!  Glad you could visit from Cupertino."
+move(to: "渋谷", from: "中目黒")
 ```
 
 ### クロージャ
-- クロージャとは簡単にいうと受け渡しが可能な関数です
-- 以下のような定義になります
+- クロージャとは、関数として定義せずに呼び出すことができる一連のコードブロックのことです
+- 多言語のラムダ式、匿名関数などと同じ概念に相当します
+- 以下のように使用します
 
 ```swift
-{ (parameters) -> return type in
-    statements
+var decorate: (Int) -> String = { number in
+    "[[\(number)]]"
 }
+decorate(100) // "[[100]]"
 ```
 
 - Swiftではクロージャを受け取る関数が数多く用意されています、その一つの例が [sorted(by:)](https://developer.apple.com/documentation/swift/array/2296815-sorted) です
