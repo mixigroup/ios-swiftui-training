@@ -83,4 +83,4 @@ HStack {
 [session-1.1..session-1.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.1..session-1.2)
 
 ## Next
-[1.3. リスト表示](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3)
+[1.3. リスト表示](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.3/README.md)
