@@ -56,4 +56,4 @@ struct RepoAPIClient {
 [session-2.3..session-3.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.3..session-3.1)
 
 ## Next
-[3.2. XCTest](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+[3.2. XCTest](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2/README.md)
