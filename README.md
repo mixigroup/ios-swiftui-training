@@ -146,4 +146,4 @@ class ReposStore {
 [session-1.5..session-2.1](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.5..session-2.1)
 
 ## Next
-[2.2. URLSessionによる通信](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2)
+[2.2. URLSessionによる通信](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.2/README.md)
