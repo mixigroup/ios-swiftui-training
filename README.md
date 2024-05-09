@@ -102,4 +102,4 @@ if mockRepos.isEmpty {
 [session-1.4..session-1.5](https://github.com/mixigroup/ios-swiftui-training/compare/session-1.4..session-1.5)
 
 ## Next
-[2.1. Swift Concurrencyによる非同期処理](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1)
+[2.1. Swift Concurrencyによる非同期処理](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.1/README.md)
