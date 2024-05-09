@@ -140,4 +140,4 @@ repos = try! decoder.decode([Repo].self, from: data)
 [session-2.1..session-2.2](https://github.com/mixigroup/ios-swiftui-training/compare/session-2.1..session-2.2)
 
 ## Next
-[2.3. エラーハンドリング](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3)
+[2.3. エラーハンドリング](https://github.com/mixigroup/ios-swiftui-training/tree/session-2.3/README.md)
