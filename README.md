@@ -1,20 +1,16 @@
 ## 1.3. リスト表示
 - 先のセッションで組み立てたレイアウトをリスト形式で表示してみましょう
 - SwiftUIでリスト表示を実装する場合には [List](https://developer.apple.com/documentation/swiftui/list) を使うと良いでしょう
-- 一番外側のHStackを 右クリックして、 `Embed in List` を選択してください
+- 以下のように一番外側のHStackを`List`で囲んでみましょう
 
-<img width="376" alt="スクリーンショット 2024-04-21 0 37 50" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/477c1a11-0eb7-4109-9c5b-eba772bae44b">
-
-- HStack が List に置き換わってしまうので、HStack で囲い直します（List で HStack を囲ってところ）
-
-```swift
-List(0 ..< 5) { item in
+```diff
++ List(0 ..< 5) { item in
     HStack {
         ....
     }
-}
++ }
 ```
-- いい感じにリスト表示されていそうです
+- これだけの変更でリスト表示を実現することができます。previewを確認してみましょう。
 
 ![スクリーンショット 2023-04-25 13 37 59](https://user-images.githubusercontent.com/17004375/234175630-d01e9cce-fe8f-4381-8569-813a79085132.png)
 
