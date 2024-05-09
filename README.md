@@ -45,4 +45,4 @@ struct GitHubClientApp: App {
 ```
 
 ## Next
-[1.1. 簡単なレイアウトを組む](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1/readme.md)
+[1.1. 簡単なレイアウトを組む](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.1/README.md)
