@@ -533,4 +533,4 @@ var anotherData: Stateful<[Int]> = .loaded([1, 2, 3])
 ```
 
 ## Next
-[1. SwiftUIの基本 -前準備-](https://github.com/mixigroup/ios-swiftui-training/tree/session-1-prepare)
+[1. SwiftUIの基本 -前準備-](https://github.com/mixigroup/ios-swiftui-training/tree/session-1.0)
