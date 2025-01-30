@@ -59,6 +59,13 @@ if let optionalValue {
 } else {
     print("Couldn't bind an optional value")
 }
+// 以下のコードと同義:
+// if let optionalValue = optionalValue {
+//     print("Value: '\(optionalValue)'")
+// } else {
+//     print("Couldn't bind an optional value")
+// }
+
 ```
 
 - 「わざわざ値をOptionalから取り出さずに値を参照したい...」という機会も多いでしょう、その場合は `Optional Chaining` を使います
@@ -92,7 +99,7 @@ let value = optionalValue!
 ```
 
 - しかし、万が一nilに対して強制アンラップをしてしまうとexceptionを吐いてしまいます。
-- Playground上ではわかりづらいですが、アプリではクラッシュが発生し、ユーザ体験を損ねる一因となります。
+- Playground上ではわかりづらいですが、アプリではクラッシュが発生し、突然ホーム画面が表示されることになり、ユーザ体験を損ねる一因となります。
 
 ```swift
 optionalValue = nil
@@ -116,15 +123,19 @@ func greet(person: String) -> String {
 func greet(person: String) -> String {
     "Hello, " + person + "!"
 }
+// 以下のコードと同義:
+// func greet(person: String) -> String {
+//     return "Hello, " + person + "!"
+// }
 ```
 
-- 関数の引数には、「引数ラベル」という呼び出し用の名前をつけて可読性をあげることも可能です
+- 関数の引数には「引数ラベル」という呼び出し用の名前をつけることができます。効果的に使用することで可読性を高めることができます。
 
 ```swift
-func move(to office: String, from home: String) {
+func move(from home: String, to office: String) {
     print("\(home)から\(office)に移動")
 }
-move(to: "渋谷", from: "中目黒")
+move(from: "中目黒", to: "渋谷")
 ```
 
 ### クロージャ
@@ -144,21 +155,55 @@ decorate(100) // "[[100]]"
 
 ```swift
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
-var sortedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
-    return s1 > s2
+
+// 1. 丁寧に書き下したパターン
+names.sorted(by: { (s1: String, s2: String) -> Bool in
+    return s1 < s2
 })
+// 結果: ["Alex", "Barry", "Chris", "Daniella", "Ewa"]
 
-// 型推論
-sortedNames = names.sorted(by: { s1, s2 in s1 > s2 })
+// 2. 型推論を使うパターン
+names.sorted(by: { s1, s2 in s1 < s2 })
 
-// $による引数参照
-sortedNames = names.sorted(by: { $0 > $1 } )
+// 3. $による引数参照を使うパターン
+names.sorted(by: { $0 < $1 } )
 
-// 引数の最後がクロージャの場合、省略可能
-sortedNames = names.sorted { $0 > $1 }
+// 4. 引数の最後がクロージャであることを用いて、丸括弧を省略するパターン
+names.sorted { $0 < $1 }
 
-// sorted(by:)に大なりオペレータだけを渡す書き方もできる
-sortedNames = names.sorted(by: >)
+// 5. 小なりオペレータが2つのStringを受け取ってBoolを返すことを利用するパターン
+names.sorted(by: <)
+```
+
+### 式と文
+- 式は、評価されると1つの値になるプログラムの要素のことです。
+  - `1 + 1`, `if`, `switch` など
+- 文は、式とは違って評価されても値にはなりません。
+  - `let x = 2`, `for-in`, `while`, `if`, `switch` など
+- ifとswitchは場合によって、式と文のそれぞれに解釈されることがあります。
+
+```swift
+// 式
+let number: Double = if Bool.random() { 2.718 } else { 3.14 }
+let word: String = switch state {
+    case .success: "guitar"
+    case .failure: "piano"
+}
+
+// 文
+let number: Double
+if Bool.random() {
+    number = 2.718
+} else {
+    number = 3.14
+}
+let word: String
+switch state {
+case .success:
+    word = "guitar"
+case .failure:
+    word = "piano"
+}
 ```
 
 ### enum
@@ -173,11 +218,11 @@ enum CompassPoint {
 }
 
 var point = CompassPoint.north
-// 型推論で省略可
+// 型名を省略して各caseを参照することができる
 point = .south
 ```
 
-- よくSwitch文と一緒に使います
+- Switch文と組み合わせることで効果を発揮します
 
 ```swift
 let directionToHead: CompassPoint = .south
@@ -227,39 +272,8 @@ case let .failure(error): print("Failure: \(error)")
 }
 ```
 
-### 式と文
-- 式は、評価されると1つの値になるプログラムの要素のことです。
-  - `1 + 1`, `if`, `switch` など
-- 文は、式とは違って評価されても値にはなりません。
-  - `let x = 2`, `for-in`, `while`, `if`, `switch` など
-- ifとswitchは場合によって、式と文のそれぞれに解釈されることがあります。
-
-```swift
-// 式
-let number: Double = if Bool.random() { 2.718 } else { 3.14 }
-let word: String = switch state {
-    case .success: "guitar"
-    case .failure: "piano"
-}
-
-// 文
-let number: Double
-if Bool.random() {
-    number = 2.718
-} else {
-    number = 3.14
-}
-let word: String
-switch state {
-case .success:
-    word = "guitar"
-case .failure:
-    word = "piano"
-}
-```
-
 ### struct と class
-- structとclassはデータをモデリングする上で必ず必要となってくる機能です
+- structとclassはSwiftでプログラミングする際に必要不可欠な概念です。
 - どちらもpropertyを定義して値を保持したり、メソッドを定義して処理を実行したりできます
 
 ```swift
@@ -272,7 +286,7 @@ class SomeClass {
 ```
 
 - Swiftでは基本的にはstructを使用することが推奨されています
-- classは、保持するデータの一意性を担保する必要がある場合、あるいはObjective-Cとの互換性が必要な場合に使用するようにしてください
+- classは、保持するデータの同一性を担保する必要がある場合、あるいはObjective-Cとの互換性が必要な場合に使用しましょう
   - 参考: https://developer.apple.com/documentation/swift/choosing_between_structures_and_classes
 
 - 仮に上記のStateをstructを使って表現する場合、例えば以下のような実装が考えられます。
@@ -288,17 +302,23 @@ struct AnotherState {
 }
 ```
 - この実装ではstateが`.success`かつ errorが非nilという、本来表現できるはずのない状態を含んでしまいます。
-- Associated Valuesを使用することで、状態を必要十分に表現することが可能になります。
+```swift
+AnotherState(state: .success, error: DummyError())
+```
+
+- 上述のAssociated Valuesを使用することで、状態を必要十分に表現することが可能になります。
 
 ### 値型と参照型
-- クラスとクロージャ以外で定義された型はすべて **値型** です、値の受け渡しはすべてコピーした上で行われます
+- structで定義した型は、**値型** です
+- 値型のインスタンスを別の変数に格納すると、それぞれの変数がメモリ上で指し示す箇所は別々となります
+- つまり、一方の変数への変更がもう一方の変数には影響しません
 
 ```swift
-struct SomeStructure {
+struct S {
   var value: Int
 }
 
-var a = SomeStructure(value: 1)
+var a = S(value: 1)
 var b = a
 
 b.value = 2
@@ -309,10 +329,12 @@ print("b: \(b.value)")
 // b: 2
 ```
 
-- クラスとクロージャは **参照型** です、値の受け渡しは参照で行われるため、例え異なる変数に格納されていても参照されるインスタンスは同じになります
+- classで定義した型は、 **参照型** です
+- 参照型のインスタンスを別の変数に格納すると、それぞれの変数はメモリ上で同じ箇所を指し示します
+- つまり、一方の変数への偏光がもう一方の変数にも影響します
 
 ```swift
-class SomeClass {
+class C {
   var value: Int
   
   init(value: Int) {
@@ -320,7 +342,7 @@ class SomeClass {
   }
 }
 
-var a = SomeClass(value: 1)
+var a = C(value: 1)
 var b = a
 
 b.value = 2
@@ -331,7 +353,8 @@ print("b: \(b.value)")
 // b: 2
 ```
 
-- Swiftは値型中心の言語です、値がどこからともなく変更される可能性のある参照型よりも値型を使って安全にコーディングしていくことが良いとされています
+- Swiftは値型中心の言語です。現に、Int, String, Arrayなど、Swiftにおいて頻繁に使用する型にもstructが使用されています。
+- どこからともなく変更される可能性のある参照型の利用箇所を限定的にすることで、自信をもってコードを改修することができるようになります
 
 #### ARC（本研修ではこれをあまり意識せずにできるので、スキップでもOK）
 - Swiftのメモリは `ARC(Automatic Reference Counting)` によって管理されています
@@ -442,7 +465,7 @@ class Person {
 - 弱参照は参照カウントに加算されません、よって循環参照を防ぎメモリリークを解消してくれます
 
 ### Protocols
-- protocolは、特定の機能に適したメソッドやproperty等のI/Fを定義し、それをclassやstruct, enumに適用することができます
+- protocolは、特定の機能に適したメソッドやproperty等のインターフェースを定義します。protocolはclassやstruct, enumに適用することができます。
 
 ```swift
 protocol SomeProtocol {
@@ -476,7 +499,7 @@ extension SomeStructure: AnotherProtocol {
 }
 ```
 
-- 例えば、同じような機能を複数箇所に持たせたい場合、間違ってもclassの継承を使って実現せずに、Swiftではprotocolによる共通化を心がけてください
+- 例えば、同じような機能を複数箇所に持たせたい場合、classの継承を使って実現する代わりに、まずprotocolを使って実現できないか検討してみましょう
 
 ### Generics
 - Genericsを扱うことで、任意の型を扱うI/Fを定義できます
