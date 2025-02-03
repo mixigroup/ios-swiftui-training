@@ -6,8 +6,8 @@
 
 ## 環境
 
-- Xcode 15.2
-- Swift 5.9.2
+- Xcode 16.2
+- Swift 6.0.3
 
 ## セッション
 ### [0. Swiftの基本](https://github.com/mixigroup/ios-swiftui-training/tree/session-0)
