@@ -13,7 +13,7 @@
 
 - 以下のようにそれぞれ入力した上で `Next` を押して適当なフォルダに保存してください
 
-<img width="1181" alt="スクリーンショット 2024-04-20 23 45 18" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/644d121b-b2ae-43ed-8f3a-962245d5667e">
+<img width="1181" alt="スクリーンショット 2025-02-04 1 05 30" src="https://github.com/user-attachments/assets/f03d72bb-3820-47ff-9486-c693109942a8">
 
 
 - 一応各項目について簡単に説明しておきます
@@ -21,14 +21,14 @@
 |item|description|
 |---|---|
 |Product Name | ・プロダクトの名前<br/>・この名前がデフォルトでアプリ名として表示されるが、もちろん変更可能|
-|Team | アプリを管理するチーム|
+|Team | ・アプリを管理するチーム<br/>・実機ビルドやApp Store配信をしないのであれば、未設定でも問題はありません|
 |Organization Identifier | ・組織の識別子<br/>・ユニークである必要がある<br/>・基本的には所属している組織が保有しているドメインを逆から並べたものを指定|
 |Bundle Identifier | ・アプリを一意に識別する文字列<br/>・Organization IdentifierにProduct Nameをくっつけたものになる|
 |Interface | SwiftUI, Storyboardから選択できる|
 |Language | SwiftUIを選択しなかった場合にはSwift以外にObjective-Cを選択可能|
+|Testing System | プロジェクトに組み込むテストのターゲットやファイルテンプレートを None, XCTest for Unit and UITests, Swift Testing with XCTest UITests から選択できる|
 |Storage | データの永続化に使用するframeworkを None, Swift Data, CoreData から選択できる|
 |Host in CloudKit | StorageとしてSwift DataかCoreDataを選択したときのみ選択可能 |
-|Include Tests | チェックを入れておくとテスト用のターゲットも追加してくれる|
 
 
 - `GitHubClientApp` はアプリを起動したときのエントリーポイントになります
