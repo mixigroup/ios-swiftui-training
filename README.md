@@ -468,35 +468,50 @@ class Person {
 - protocolは、特定の機能に適したメソッドやproperty等のインターフェースを定義します。protocolはclassやstruct, enumに適用することができます。
 
 ```swift
-protocol SomeProtocol {
-    var mustBeSettable: Int { get set }
-    var doesNotNeedToBeSettable: Int { get }
-    func someMethod()
+protocol Drink {
+    // 定価
+    var price: Double { get }
+    func serve()
 }
 
-// extensionによるprotocolのデフォルト実装
-extension SomeProtocol {
-    func someMethod() {
-        print("someMethod called")
+extension Drink {
+    func serve() {
+        print("Serving a drink: $\(price)")
     }
 }
 
-// structへのprotocolの適用
-struct SomeStructure: SomeProtocol {
-    var mustBeSettable: Int
-    let doesNotNeedToBeSettable: Int
+struct Soda: Drink {
+    let price: Double
 }
 
-protocol AnotherProtocol {
-    func anotherMethod()
+let soda = Soda(price: 1.23)
+soda.serve()
+// Serving a drink: $1.23
+
+protocol Discountable {
+    var discountPrice: Double { get }
 }
 
-// extensionによるprotocolの適用
-extension SomeStructure: AnotherProtocol {
-    func anotherMethod() {
-        print("anotherMethod called")
+struct Coffee {
+    let price: Double
+}
+
+// Coffee に Discountable を適用し、割引対応を追加
+extension Coffee: Discountable {
+    // 例: $1引き
+    var discountPrice: Double { 1.0 }
+}
+
+// デフォルト実装を上書きすることも可能
+extension Coffee: Drink {
+    func serve() {
+        print("Serving a HOT coffee: $\(price - discountPrice)")
     }
 }
+
+let coffee = Coffee(price: 4.50)
+coffee.serve()
+// Serving a HOT drink: $3.5
 ```
 
 - 例えば、同じような機能を複数箇所に持たせたい場合、classの継承を使って実現する代わりに、まずprotocolを使って実現できないか検討してみましょう
