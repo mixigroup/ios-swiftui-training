@@ -1,7 +1,8 @@
 ## 1.1. 簡単なレイアウトを組む
 - `ContentView` を開くと、Previewsが表示されるはずです
 
-<img width="1179" alt="スクリーンショット 2024-04-21 0 06 03" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/841a4eda-e251-4fde-91c5-3ac9e2ac68a3">
+
+<img width="1269" alt="スクリーンショット 2025-02-09 23 41 32" src="https://github.com/user-attachments/assets/b5ffe208-74ef-454c-a62b-6b33e1ce031c" />
 
 - 今 `ContentView` には地球のようなアイコンとHello, world!というテキストが配置されているだけになっています
 - コードを見ると[Image](https://developer.apple.com/documentation/swiftui/image)と[Text](https://developer.apple.com/documentation/swiftui/text)が[VStack](https://developer.apple.com/documentation/swiftui/vstack)で囲われていることがわかります
@@ -44,8 +45,7 @@
 
 - 次にVStackを選択し、右側のペインの `Alignment` という項目で左寄せのアイコンを選択します
 
-<img width="1179" alt="スクリーンショット 2024-04-21 0 16 22" src="https://github.com/mixigroup/ios-swiftui-training/assets/13087887/911b13a4-bdd5-4b07-8463-464bbfbc9335">
-
+<img width="1269" alt="スクリーンショット 2025-02-09 23 45 04" src="https://github.com/user-attachments/assets/c4e2f02a-50c2-43b5-9fb9-1e65f9b7359c" />
 
 ```swift
 VStack(alignment: .leading) {
