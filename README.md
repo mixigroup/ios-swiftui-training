@@ -21,7 +21,7 @@
 
 
 - これで、HStackがVStackに囲われました
-- Good evening, world!というテキストをHStackの下に追加して縦に並べてみましょう
+- 次に、"Good evening, world!"というテキストをHStackの下に追加して縦に並べてみましょう
 
 ![スクリーンショット 2023-04-25 11 09 00](https://user-images.githubusercontent.com/17004375/234157017-b1719951-2ce1-46aa-90f1-5dc02120f112.png)
 
