@@ -22,10 +22,11 @@
 
 - 2つのファイルを選択して右クリックで `New Folder from Selection` を選んで `Models` フォルダにまとめてしまいましょう
 
-<img width="352" alt="スクリーンショット 2022-04-26 21 18 06" src="https://user-images.githubusercontent.com/17004375/165298260-7e826db1-1d6f-49a8-b617-7a49d05dc5e6.png">
+<img width="352" alt="スクリーンショット 2025-02-19 23 58 21" src="https://github.com/user-attachments/assets/e025042f-2588-453a-b2c8-616beb07b682">
 
 
 ```swift
+
 struct Repo {
     var name: String
     var owner: User
