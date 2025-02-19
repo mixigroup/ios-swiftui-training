@@ -20,7 +20,7 @@
 
 <img src="https://user-images.githubusercontent.com/8536870/115513794-724bfa80-a2be-11eb-9ff5-7680bf1dd0f4.png">
 
-- 2つのファイルを選択して右クリックで `New Group from Selection` を選んで `Models` フォルダにまとめてしまいましょう
+- 2つのファイルを選択して右クリックで `New Folder from Selection` を選んで `Models` フォルダにまとめてしまいましょう
 
 <img width="352" alt="スクリーンショット 2022-04-26 21 18 06" src="https://user-images.githubusercontent.com/17004375/165298260-7e826db1-1d6f-49a8-b617-7a49d05dc5e6.png">
 
