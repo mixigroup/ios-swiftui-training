@@ -10,7 +10,7 @@
 
 - View周りのファイルも `Views` フォルダにまとめましょう
 
-<img src="https://user-images.githubusercontent.com/8536870/115515967-9e687b00-a2c0-11eb-9ace-d1cf74035b20.png">
+<img src="https://github.com/user-attachments/assets/0b384604-bff0-4e6e-af43-814e32d9f269">
 
 - 詳細画面は以下のようなレイアウトを目指していきます
 
@@ -45,7 +45,8 @@ struct RepoDetailView: View {
 - このようなPreviewでしか使わないようなデータは `Preview Content` にまとめて定義して使いまわしましょう
 - `Preview Content` はデフォルトで `Development Assets` として設定されているため、プロダクションのバイナリに含まれることはありません
 
-![image](https://user-images.githubusercontent.com/8536870/115516250-e4254380-a2c0-11eb-87e5-ca657711a1d9.png)
+![image](https://github.com/user-attachments/assets/d907f2f2-418f-4a25-a493-8b8a6d53f7db)
+
 
 - `Preview Content/Mocks` 以下に `Repo+mock.swift` と `User+mock.swift`を追加します
 
