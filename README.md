@@ -34,7 +34,8 @@
 - まずはキャッチしたエラーをViewに反映させるために、`ReposStore`のインスタンスプロパティに`error`を設置しましょう
 
 ```swift
-@Observable   
+@Observable
+@MainActor   
 class ReposStore {
     private(set) var repos = [Repo]()
     private(set) var error: Error? = nil
@@ -82,7 +83,8 @@ struct RepoListView: View {
 - 現状はreposが空の場合を読み込み中と判定してしまっているので、別途読み込み中を監視できるようにします
 
 ```swift
-@Observable   
+@Observable
+@MainActor   
 class ReposStore {
     private(set) var repos = [Repo]()
     private(set) var error: Error? = nil
@@ -192,6 +194,7 @@ Statefulを駆使して3つあったインスタンスプロパティを1つに�
 
 ```swift
 @Observable
+@MainActor
 class ReposStore {
     private(set) var state: Stateful<[Repo]> = .loading
 
