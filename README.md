@@ -124,6 +124,19 @@ struct RepoListView: View {
 }
 ```
     
+- `loadRepos()` を`store`の物に置き換えたところで`「Sending ‘self.store’ risks causing data races」`というコンパイルエラーが発生するようになっていると思います。
+- 元々、`loadRepos()`はView内に定義されていたため、SwiftUIのViewが暗黙的にメインスレッド上で実行され、UI更新の安全性が担保されていました。しかし、このメソッドをクラスに切り出すと、そのクラスは自動的にメインスレッドに隔離されるわけではありません。
+- その結果、非同期処理中に複数のタスクが同じ`store`インスタンスの状態に同時にアクセス・更新する可能性があり、どの順序で処理されるかが不明瞭になる「データ競合（data race）」のリスクがあるとコンパイラが判断し、コンパイルエラーになります。
+ - **※データ競合（data race）**とは、複数の並行処理が同じデータに同時にアクセスし、結果として予測不可能な状態や不整合が生じる現象です。
+- このエラーを解消する最もシンプルな対策は、`ReposStore` クラスに[@MainActor](https://developer.apple.com/documentation/swift/mainactor) を付与することです。
+- `@MainActor`を付与すると、`ReposStore` 内のすべての処理がメインスレッド上で実行されることが保証されるため、UI更新と並行処理の安全性が確保され、データ競合のリスクが解消されます。
+
+```swift
+@MainActor
+class ReposStore {
+    private(set) var repos = [Repo]()
+```
+
 - この状態でLive Previewを試してみましょう
 - loadingのまま何も中身が更新されないことがわかるはずです
 - @Stateはそのproperty自身に変更が加えられた際にViewの再描画を促します、この場合 `ReposStore` の内部で状態が変わったとしてもクラスのインスタンスが作り変えられるわけでもないので更新は走りません
