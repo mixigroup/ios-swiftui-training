@@ -32,12 +32,13 @@ show(photo)
   - 詳しくは[Tasks and Task Groups](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency#Tasks-and-Task-Groups)というドキュメントをご覧ください
 - Swift Concurrencyにおいて重要な3つのキーワードについて簡単に紹介します
 - async/await
-   - 関数に `async` キーワードを付けることで、その関数内が「非同期なコンテキスト」になる
-   - 「非同期なコンテキスト」では、他の `async` な関数を呼び出すことができる
-   - `async` な関数を呼び出す際は `await` キーワードをつけてその結果を待つ（サスペンションポイント）
+   - `async`: 関数、メソッド、クロージャなどが、実行中に処理が中断される**可能性がある**ことを明示する
+   - `await`: 処理が中断される**可能性がある**箇所に明記する
+     - 言い換えると、中断される可能性がある箇所にはすべて`await`が書いてあるが、 `await`が書いてある箇所で必ず中断が発生する訳ではない
+   - `async` な関数を呼び出す際は `await` キーワードをつけてその結果を待つ
 - Task
    - `Task` とは非同期で実行できる処理の単位
-   - 「非同期なコンテキスト」を提供し、Backgroud Threadで実行される
+   - 本研修では、同期処理から非同期処理を呼び出すために使用する
 - actor
    - `actor` とは `struct` や `class` と並ぶ型の一種
    - マルチスレッドにおけるデータ競合を回避し、より安全な並行処理を実現するための型
