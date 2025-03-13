@@ -34,6 +34,7 @@
 
 ```swift
 @Observable
+@MainActor
 class ReposStore {
     enum Action {
         case onAppear
