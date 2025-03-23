@@ -9,9 +9,9 @@ final class ReposStore {
 
     private(set) var state: Stateful<[Repo]> = .loading
 
-    private let apiClient: RepositoryHandling
+    private let apiClient: any RepositoryHandling
 
-    init(repoAPIClient: RepositoryHandling = RepoAPIClient()) {
+    init(repoAPIClient: any RepositoryHandling = RepoAPIClient()) {
         self.apiClient = repoAPIClient
     }
 
