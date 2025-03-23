@@ -1,10 +1,10 @@
-import XCTest
+import Testing
 @testable import GitHubClient
 
-class ReposStoreTests: XCTestCase {
-    func test_onAppear_正常系() async {
+struct ReposStoreTests {
+    @Test func onAppear_正常系() async {
         let store = ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: { [.mock1, .mock2] }
             )
         )
@@ -13,15 +13,15 @@ class ReposStoreTests: XCTestCase {
 
         switch store.state {
         case let .loaded(repos):
-            XCTAssertEqual(repos, [.mock1, .mock2])
+            #expect(repos == [.mock1, .mock2])
         default:
-            XCTFail()
+            Issue.record("state should be `.loaded`")
         }
     }
 
-    func test_onAppear_異常系() async {
+    @Test func onAppear_異常系() async {
         let store = ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     throw DummyError()
                 }
@@ -32,9 +32,9 @@ class ReposStoreTests: XCTestCase {
 
         switch store.state {
         case let .failed(error):
-            XCTAssert(error is DummyError)
+            #expect(error is DummyError)
         default:
-            XCTFail()
+            Issue.record("state should be `.failed`")
         }
     }
 }
