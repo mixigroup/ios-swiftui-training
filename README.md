@@ -75,7 +75,22 @@ struct GitHubClientApp: App {
 ### チャレンジ
 - エラー状態、読み込み状態のRepoListViewのPreviewをそれぞれ実装してください
 - 各Previewは、 `#Preview("Default") {...}` などと、[init(_:traits:body:)](https://developer.apple.com/documentation/developertoolssupport/preview/init(_:traits:body:)-8pemr) の第一引数に名前をつけて表示することが可能です
-- 読み込み状態のPreviewは、例えば[Task.sleep(until:tolerance:clock:)](https://developer.apple.com/documentation/swift/task/sleep(until:tolerance:clock:))を使って無限ループを作り出すことで実現可能です。
+- 読み込み状態のPreviewは、例えば以下のように値を何も返さない[AsyncStream](https://developer.apple.com/documentation/swift/asyncstream)を使用してasyncなfunctionを定義することで実現可能です。
+  ```swift
+  // Utilities/に`Task+never.swift`として以下を定義する
+  extension Task {
+      static func never() async throws -> Success where Failure == Never {
+          let stream = AsyncStream<Success> { _ in }
+          for await element in stream {
+              return element
+          }
+          throw _Concurrency.CancellationError()
+      }
+  }
+
+  // 使い方
+  try await Task.never()
+  ```
 
 <details>
     <summary>解説</summary>
@@ -103,16 +118,14 @@ Previewの上部にErrorというタブが表示されました、これをク�
 <img src="https://user-images.githubusercontent.com/17004375/234429326-f8a275c4-3f92-409a-9562-61998df9fb95.png" width="300" />
 
 #### 読み込み状態のPreview
-例えば、一秒待つ処理を無限ループさせることで実現可能です。
+上述のTask.never()を使うことで実現可能です。
 ```swift
 #Preview("Loading") {
     RepoListView(
         store: ReposStore(
             apiClient: MockRepoAPIClient(
                 getRepos: {
-                    while true {
-                        try await Task.sleep(until: .now + .seconds(1))
-                    }
+                    try await Task.never()
                 }
             )
         )

@@ -23,6 +23,7 @@
 		DF938EF7262FF439003642C7 /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF938EF6262FF439003642C7 /* Stateful.swift */; };
 		DFDE10BA262FF55700E709EA /* ReposStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDE10B9262FF55700E709EA /* ReposStore.swift */; };
 		DFDE10C2262FF56E00E709EA /* RepoAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDE10C1262FF56E00E709EA /* RepoAPIClient.swift */; };
+		E6A9F61A2D906F560047F7D9 /* Task+never.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A9F6192D906F560047F7D9 /* Task+never.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		DF938EF6262FF439003642C7 /* Stateful.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
 		DFDE10B9262FF55700E709EA /* ReposStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReposStore.swift; sourceTree = "<group>"; };
 		DFDE10C1262FF56E00E709EA /* RepoAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoAPIClient.swift; sourceTree = "<group>"; };
+		E6A9F6192D906F560047F7D9 /* Task+never.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+never.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				DF938EF6262FF439003642C7 /* Stateful.swift */,
+				E6A9F6192D906F560047F7D9 /* Task+never.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				DF938EDB262FF242003642C7 /* User.swift in Sources */,
 				DF938EEE262FF30F003642C7 /* RepoDetailView.swift in Sources */,
 				DF938EF7262FF439003642C7 /* Stateful.swift in Sources */,
+				E6A9F61A2D906F560047F7D9 /* Task+never.swift in Sources */,
 				DF228A45262FF76C00C69CDC /* MockRepoAPIClient.swift in Sources */,
 				DF938EE5262FF304003642C7 /* User+mock.swift in Sources */,
 				DF938EDC262FF242003642C7 /* Repo.swift in Sources */,
