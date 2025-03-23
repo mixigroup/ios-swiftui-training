@@ -30,7 +30,7 @@
 |RepoAPIClient|GitHub APIを叩いてmixi GroupのOrganizationにあるpublicなリポジトリ一覧を取得する|
 
 #### ヒント
-- 各モジュールのI/Fは以下のようになる想定です
+- 各モジュールのインターフェースは以下のようになる想定です
 
 ```swift
 @Observable
