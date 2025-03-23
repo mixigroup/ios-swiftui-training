@@ -1,4 +1,4 @@
-## 3.2. XCTest
+## 3.2. Swift Testing
 - 責務の分離を施したことによるメリットとして、各クラスをテストしやすくなったという点があります
 - `ReposStore` のテストを書いてみましょう
 - テストしたい項目は以下の通りです
@@ -9,15 +9,14 @@
 <img src="https://user-images.githubusercontent.com/8536870/115539731-49d0fa00-a2d8-11eb-85a0-87ec3b6548c0.png">
 
 - `GitHubClientTests.swift` というテストファイルがすでに追加されているはずなので、 `ReposStoreTests` にrenameしましょう
-- `setUpWithError` と `tearDownWithError` は各テストの開始, 終了時にそれぞれ呼ばれます
-- `test` から始まるメソッドがテストケースとして認識されて実行されます
-- とりあえずは `setUpWithError`, `tearDownWithError`を消してしまい、「正しくリポジトリ一覧が読み込まれること」をテストするメソッドを追加しましょう
+- `@Test` を付けたメソッドがテストケースとして認識されて実行されます
+- まずは、「リポジトリ一覧が正常に読み込まれること」をテストするメソッドを追加しましょう
 
 ```swift
 @testable import GitHubClient
 
-class ReposStoreTests: XCTestCase {
-    func test_onAppear_正常系() async {
+struct ReposStoreTests {
+    @Test func onAppear_正常系() async {
     }
 }
 ```
@@ -28,9 +27,9 @@ class ReposStoreTests: XCTestCase {
 - まずはテストメソッド内で、テスト対象の `ReposStore` を初期化し、`send(.onAppear)` を呼び出してリポジトリが読み込まれるか確認...
 - と、このままだとテストを走らせるたびにAPI通信が走ってしまいます
 - 常套手段として、 `ReposStore` が依存している `RepoAPIClient` をモックに差し替えましょう
-- そのためには、以下の二つのことをしてあげる必要があります
+- そのためには、以下の2つのことをしてあげる必要があります
     - 現在メソッド内で初期化されている `RepoAPIClient` を外から渡す (Dependency Injection)
-    - `RepoAPIClient` のI/Fを抽象化したprotocolを`ReposStore`のイニシャライザ引数とする
+    - `RepoAPIClient` のインターフェースを抽象化したprotocolを`ReposStore`のイニシャライザ引数とする
 
 ```swift
 protocol RepoAPIClientProtocol {
@@ -72,7 +71,7 @@ final class ReposStore {
 - これで `RepoAPIClient` をモックに差し替える準備が整いました、早速モックを作ってみましょう
 
 ```swift
-class ReposStoreTests: XCTestCase {
+struct ReposStoreTests {
     ...
     
     struct MockRepoAPIClient: RepoAPIClientProtocol {
@@ -85,7 +84,7 @@ class ReposStoreTests: XCTestCase {
 }
 ```
 
-- モックはこんな感じになります
+- このモックのポイントは以下になります。
     - イニシャライザの引数で、`getRepos()`を呼び出したときのふるまいを定義する
     - `getRepos()` ではイニシャライザ引数で受け取った値をそのまま返す
 
@@ -93,8 +92,8 @@ class ReposStoreTests: XCTestCase {
 - Viewに反映されるデータは `ReposStore.state` です、テストメソッドでもこの値を監視して想定通りに更新されていることを確認します
 
 ```swift
-class ReposStoreTests: XCTestCase {
-    func test_onAppear_正常系() async {
+struct ReposStoreTests {
+    @Test func onAppear_正常系() async {
         let store = ReposStore(
             repoAPIClient: MockRepoAPIClient(
                 getRepos: { [.mock1, .mock2] }
@@ -105,9 +104,9 @@ class ReposStoreTests: XCTestCase {
 
         switch store.state {
         case let .loaded(repos):
-            XCTAssertEqual(repos, [.mock1, .mock2])
+            #expect(repos == [.mock1, .mock2])
         default:
-            XCTFail()
+            Issue.record("state should be `.loaded`")
         }
     }
     
@@ -135,7 +134,7 @@ let dummyError = DummyError()
 正常系のテストと同じ要領でテストを書いていきます
 
 ```swift
-func test_onAppear_異常系() async {
+@Test func onAppear_異常系() async {
     let store = ReposStore(
         repoAPIClient: MockRepoAPIClient(
             getRepos: { throw DummyError() }
@@ -146,9 +145,9 @@ func test_onAppear_異常系() async {
 
     switch store.state {
     case let .failed(error):
-        XCTAssert(error is DummyError)
+        #expect(error is DummyError)
     default:
-        XCTFail()
+        Issue.record("state should be `.failed`")
     }
 }
 ```
