@@ -38,7 +38,7 @@ struct ReposStoreTests {
         }
     }
 
-    struct MockRepoAPIClient: RepoAPIClientProtocol {
+    struct MockRepoAPIClient: RepositoryHandling {
         var getRepos: () async throws -> [Repo]
 
         func getRepos() async throws -> [Repo] {
