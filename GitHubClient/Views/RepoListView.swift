@@ -46,7 +46,7 @@ struct RepoListView: View {
 #Preview("Default") {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     [.mock1, .mock2, .mock3, .mock4, .mock5]
                 }
@@ -57,7 +57,7 @@ struct RepoListView: View {
 #Preview("Loading") {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     while true {
                         try await Task.sleep(until: .now + .seconds(1))
@@ -70,7 +70,7 @@ struct RepoListView: View {
 #Preview("Error") {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     throw DummyError()
                 }

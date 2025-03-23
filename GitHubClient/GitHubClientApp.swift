@@ -6,7 +6,7 @@ struct GitHubClientApp: App {
         WindowGroup {
             RepoListView(
                 store: ReposStore(
-                    repoAPIClient: RepoAPIClient()
+                    apiClient: RepoAPIClient()
                 )
             )
         }

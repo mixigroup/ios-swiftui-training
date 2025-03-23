@@ -14,7 +14,7 @@ struct DummyError: Error {}
 // Preview Content/Mocks/MockRepoAPIClient.swift
 import Foundation
 
-struct MockRepoAPIClient: RepoAPIClientProtocol {
+struct MockRepoAPIClient: RepositoryHandling {
     var getRepos: () async throws -> [Repo]
 
     func getRepos() async throws -> [Repo] {
@@ -22,16 +22,16 @@ struct MockRepoAPIClient: RepoAPIClientProtocol {
     }
 }
 ```
-- 次に、`ReposStore`のイニシャライザ引数のデフォルト値として `RepoAPIClient()` をセットしていましたが、これを機にReposStoreのインスタンスを作る度に明示的に`RepoAPIClientProtocol`に準拠したインスタンスを渡す形に変更しましょう
+- 次に、`ReposStore`のイニシャライザ引数のデフォルト値として `RepoAPIClient()` をセットしていましたが、これを機にReposStoreのインスタンスを作る度に明示的に`RepositoryHandling`に準拠したインスタンスを渡す形に変更しましょう
 ```diff 
-     private let repoAPIClient: RepoAPIClientProtocol
+     private let apiClient: RepositoryHandling
  
--    init(repoAPIClient: RepoAPIClientProtocol = RepoAPIClient()) {
-+    init(repoAPIClient: RepoAPIClientProtocol) {
+-    init(apiClient: RepositoryHandling = RepoAPIClient()) {
++    init(apiClient: RepositoryHandling) {
          self.repoAPIClient = repoAPIClient
      }
 ```
-- また、`RepoListView`に`ReposStore`をDIするため、初期値を削除しておきます
+- また、`RepoListView`に`ReposStore`をDependency Injectionするため、初期値を削除しておきます
 
 ```diff
 struct RepoListView: View {
@@ -46,7 +46,7 @@ struct GitHubClientApp: App {
         WindowGroup {
             RepoListView(
                 store: ReposStore(
-                    repoAPIClient: RepoAPIClient()
+                    apiClient: RepoAPIClient()
                 )
             )
         }
@@ -60,7 +60,7 @@ struct GitHubClientApp: App {
 #Preview {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     [.mock1, .mock2, .mock3, .mock4, .mock5]
                 }
@@ -88,7 +88,7 @@ RepoListViewを追加して、MockRepoAPIClientのerrorに`DummyError()`を渡�
 #Preview("Error") {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     throw DummyError()
                 }
@@ -108,7 +108,7 @@ Previewの上部にErrorというタブが表示されました、これをク�
 #Preview("Loading") {
     RepoListView(
         store: ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     while true {
                         try await Task.sleep(until: .now + .seconds(1))

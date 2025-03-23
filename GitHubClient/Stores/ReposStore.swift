@@ -9,10 +9,10 @@ final class ReposStore {
 
     private(set) var state: Stateful<[Repo]> = .loading
 
-    private let repoAPIClient: RepoAPIClientProtocol
+    private let apiClient: any RepositoryHandling
 
-    init(repoAPIClient: RepoAPIClientProtocol) {
-        self.repoAPIClient = repoAPIClient
+    init(apiClient: any RepositoryHandling) {
+        self.apiClient = apiClient
     }
 
     func send(_ action: Action) async {
@@ -21,7 +21,7 @@ final class ReposStore {
             state = .loading
 
             do {
-                let repos = try await repoAPIClient.getRepos()
+                let repos = try await apiClient.getRepos()
                 state = .loaded(repos)
             } catch {
                 state = .failed(error)
