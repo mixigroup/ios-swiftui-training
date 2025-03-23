@@ -35,7 +35,7 @@
 ### 3. 設計とテスト
 #### [3.1. Single Source of Truth](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.1)
 
-#### [3.2. XCTest](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
+#### [3.2. Swift Testing](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.2)
 
 #### [3.3. Xcode Previewsの再活用](https://github.com/mixigroup/ios-swiftui-training/tree/session-3.3)
 
