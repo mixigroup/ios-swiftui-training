@@ -32,11 +32,11 @@ struct ReposStoreTests {
     - `RepoAPIClient` のインターフェースを抽象化したprotocolを`ReposStore`のイニシャライザ引数とする
 
 ```swift
-protocol RepoAPIClientProtocol {
+protocol RepositoryHandling {
     func getRepos() async throws -> [Repo]
 }
 
-struct RepoAPIClient: RepoAPIClientProtocol {
+struct RepoAPIClient: RepositoryHandling {
     func getRepos() async throws -> [Repo] {
         ...
     }
@@ -53,9 +53,9 @@ final class ReposStore {
 
     private(set) var state: Stateful<[Repo]> = .loading
 
-    private let repoAPIClient: RepoAPIClientProtocol
+    private let repoAPIClient: RepositoryHandling
 
-    init(repoAPIClient: RepoAPIClientProtocol = RepoAPIClient()) {
+    init(repoAPIClient: RepositoryHandling = RepoAPIClient()) {
         self.repoAPIClient = repoAPIClient
     }
     ...
@@ -74,7 +74,7 @@ final class ReposStore {
 struct ReposStoreTests {
     ...
     
-    struct MockRepoAPIClient: RepoAPIClientProtocol {
+    struct MockRepoAPIClient: RepositoryHandling {
         var getRepos: () async throws -> [Repo]
 
         func getRepos() async throws -> [Repo] {
