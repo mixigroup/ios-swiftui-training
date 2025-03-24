@@ -12,8 +12,8 @@ final class ReposStore {
 
     private let apiClient: any RepositoryHandling
 
-    init(repoAPIClient: any RepositoryHandling = RepoAPIClient()) {
-        self.apiClient = repoAPIClient
+    init(apiClient: any RepositoryHandling = RepoAPIClient()) {
+        self.apiClient = apiClient
     }
 
     func send(_ action: Action) async {

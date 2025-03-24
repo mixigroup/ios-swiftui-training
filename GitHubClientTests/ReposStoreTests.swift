@@ -5,7 +5,7 @@ struct ReposStoreTests {
     @MainActor
     @Test func onAppear_正常系() async {
         let store = ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: { [.mock1, .mock2] }
             )
         )
@@ -23,7 +23,7 @@ struct ReposStoreTests {
     @MainActor
     @Test func onAppear_異常系() async {
         let store = ReposStore(
-            repoAPIClient: MockRepoAPIClient(
+            apiClient: MockRepoAPIClient(
                 getRepos: {
                     throw DummyError()
                 }
