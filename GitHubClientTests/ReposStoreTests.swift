@@ -2,6 +2,7 @@ import Testing
 @testable import GitHubClient
 
 struct ReposStoreTests {
+    @MainActor
     @Test func onAppear_正常系() async {
         let store = ReposStore(
             repoAPIClient: MockRepoAPIClient(
@@ -19,6 +20,7 @@ struct ReposStoreTests {
         }
     }
 
+    @MainActor
     @Test func onAppear_異常系() async {
         let store = ReposStore(
             repoAPIClient: MockRepoAPIClient(
@@ -39,7 +41,7 @@ struct ReposStoreTests {
     }
 
     struct MockRepoAPIClient: RepositoryHandling {
-        var getRepos: () async throws -> [Repo]
+        var getRepos: @Sendable () async throws -> [Repo]
 
         func getRepos() async throws -> [Repo] {
             try await getRepos()
